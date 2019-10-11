@@ -32,5 +32,6 @@ val union = alpha.concat(list)
 val inter = alpha.intersect(list)
 val dif = alpha.diff(list)
 
+val i = 12
 
 
