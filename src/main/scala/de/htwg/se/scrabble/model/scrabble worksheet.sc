@@ -15,7 +15,7 @@ point("")
 
 val alpha = 'a' to 'z'
 
-val hand1 = (1 to 7).map(_ => alpha(Random.nextInt(26)))
+val hand1 = (1 to 7).map(_ => Random.nextInt(26))
 val hand2 = Seq.fill(7)(alpha(Random.nextInt(26)))
 hand1.concat(hand2)
 
@@ -24,7 +24,7 @@ val List2 = List1 :+ "a":+"b"
 val List3 = List2.filter(_!="b")
 
 def remove(alp: String, list: List[String]) = list diff List(alp)
-remove("a",List2)
+remove("b",List2)
 
 val list = ('a' to 'g').toList
 
