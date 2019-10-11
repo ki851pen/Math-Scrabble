@@ -9,8 +9,22 @@ case class Alphabet() {
 
 class alphalist()
 
-class Grid(number: Int) {
+class Grid(rows: Int,cols: Int) {
+  private val mygrid =  Array.ofDim[Cell](rows,cols)
+}
 
+class Cell(char: String){
+  private val letter = char
+  //def isSet {}
+  def isAlphabet: Boolean = {'a' to 'z' contains letter}
+  def getPoint: Int = {
+    var a = Alphabet()
+    a.point(char)
+  }
+}
+
+class doublecell(char: String) extends Cell(char) {
+  override def getPoint: Int = super.getPoint * 2
 }
 
 class Hand(number: Int) {
