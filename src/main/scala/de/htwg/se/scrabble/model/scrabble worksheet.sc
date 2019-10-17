@@ -34,4 +34,21 @@ val dif = alpha.diff(list)
 
 val i = 12
 
+val x1 = List.fill(15)("=")
+val x2 = List.fill(5)("+")
+val x3 = List.fill(5)("-")
+val x4 = List.fill(5)("*")
+val x5 = List.fill(5)("/")
+val x6 = List.fill(5)((0 to 9).toList).flatten
+val x = x1 ::: x2 ::: x3 ::: x4 ::: x5 :::x6
+val sx = Random.shuffle(Random.shuffle(Random.shuffle(x)))
+val hand = sx.take(9)
+val nx = sx.drop(9)
+
+sx.init
+
+val pop :: newList = sx
+
+
+
 
