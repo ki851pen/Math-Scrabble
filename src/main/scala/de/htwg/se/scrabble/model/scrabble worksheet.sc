@@ -8,13 +8,11 @@ point.keys
 point.values
 point.isEmpty
 point.size
-
 point("a")
 point("q")
-point("")
+//point("")
 
 val alpha = 'a' to 'z'
-
 val hand1 = (1 to 7).map(_ => Random.nextInt(26))
 val hand2 = Seq.fill(7)(alpha(Random.nextInt(26)))
 hand1.concat(hand2)
@@ -34,20 +32,41 @@ val dif = alpha.diff(list)
 
 val i = 12
 
-val x1 = List.fill(15)("=")
-val x2 = List.fill(5)("+")
-val x3 = List.fill(5)("-")
+val x1 = List.fill(20)("=")
+val x2 = List.fill(7)("+")
+val x3 = List.fill(7)("-")
 val x4 = List.fill(5)("*")
 val x5 = List.fill(5)("/")
-val x6 = List.fill(5)((0 to 9).toList).flatten
-val x = x1 ::: x2 ::: x3 ::: x4 ::: x5 :::x6
+val x6 = List.fill(4)("_")
+val x7 = List.fill(5)((0 to 9).toList).flatten
+val x = x1 ::: x2 ::: x3 ::: x4 ::: x5 :::x6:::x7
+x.length
 val sx = Random.shuffle(Random.shuffle(Random.shuffle(x)))
 val hand = sx.take(9)
 val nx = sx.drop(9)
+val snx = Random.shuffle(Random.shuffle(Random.shuffle(nx)))
+snx.take(9)
+snx.drop(9)
 
-sx.init
+9*1==9
 
-val pop :: newList = sx
+val in = "9*1=9=4+5"
+val in2 = "33+67"
+
+in.contains('=')
+val sp = in.split('=')
+
+//val check = x => _.size > 1
+
+in2.split('=')
+val ina = in.toCharArray
+
+if(ina.indexOf('=') == -1) println("no equal sign")
+else ina.splitAt(ina.indexOf('='))
+
+for(char <- ina if !char.isDigit)
+  if(char == '=') println("==")
+
 
 
 
