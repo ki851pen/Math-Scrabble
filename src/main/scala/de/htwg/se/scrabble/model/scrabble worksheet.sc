@@ -34,4 +34,4 @@ val dif = alpha.diff(list)
 
 val i = 12
 
-
+val value = 13
