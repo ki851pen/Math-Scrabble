@@ -70,6 +70,7 @@ for(char <- ina if !char.isDigit)
   if(char == '=') println("==")
 
 var darr = Array.tabulate(3, 3){ (a,b) => a*2+b }
+//^([-+]? ?(\d+|\(\g<1>\))( ?[-+*\/] ?\g<1>)?)$
 
 
 
