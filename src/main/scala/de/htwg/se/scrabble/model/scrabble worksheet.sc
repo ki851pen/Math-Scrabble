@@ -48,6 +48,8 @@ val snx = Random.shuffle(Random.shuffle(Random.shuffle(nx)))
 snx.take(9)
 snx.drop(9)
 
+val nnx = nx.drop(9)
+
 9*1==9
 
 val in = "9*1=9=4+5"
@@ -66,6 +68,8 @@ else ina.splitAt(ina.indexOf('='))
 
 for(char <- ina if !char.isDigit)
   if(char == '=') println("==")
+
+var darr = Array.tabulate(3, 3){ (a,b) => a*2+b }
 
 
 
