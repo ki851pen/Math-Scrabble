@@ -66,8 +66,6 @@ else ina.splitAt(ina.indexOf('='))
 
 for(char <- ina if !char.isDigit)
   if(char == '=') println("==")
-
-
-
+val value = 13
 
 
