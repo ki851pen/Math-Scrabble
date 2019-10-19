@@ -1,15 +1,14 @@
 package de.htwg.se.scrabble.model
 
 case class Cell(value: String){
-  val digit: List[Int] = (0 to 9).toList
-  val operator: List[String] = List("+","-","*","/","=")
-  val validlist: List[Any] = digit ::: operator
+  val validlist: List[String] = (0 to 9).toList.map(x => x.toString) ::: List("+","-","*","/","=")
   def isSet(input : String):Boolean =
     input match{
       case "" => false
       case _ => true
     }
-  //def parsevalue = if value
+  def isvalid: Boolean = validlist.contains(value)
+  def parsevalue: Int = ??? //value.filter(x => !operator.contains(x)).toIntOption.getOrElse(-1)
 /*
   def matchTest = value match {
     //case 0 to 9=> "Digit"

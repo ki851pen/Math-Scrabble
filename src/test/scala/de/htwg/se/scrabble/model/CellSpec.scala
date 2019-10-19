@@ -15,9 +15,33 @@ class CellSpec extends WordSpec with Matchers {
       }
     }
     "set to 3" should {
-      val filledcell = Cell("3")
-      "have value 3" in {
-        filledcell.value should be("3")
+      val validcell = Cell("3")
+      "have value string 3" in {
+        validcell.value should be("3")
+      }
+      "parse string 3 to int" in {
+        validcell.parsevalue should be(3)
+      }
+      "is valid" in{
+        validcell.isvalid should be(true)
+      }
+    }
+    "set to +" should {
+      val notvalidcell = Cell("+")
+      "have value +" in {
+        notvalidcell.value should be("+")
+      }
+      "is valid" in{
+        notvalidcell.isvalid should be(true)
+      }
+    }
+    "set to n" should {
+      val notvalidcell = Cell("n")
+      "have value n" in {
+        notvalidcell.value should be("n")
+      }
+      "is not valid" in{
+        notvalidcell.isvalid should be(false)
       }
     }
   }
