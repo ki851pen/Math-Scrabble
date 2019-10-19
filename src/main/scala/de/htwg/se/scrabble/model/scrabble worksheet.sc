@@ -72,7 +72,11 @@ for(char <- ina if !char.isDigit)
 var darr = Array.tabulate(3, 3){ (a,b) => a*2+b }
 //^([-+]? ?(\d+|\(\g<1>\))( ?[-+*\/] ?\g<1>)?)$
 
+val valid = List(1 to 10,"+","-","*","/","=")
 
+val digit= (0 to 9).toList
+val operator= List("+","-","*","/","=")
+val validlist = digit ::: operator
 
 
 
