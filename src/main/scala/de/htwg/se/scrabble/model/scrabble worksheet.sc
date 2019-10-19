@@ -10,7 +10,6 @@ point.isEmpty
 point.size
 point("a")
 point("q")
-//point("")
 
 val alpha = 'a' to 'z'
 val hand1 = (1 to 7).map(_ => Random.nextInt(26))
@@ -20,17 +19,13 @@ hand1.concat(hand2)
 val List1 = List.empty[String]
 val List2 = List1 :+ "a":+"b"
 val List3 = List2.filter(_!="b")
-
 def remove(alp: String, list: List[String]) = list diff List(alp)
 remove("b",List2)
-
 val list = ('a' to 'g').toList
 
 val union = alpha.concat(list)
 val inter = alpha.intersect(list)
 val dif = alpha.diff(list)
-
-val i = 12
 
 val x1 = List.fill(20)("=")
 val x2 = List.fill(7)("+")
@@ -50,16 +45,11 @@ snx.drop(9)
 
 val nnx = nx.drop(9)
 
-9*1==9
-
 val in = "9*1=9=4+5"
 val in2 = "33+67"
 
 in.contains('=')
 val sp = in.split('=')
-
-//val check = x => _.size > 1
-
 in2.split('=')
 val ina = in.toCharArray
 
@@ -78,16 +68,4 @@ val validlist = (0 to 9).toList.map(x => x.toString) ::: List("+","-","*","/","=
 "+".toIntOption.getOrElse(-1)
 "-1".toIntOption.getOrElse(-1)
 "3.0".toIntOption.getOrElse(-1)
-/*
-"+".filter(x => !operator.contains(x)).toIntOption.getOrElse(-1)
-"3".filter(x => !operator.contains(x)).toIntOption.getOrElse(-1)
-
-"+".filter(x => !operator.contains(x))
-"3".filter(x => !operator.contains(x))
-"n".filter(x => operator.contains(x))
-"-".filter(x => !operator.contains(x))
-"-".filter(x => operator.contains(x))
-
-!operator.contains("-")
-!operator.contains("n")
-*/
+"9".toIntOption.getOrElse(-1)
