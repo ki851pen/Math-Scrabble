@@ -27,12 +27,15 @@ class CellSpec extends WordSpec with Matchers {
       }
     }
     "set to +" should {
-      val notvalidcell = Cell("+")
+      val pluscell = Cell("+")
       "have value +" in {
-        notvalidcell.value should be("+")
+        pluscell.value should be("+")
+      }
+      "have the same parsevulue as value" in {
+        pluscell.parsevalue should be("+")
       }
       "is valid" in{
-        notvalidcell.isvalid should be(true)
+        pluscell.isvalid should be(true)
       }
     }
     "set to n" should {
@@ -40,19 +43,22 @@ class CellSpec extends WordSpec with Matchers {
       "have value n" in {
         notvalidcell.value should be("n")
       }
+      "have empty string as parsevulue" in {
+        notvalidcell.parsevalue should be("")
+      }
       "is not valid" in{
         notvalidcell.isvalid should be(false)
       }
     }
   }
   "A Cell" should {
-    "have a valid list that contain number" in {
+    "have a valid list that contain number as String" in {
       val testCell = Cell("")
-      testCell.validlist.contains(4) should be(true)
+      testCell.validlist.contains("0") should be(true)
     }
-    "and contain arithmetic operation" in {
+    "and contain arithmetic operation as String" in {
       val testCell = Cell("")
-      testCell.validlist.contains("+") should be(true)
+      testCell.validlist.contains("=") should be(true)
     }
   }
 }
