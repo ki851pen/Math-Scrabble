@@ -1,11 +1,10 @@
 package de.htwg.se.scrabble.model
 
-case class Cell(value: String){
-  def isSet(input : String):Boolean =
-    input match{
-      case "" => false
-      case _ => true
-  }
+import de.htwg.se.scrabble.util.SpecialCell._
+case class Cell(value: String, special: SpecialCell){
+  def this(value : String) = this(value, Normal)
+  def isSet : Boolean = value != "" && value != null
+  def isNormal : Boolean = special == Normal
 /*
   def matchTest = value match {
     //case 0 to 9=> "Digit"
@@ -17,3 +16,4 @@ case class Cell(value: String){
     case _ => false
   }*/
 }
+
