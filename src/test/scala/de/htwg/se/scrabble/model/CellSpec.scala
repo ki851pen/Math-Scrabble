@@ -16,17 +16,23 @@ class CellSpec extends WordSpec with Matchers {
     }
     "set to a specific value" should {
       val nonEmptyCell = new Cell("5")
+      val othernonEmptyCell = Cell("5", Double)
+
       "return that value" in {
         nonEmptyCell.value should be("5")
+        othernonEmptyCell.value should be("5")
       }
       "be set" in {
         nonEmptyCell.isSet should be(true)
+        othernonEmptyCell.isSet should be(true)
       }
     }
     "special" should{
       val specialCell = Cell("1", Triple)
+      val normalCell = Cell("1", Normal)
       "be not normal" in {
         specialCell.isNormal should be(false)
+        normalCell.isNormal should be(true)
       }
     }
   }
