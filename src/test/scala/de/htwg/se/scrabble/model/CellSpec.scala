@@ -11,7 +11,7 @@ class CellSpec extends WordSpec with Matchers {
         emptyCell.value should be ("")
       }
       "not be set" in {
-        emptyCell.isSet("") should be (false)
+        emptyCell.isSet should be (false)
       }
     }
     "set to 3" should {

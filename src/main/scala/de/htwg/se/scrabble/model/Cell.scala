@@ -3,8 +3,8 @@ package de.htwg.se.scrabble.model
 case class Cell(value: String){
   val operator: List[String] = List("+","-","*","/","=")
   val validlist: List[String] = (0 to 9).toList.map(x => x.toString) ::: operator
-  def isSet(input : String):Boolean =
-    input match{
+  def isSet:Boolean =
+    value match{
       case "" => false
       case _ => true
     }
