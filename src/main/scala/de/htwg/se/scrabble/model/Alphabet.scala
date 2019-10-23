@@ -13,7 +13,3 @@ class Grid(rows: Int,cols: Int) {
   private val mygrid =  Array.ofDim[Cell](rows,cols)
 }
 
-class Hand(number: Int) {
-
-}
-
