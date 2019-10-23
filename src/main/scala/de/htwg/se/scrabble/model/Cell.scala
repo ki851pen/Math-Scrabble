@@ -10,6 +10,7 @@ case class Cell(value: String){
     }
   def isvalid: Boolean = validlist.contains(value)
   def parsevalue: Any = if(operator.contains(value)){value} else {value.toIntOption.getOrElse("")}
+
 /*
   def matchTest = value match {
     //case 0 to 9=> "Digit"
