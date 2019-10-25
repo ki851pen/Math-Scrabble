@@ -69,3 +69,5 @@ val validlist = (0 to 9).toList.map(x => x.toString) ::: List("+","-","*","/","=
 "-1".toIntOption.getOrElse(-1)
 "3.0".toIntOption.getOrElse(-1)
 "9".toIntOption.getOrElse(-1)
+
+Random.shuffle(Vector(1,2,3,4))//Vector oder List?
