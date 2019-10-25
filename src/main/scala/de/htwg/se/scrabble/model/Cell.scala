@@ -1,16 +1,14 @@
 package de.htwg.se.scrabble.model
 
-case class Cell(value: String){
+import de.htwg.se.scrabble.util.SpecialCell._
+case class Cell(value: String, special: SpecialCell){
+  def this(value : String) = this(value, Normal)
   val operator: List[String] = List("+","-","*","/","=")
   val validlist: List[String] = (0 to 9).toList.map(x => x.toString) ::: operator
-  def isSet:Boolean =
-    value match{
-      case "" => false
-      case _ => true
-    }
-  def isvalid: Boolean = validlist.contains(value)
-  def parsevalue: Any = if(operator.contains(value)){value} else {value.toIntOption.getOrElse("")}
-
+  def isSet : Boolean = value != ""
+  def isNormal : Boolean = special == Normal
+  def isValid: Boolean = validlist.contains(value)
+  def parseValue: Any = if(operator.contains(value)){value} else {value.toIntOption.getOrElse("")}
 /*
   def matchTest = value match {
     //case 0 to 9=> "Digit"
@@ -21,4 +19,5 @@ case class Cell(value: String){
     case "=" => "equal"
     case _ => false
   }*/
+  override def toString: String = value
 }
