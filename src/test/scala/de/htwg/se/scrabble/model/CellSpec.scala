@@ -26,6 +26,9 @@ class CellSpec extends WordSpec with Matchers {
         nonEmptyCell.isSet should be(true)
         othernonEmptyCell.isSet should be(true)
       }
+      "have string representation" in {
+        nonEmptyCell.toString should be ("5")
+      }
     }
     "special" should{
       val specialCell = Cell("1", Triple)
@@ -40,10 +43,10 @@ class CellSpec extends WordSpec with Matchers {
           validcell.value should be("3")
         }
         "parse string 3 to int" in {
-          validcell.parsevalue should be(3)
+          validcell.parseValue should be(3)
         }
         "is valid" in{
-          validcell.isvalid should be(true)
+          validcell.isValid should be(true)
         }
       }
       "set to +" should {
@@ -52,10 +55,10 @@ class CellSpec extends WordSpec with Matchers {
           pluscell.value should be("+")
         }
         "have the same parsevulue as value" in {
-          pluscell.parsevalue should be("+")
+          pluscell.parseValue should be("+")
         }
       "is valid" in{
-        pluscell.isvalid should be(true)
+        pluscell.isValid should be(true)
       }
     }
     "set to n" should {
@@ -64,10 +67,10 @@ class CellSpec extends WordSpec with Matchers {
         notvalidcell.value should be("n")
       }
       "have empty string as parsevulue" in {
-        notvalidcell.parsevalue should be("")
+        notvalidcell.parseValue should be("")
       }
       "is not valid" in{
-        notvalidcell.isvalid should be(false)
+        notvalidcell.isValid should be(false)
       }
     }
   }

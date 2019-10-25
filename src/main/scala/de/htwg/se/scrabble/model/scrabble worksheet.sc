@@ -1,8 +1,6 @@
 import scala.util.Random
-val point = Map("a"->1, "b"->3, "c"->3, "d"->2, "e"->1, "f"->4
-  , "g"->2, "h"->4, "i"->1, "j"->8, "k"->5, "l"->1, "m"->3, "n"->1
-  , "o"->1, "p"->3, "q"->10, "r"->1, "s"->1, "t"->1, "u"->1, "v"->4
-  , "w"->4, "x"->8, "y"->4, "z"->10)
+val point: Map[Any, Int] = Map("="->1, "+"->1, "-"->1, "*"->2, "/"->3, "_"->0
+  , 1->1, 2->1, 3->2, 4->2, 5->3, 6->2, 7->4, 8->2, 9->2, 0-> 1)
 
 point.keys
 point.values
@@ -71,3 +69,5 @@ val validlist = (0 to 9).toList.map(x => x.toString) ::: List("+","-","*","/","=
 "9".toIntOption.getOrElse(-1)
 
 Random.shuffle(Vector(1,2,3,4))//Vector oder List?
+
+val sum = list.foldLeft(0)(_+_)
