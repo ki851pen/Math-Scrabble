@@ -6,5 +6,5 @@ case class Pile(){
   val tilepile: List[Any] = List.fill(20)("="):::List.fill(7)("+"):::List.fill(7)("-"):::List.fill(5)("*"):::List.fill(5)("/"):::List.fill(6)("_"):::List.fill(5)((0 to 9).toList).flatten
   def size: Int = tilepile.length
 
-  override def toString: String = tilepile.toString()
+  override def toString: String = tilepile.mkString(", ")
 }
