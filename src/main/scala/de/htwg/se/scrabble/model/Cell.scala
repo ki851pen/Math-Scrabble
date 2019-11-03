@@ -19,5 +19,9 @@ case class Cell(value: String, special: SpecialCell){
     case "=" => "equal"
     case _ => false
   }*/
-  override def toString: String = value
+  override def toString: String = {
+    if (value == "")
+      return " "
+    return value
+  }
 }

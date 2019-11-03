@@ -7,5 +7,5 @@ case class Pile(mode: Int){
   def size: Int = tilepile.length
   def shuffle: Pile = Random.shuffle(tilepile)
 
-  override def toString: String = tilepile.toString()
+  override def toString: String = tilepile.mkString(", ")
 }

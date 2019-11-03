@@ -20,7 +20,7 @@ class GridSpec extends WordSpec with Matchers {
         grid.cell(0, 0) should be(new Cell(""))
       }
       "allow to set individual Cells and remain immutable" in {
-        val newGrid = grid.set(0, 0, new Cell("1"))
+        val newGrid = grid.set(0, 0, "1")
         newGrid.cell(0, 0) should be(new Cell("1"))
         grid.cell(0,0) should be(new Cell(""))
       }
