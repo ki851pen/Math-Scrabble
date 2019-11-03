@@ -10,13 +10,13 @@ object Scrabble {
     println("This is Scrabble")
     var input: String = ""
     var grid = new Grid(9)
-    var pile = Pile()
+    var pile = new Pile()
     val tui = new Tui()
     do {
       println("Grid : " + grid)
       println("Pile : " + pile)
       input = readLine()
-      grid = tui.processInputLine(input, grid, pile)
+      pile = tui.processInputLine(input, grid, pile)
     } while (input != "q")
   }
 }
