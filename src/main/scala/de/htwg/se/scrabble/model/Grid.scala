@@ -7,12 +7,17 @@ case class Grid(private val cells:Matrix[Cell]) {
   def set(row:Int, col:Int, value:String):Grid = copy(cells.replaceCell(row, col, Cell(value, cell(row, col).special)))
 
   override def toString: String = {
-    val numCol = "     " + List.range(1, size + 1).mkString("   ") +  "  \n"
-    val lineSeparator = "   +" + "----" * size + "+\n"
+    val numCol = "      " + List.range(1, size + 1).filter(_<10).mkString("    ") + "    " + List.range(1, size + 1).filter(_>9).mkString("   ") +  "  \n"
+    val lineSeparator = "   +" + "-----" * size + "+\n"
     var box = "\n" + numCol + lineSeparator
     for (numLine <- 1 to size){
-      val line = String.format(" %s ", numLine) + "|" + " _ |"  * size + "\n"
-      box += line
+      if(numLine <10){
+        val line = String.format(" %s  ", numLine) + "|" + " _  |"  * size + "\n"
+        box += line}
+      else {
+        val line = String.format(" %s ", numLine) + "|" + " _  |"  * size + "\n"
+        box += line
+      }
     }
     box += lineSeparator
     for {
