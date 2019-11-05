@@ -5,6 +5,9 @@ case class Grid(private val cells:Matrix[Cell]) {
   val size:Int = cells.size
   def cell(row:Int, col:Int):Cell = cells.cell(row, col)
   def isEmpty: Boolean = cells.rows.forall(c => c.forall(d => d.value == ""))
+  def checkNeighbor(row:Int, col:Int): List[String] = cells.rows(row-1)(col).value :: cells.rows(row)(col-1).value :: cells.rows(row+1)(col).value :: cells.rows(row)(col+1).value :: Nil
+  def emptyNeighbor(row:Int, col:Int): Boolean = checkNeighbor(row,col).forall(s => s ==" ")
+  //TODO: man kann cell nur setzen wenn eine Nachbarn Cell ein Wert besitzt
   def set(row:Int, col:Int, value:String):Grid = copy(cells.replaceCell(row, col, Cell(value, cell(row, col).special)))
 
   override def toString: String = {
