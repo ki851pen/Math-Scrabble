@@ -4,6 +4,7 @@ case class Grid(private val cells:Matrix[Cell]) {
   def this(size:Int) = this(new Matrix[Cell](size, new Cell("")))
   val size:Int = cells.size
   def cell(row:Int, col:Int):Cell = cells.cell(row, col)
+  def isEmpty: Boolean = cells.rows.forall(c => c.forall(d => d.value == ""))
   def set(row:Int, col:Int, value:String):Grid = copy(cells.replaceCell(row, col, Cell(value, cell(row, col).special)))
 
   override def toString: String = {

@@ -71,4 +71,6 @@ val validlist = (0 to 9).toList.map(x => x.toString) ::: List("+","-","*","/","=
 
 Random.shuffle(Vector(1,2,3,4))//Vector oder List?
 
-val sum = list.foldLeft(0)(_+_)
+//val sum = list.foldLeft(0)(_+_)
+
+15 / 2
