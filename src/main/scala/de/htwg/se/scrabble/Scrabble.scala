@@ -15,7 +15,7 @@ object Scrabble {
     var pile = Pile()
     val tui = new Tui
     do {
-      println("Grid : " + grid)
+      println("Grid : \n " + grid)
       println("Pile : " + pile)
       input = readLine()
       grid = tui.processInputLine(input, grid)
