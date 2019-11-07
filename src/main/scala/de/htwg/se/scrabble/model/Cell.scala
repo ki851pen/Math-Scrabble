@@ -1,16 +1,13 @@
 package de.htwg.se.scrabble.model
 
 import de.htwg.se.scrabble.util.SpecialCell._
-case class Cell(obj: Either[Card,String], special: SpecialCell){
-
-  def this(value : String) = this(card, Normal)
-  val operator: List[String] = List("+","-","*","/","=")
-  val validlist: List[String] = (0 to 9).toList.map(x => x.toString) ::: operator
-  def isSet : Boolean = card != ""
+case class Cell(value: String, special: SpecialCell){
+  def this(value: String) = this(value, Normal)
   def isNormal : Boolean = special == Normal
+  def isSet : Boolean = value != ""
 
   override def toString: String = {
-    if (card.value == "") " "
-    card.value
+    if(isSet) value
+    " "
   }
 }
