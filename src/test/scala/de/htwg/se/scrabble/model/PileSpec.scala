@@ -24,5 +24,12 @@ class PileSpec extends WordSpec with Matchers {
         pile.shuffle.toString should not be pile.toString
       }
     }
+    "take some Card off" should {
+      val pile = new Pile()
+      val newPile = pile.take(10)
+      "have a size reduced" in{
+        newPile.size should be(pile.size - 10)
+      }
+    }
   }
 }

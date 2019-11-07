@@ -13,6 +13,9 @@ class GridSpec extends WordSpec with Matchers {
       "give access to its Cells" in {
         grid.cell(0, 0) should be(new Cell(""))
       }
+      "have a string representation" in {
+        grid.toString shouldBe a [String]
+      }
       "allow to set individual Cells and remain immutable" in {
         val newGrid = grid.set(0, 0, "1")
         newGrid.cell(0, 0) should be(new Cell("1"))
@@ -34,6 +37,9 @@ class GridSpec extends WordSpec with Matchers {
       "be filled using fill operation" in {
         val returnedGrid = grid.fill(new Cell("5"))
         returnedGrid.cell(0, 0) should be(new Cell("5"))
+      }
+      "also have a string representation" in {
+        grid.toString shouldBe a [String]
       }
     }
     "created for test purposes only with a Vector of Vectors" should {

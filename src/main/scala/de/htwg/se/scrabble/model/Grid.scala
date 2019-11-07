@@ -8,8 +8,8 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
   def fill(filling: Cell): Grid = copy(Vector.tabulate(size, size) { (row, col) => filling})
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
 
-  def checkNeighbor(row:Int, col:Int): List[String] = cells(row-1)(col).value :: cells(row)(col-1).value :: cells(row+1)(col).value :: cells(row)(col+1).value :: Nil
-  def emptyNeighbor(row:Int, col:Int): Boolean = checkNeighbor(row,col).forall(s => s =="")
+  //def checkNeighbor(row:Int, col:Int): List[String] = cells(row-1)(col).value :: cells(row)(col-1).value :: cells(row+1)(col).value :: cells(row)(col+1).value :: Nil
+  //def emptyNeighbor(row:Int, col:Int): Boolean = checkNeighbor(row,col).forall(s => s =="")
   //TODO: man kann cell nur setzen wenn eine Nachbarn Cell ein Wert besitzt
   def set(row:Int, col:Int, value:String):Grid = copy(cells.updated(row, cells(row).updated(col, Cell(value, cells(row)(col).special))))
 
