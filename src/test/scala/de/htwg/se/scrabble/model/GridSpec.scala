@@ -29,19 +29,6 @@ class GridSpec extends WordSpec with Matchers {
         setGrid.isEmpty should be(false)
       }
     }
-    "filled" should {
-      val grid = new Grid(2, new Cell("1"))
-      "give access to its cells" in {
-        grid.cell(0, 0) should be(new Cell("1"))
-      }
-      "be filled using fill operation" in {
-        val returnedGrid = grid.fill(new Cell("5"))
-        returnedGrid.cell(0, 0) should be(new Cell("5"))
-      }
-      "also have a string representation" in {
-        grid.toString shouldBe a [String]
-      }
-    }
     "created for test purposes only with a Vector of Vectors" should {
       val testGrid = Grid(Vector(Vector(new Cell(""))))
       "work normally" in {

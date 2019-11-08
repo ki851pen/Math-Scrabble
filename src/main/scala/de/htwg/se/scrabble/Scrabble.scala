@@ -16,11 +16,11 @@ object Scrabble {
       println("Pile : " + pile)
       input = readLine()
       //grid = tui.processInputLine(input, grid, pile)
-      var gridOrPile = tui.processInputLine(input, grid, pile)
-      if (gridOrPile.isInstanceOf[Pile])
-        pile = gridOrPile.asInstanceOf[Pile]
-      else
-        grid = gridOrPile.asInstanceOf[Grid]
+      val gridOrPile = tui.processInputLine(input, grid, pile)
+      gridOrPile match {
+        case instanceOfPile: Pile => pile = instanceOfPile
+        case instanceOfGrid: Grid => grid = instanceOfGrid
+      }
     } while (input != "q")
   }
 }

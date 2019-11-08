@@ -65,8 +65,8 @@ class CardSpec extends WordSpec with Matchers {
       val validCard = Card("=")
       val secondvalidCard = Card("7")
       "have a point assign to them" in {
-        validCard.getpoint should be (1)
-        secondvalidCard.getpoint should be (4)
+        validCard.getPoint should be (1)
+        secondvalidCard.getPoint should be (4)
       }
     }
   }
