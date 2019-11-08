@@ -15,7 +15,12 @@ object Scrabble {
       println("Grid : " + grid)
       println("Pile : " + pile)
       input = readLine()
-      grid = tui.processInputLine(input, grid, pile)
+      //grid = tui.processInputLine(input, grid, pile)
+      var gridOrPile = tui.processInputLine(input, grid, pile)
+      if (gridOrPile.isInstanceOf[Pile])
+        pile = gridOrPile.asInstanceOf[Pile]
+      else
+        grid = gridOrPile.asInstanceOf[Grid]
     } while (input != "q")
   }
 }
