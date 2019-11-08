@@ -11,6 +11,10 @@ class PlayerSpec extends WordSpec with Matchers {
       "have a nice String representation" in {
         player.toString should be("Testname")
       }
+      "dont have card in hand" in {
+        player.getHand should be (Nil)
+        player.getNrCardsInHand should be (0)
+      }
     }
   }
 }
