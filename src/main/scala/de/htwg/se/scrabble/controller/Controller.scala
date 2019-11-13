@@ -4,13 +4,9 @@ import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
 import de.htwg.se.scrabble.util.Observable
 
 class Controller(var game: Gamefield) extends Observable{
-  def createEmptyGrid(size: String):Unit = {
-    if (size.toIntOption.getOrElse("") == "") {
-      println("size have to be integer")
-    } else {
-      game = new Gamefield(new Grid(size.toInt),game.pile)
-      notifyObservers
-    }
+  def createEmptyGrid(size: Int):Unit = {
+    game = new Gamefield(new Grid(size.toInt),game.pile)
+    notifyObservers
   }
   def setGrid(row: String, col: String, value: String): Unit ={
     if(!game.grid.isEmpty || (row == col && game.grid.size/2+1 == row.toInt)) {
@@ -26,6 +22,10 @@ class Controller(var game: Gamefield) extends Observable{
   }
   def shufflePile():Unit = {
     game = new Gamefield(game.grid, game.pile.shuffle)
+    notifyObservers
+  }
+  def takeFromPile(size:Int): Unit ={
+    game = new Gamefield(game.grid, game.pile.take(size))
     notifyObservers
   }
 
