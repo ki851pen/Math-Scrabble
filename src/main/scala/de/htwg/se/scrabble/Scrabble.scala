@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble
 
 import de.htwg.se.scrabble.aview.Tui
-import de.htwg.se.scrabble.model.{Grid, Pile}
+import de.htwg.se.scrabble.model.{Grid, Pile, Gamefield}
 
 import scala.io.StdIn.readLine
 object Scrabble {
@@ -10,17 +10,12 @@ object Scrabble {
     var input: String = ""
     var grid = new Grid(15)
     var pile = new Pile()
+    var game = Gamefield(grid, pile)
     val tui = new Tui()
     do {
-      println("Grid : \n " + grid)
-      println("Pile : " + pile)
+      println(game)
       input = readLine()
-      //grid = tui.processInputLine(input, grid, pile)
-      val gridOrPile = tui.processInputLine(input, grid, pile)
-      gridOrPile match {
-        case instanceOfPile: Pile => pile = instanceOfPile
-        case instanceOfGrid: Grid => grid = instanceOfGrid
-      }
+      game = tui.processInputLine(input, game)
     } while (input != "q")
   }
 }
