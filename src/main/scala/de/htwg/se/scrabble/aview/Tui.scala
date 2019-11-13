@@ -5,10 +5,11 @@ import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
 import de.htwg.se.scrabble.util.Observer
 
 class Tui(controller: Controller) extends Observer {
-  def processInputLine(input: String):Unit = {
+  def processInputLine(input: String): Unit = {
     input match {
       case "q" =>
       case "n" => controller.createEmptyGrid(15)
+      case _ =>
       /*case "s" => Gamefield(game.grid, game.pile.shuffle)
       case "t" => Gamefield(game.grid, game.pile.take(9))
       case _ => input.split(" ").toList match {

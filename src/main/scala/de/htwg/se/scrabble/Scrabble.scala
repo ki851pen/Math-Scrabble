@@ -6,12 +6,13 @@ import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
 
 import scala.io.StdIn.readLine
 object Scrabble {
+  println("This is Scrabble\n")
   val controller = new Controller(Gamefield(new Grid(15), new Pile()))
   val tui = new Tui(controller)
+  controller.add(tui)
   controller.notifyObservers
 
   def main(args: Array[String]): Unit = {
-    println("This is Scrabble")
     var input: String = ""
 
     do {

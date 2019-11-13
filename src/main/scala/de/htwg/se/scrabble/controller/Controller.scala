@@ -8,5 +8,6 @@ class Controller(var game: Gamefield) extends Observable{
     game = Gamefield(new Grid(size),game.pile)
     notifyObservers
   }
+
   def gameToString: String = game.toString
 }
