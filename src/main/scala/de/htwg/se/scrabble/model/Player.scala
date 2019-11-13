@@ -1,11 +1,12 @@
 package de.htwg.se.scrabble.model
 
-case class Player(name: String){
-  private var hand: List[Any] = Nil
-  private val handSize = 9
+case class Player(name: String, hand: List[Card]){
+  def this(name: String) = this(name, Nil)
+  val maxHandSize:Int = 9
 
-  def getHand: List[Any] = hand
+  def getHand: List[Card] = hand
   def getNrCardsInHand: Integer = hand.size
+  def addToHand(cards: List[Card]) =  Player(name, hand ::: cards)
 
   /*def addToHand(pile: Pile, nr : Int): Boolean = {
     if (getNrCardsInHand + nr <= handSize) {

@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
+import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile, Player}
 import de.htwg.se.scrabble.util.Observable
 
 class Controller(var game: Gamefield) extends Observable{
@@ -16,18 +16,32 @@ class Controller(var game: Gamefield) extends Observable{
       println("First Cell to set have to be in Middle of the Grid")
     }
   }
-  def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {
+  /*def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {
     game = new Gamefield(game.grid, new Pile(equal,plusminus,muldiv,blank,digit))
     notifyObservers
-  }
+  }*/
   def shufflePile():Unit = {
-    game = new Gamefield(game.grid, game.pile.shuffle)
+    game = Gamefield(game.grid, game.pile.shuffle, game.playerList)
     notifyObservers
   }
-  def takeFromPile(size:Int): Unit ={
-    game = new Gamefield(game.grid, game.pile.take(size))
+  def takeFromPile(name: String, size:Int): Unit = {if (game.playerList.contains(name)) {
+    game = Gamefield(game.grid, game.pile.drop(size), game.replacePlayer(name, game.playerList(name).addToHand(game.pile.take(size))))
+    notifyObservers
+  } else {println("Player " + name + " doesn't exist")}
+  }
+  def addPlayer(name: String): Unit ={
+    game = Gamefield(game.grid, game.pile, game.createPlayer(name))
     notifyObservers
   }
+  def removePlayer(name: String): Unit ={
+    game = Gamefield(game.grid, game.pile, game.deletePlayer(name))
+    notifyObservers
+  }
+  /*def fillAllHand(): Unit = {
+    val nrLeftToFill: Iterable[Int] = game.playerList.values.map(player => player.maxHandSize - player.getNrCardsInHand)
+    game = new Gamefield(game.grid, nrLeftToFill.fold((0)(_+_)))
+  }*/
+  def showHand(): Unit = println(game.playerList.values.map(_.getHand))
 
   def gameToString: String = game.toString
 }
