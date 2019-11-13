@@ -14,15 +14,15 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
 
   override def toString: String = {
     val numCol = "      " + List.range(1, size + 1).filter(_<10).mkString("    ") + "    " + List.range(1, size + 1).filter(_>9).mkString("   ") +  "  \n"
-    val lineSeparator = "   +" + "-----" * size + "+\n"
+    val lineSeparator = "   +" + "-----+" * size + "\n"
     var box = "\n" + numCol + lineSeparator
     for (numLine <- 1 to size){
       if(numLine <10){
         val line = String.format(" %s  ", numLine) + "|" + " _  |"  * size + "\n"
-        box += line}
+        box += line + lineSeparator}
       else {
         val line = String.format(" %s ", numLine) + "|" + " _  |"  * size + "\n"
-        box += line
+        box += line + lineSeparator
       }
     }
     box += lineSeparator
