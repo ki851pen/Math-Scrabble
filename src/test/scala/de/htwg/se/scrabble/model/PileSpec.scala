@@ -24,11 +24,30 @@ class PileSpec extends WordSpec with Matchers {
         pile.shuffle.toString should not be pile.toString
       }
     }
-    "take some Card off" should {
+    "drop some Card off" should {
       val pile = new Pile()
       val newPile = pile.drop(10)
       "have a size reduced" in{
         newPile.size should be(pile.size - 10)
+      }
+    }
+    "when take cards" should {
+      val takenpile = new Pile()
+      val cardsFromPile = takenpile.take(5)
+      "taken cards should be cards at the start of the pile" in{
+        cardsFromPile.size should be(5)
+        cardsFromPile should be (takenpile.tilepile.take(5))
+      }
+    }
+    "when add cards" should {
+      val pile = new Pile()
+      "have increase size if value is valid" in{
+        val addedPile = pile.add("3",5)
+        addedPile.size should be (pile.size + 5)
+      }
+      "stay the same if value is not valid" in{
+        val addedPile = pile.add("n",5)
+        addedPile.size should be (pile.size)
       }
     }
   }

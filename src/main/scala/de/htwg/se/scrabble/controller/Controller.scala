@@ -43,7 +43,7 @@ class Controller(var game: Gamefield) extends Observable{
     (playername,nrLeftToFill).zipped.foreach((p,n) => takeFromPile(p,n))
     notifyObservers
   }
-  def showHand(): Unit = println(game.playerList.values.map(_.getHand))
+  //def showHand(): Unit = println(game.playerList.values.map(_.getHand))
 
   def gameToString: String = game.toString
 }

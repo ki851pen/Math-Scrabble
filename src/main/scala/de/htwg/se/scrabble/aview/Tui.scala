@@ -13,10 +13,9 @@ class Tui(controller: Controller) extends Observer {
       case "g" => controller.createEmptyGrid(15)
       case "p" => controller.createPile(20,7,5,6,5)
       case "s" => controller.shufflePile()
-      case "h" => println(help)
+      //case "h" => println(help)
       //case "next" =>
       case "fh" => controller.fillAllHand()
-      case "sh" => controller.showHand()
       case _ => input.split(" ").toList match {
         case command :: name :: Nil if command=="py+" => controller.addPlayer(name)
         case command :: name :: Nil if command=="py-" => controller.removePlayer(name)
@@ -32,7 +31,7 @@ class Tui(controller: Controller) extends Observer {
     }
   }
 
-  def help: String = """
+  /*def help: String = """
                          || commands               |   function                                                                                                                          |
                          ||                        |                                                                                                                                     |
                          ||  g                     |   create standard size grid                                                                                                         |
@@ -43,6 +42,6 @@ class Tui(controller: Controller) extends Observer {
                          ||                        |                                                                                                                                     |
                          ||  q                     |   quit math-scrabble                                                                                                                |""".stripMargin
 
-
+  */
   override def update: Unit = println(controller.gameToString)
 }
