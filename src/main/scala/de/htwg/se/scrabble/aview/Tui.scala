@@ -10,11 +10,11 @@ class Tui(controller: Controller) extends Observer {
     val IntRegEx = "(\\d+)"
     input match {
       case "q" | "Q" | "quit" =>
-      case "next" =>
       case "g" => controller.createEmptyGrid(15)
       case "p" => controller.createPile(20,7,5,6,5)
       case "s" => controller.shufflePile()
       case "h" => println(help)
+      //case "next" =>
       //case "fh" => controller.fillAllHand()
       case "sh" => controller.showHand()
       case _ => input.split(" ").toList match {
