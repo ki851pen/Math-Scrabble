@@ -15,7 +15,7 @@ class Tui(controller: Controller) extends Observer {
       case "s" => controller.shufflePile()
       case "h" => println(help)
       //case "next" =>
-      //case "fh" => controller.fillAllHand()
+      case "fh" => controller.fillAllHand()
       case "sh" => controller.showHand()
       case _ => input.split(" ").toList match {
         case command :: name :: Nil if command=="py+" => controller.addPlayer(name)

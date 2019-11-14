@@ -37,10 +37,12 @@ class Controller(var game: Gamefield) extends Observable{
     game = Gamefield(game.grid, game.pile, game.deletePlayer(name))
     notifyObservers
   }
-  /*def fillAllHand(): Unit = {
+  def fillAllHand(): Unit = {
     val nrLeftToFill: Iterable[Int] = game.playerList.values.map(player => player.maxHandSize - player.getNrCardsInHand)
-    game = new Gamefield(game.grid, nrLeftToFill.fold((0)(_+_)))
-  }*/
+    val playername: Iterable[String] = game.playerList.keys
+    (playername,nrLeftToFill).zipped.foreach((p,n) => takeFromPile(p,n))
+    notifyObservers
+  }
   def showHand(): Unit = println(game.playerList.values.map(_.getHand))
 
   def gameToString: String = game.toString

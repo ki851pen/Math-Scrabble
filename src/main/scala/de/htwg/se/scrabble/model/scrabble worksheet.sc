@@ -6,8 +6,7 @@ point.keys
 point.values
 point.isEmpty
 point.size
-point("a")
-point("q")
+point("+")
 
 val alpha = 'a' to 'z'
 val hand1 = (1 to 7).map(_ => Random.nextInt(26))
@@ -37,11 +36,6 @@ x.length
 val sx = Random.shuffle(Random.shuffle(Random.shuffle(x)))
 val hand = sx.take(9)
 val nx = sx.drop(9)
-val snx = Random.shuffle(Random.shuffle(Random.shuffle(nx)))
-snx.take(9)
-snx.drop(9)
-
-val nnx = nx.drop(9)
 
 val in = "9*1=9=4+5"
 val in2 = "33+67"
@@ -60,7 +54,6 @@ for(char <- ina if !char.isDigit)
 var darr = Array.tabulate(3, 3){ (a,b) => a*2+b }
 //^([-+]? ?(\d+|\(\g<1>\))( ?[-+*\/] ?\g<1>)?)$
 
-
 val validlist = (0 to 9).toList.map(x => x.toString) ::: List("+","-","*","/","=")
 
 "+".toIntOption.getOrElse(-1)
@@ -68,9 +61,9 @@ val validlist = (0 to 9).toList.map(x => x.toString) ::: List("+","-","*","/","=
 "3.0".toIntOption.getOrElse(-1)
 "9".toIntOption.getOrElse(-1)
 
-
-Random.shuffle(Vector(1,2,3,4))//Vector oder List?
-
 //val sum = list.foldLeft(0)(_+_)
+
+val test: Iterable[Int] = Seq(12,3,5)
+test.sum
 
 15 / 2
