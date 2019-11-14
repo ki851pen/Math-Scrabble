@@ -12,7 +12,7 @@ class Tui(controller: Controller) extends Observer {
       case "q" | "Q" | "quit" =>
       case "next" =>
       case "g" => controller.createEmptyGrid(15)
-      //case "p" => controller.createPile(20,7,5,6,5)
+      case "p" => controller.createPile(20,7,5,6,5)
       case "s" => controller.shufflePile()
       case "h" => println(help)
       //case "fh" => controller.fillAllHand()
@@ -23,9 +23,9 @@ class Tui(controller: Controller) extends Observer {
         case command :: size :: Nil if command=="g" => if(size.matches(IntRegEx)) controller.createEmptyGrid(size.toInt) else println("size have to be integer")
         case command :: player :: size :: Nil if command=="t" => if(size.matches(IntRegEx)) controller.takeFromPile(player, size.toInt) else println("size have to be integer")
         case command :: equal :: plusminus :: muldiv :: blank:: digit:: Nil if command=="p" =>
-          /*if (List(equal,plusminus,muldiv,blank,digit).forall(_.matches(IntRegEx)))
+          if (List(equal,plusminus,muldiv,blank,digit).forall(_.matches(IntRegEx)))
           controller.createPile(equal.toInt,plusminus.toInt,muldiv.toInt,blank.toInt,digit.toInt)
-          else println("all characters after p have to be integer")*/
+          else println("all characters after p have to be integer")
         case row :: col :: value :: Nil if row.matches(IntRegEx) && col.matches(IntRegEx) => controller.setGrid(row,col,value)
         case _ => println("invalid input")
       }

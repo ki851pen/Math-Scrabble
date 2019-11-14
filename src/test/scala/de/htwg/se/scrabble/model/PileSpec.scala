@@ -26,7 +26,7 @@ class PileSpec extends WordSpec with Matchers {
     }
     "take some Card off" should {
       val pile = new Pile()
-      val newPile = pile.take(10)
+      val newPile = pile.drop(10)
       "have a size reduced" in{
         newPile.size should be(pile.size - 10)
       }

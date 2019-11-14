@@ -16,10 +16,10 @@ class Controller(var game: Gamefield) extends Observable{
       println("First Cell to set have to be in Middle of the Grid")
     }
   }
-  /*def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {
+  def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {
     game = new Gamefield(game.grid, new Pile(equal,plusminus,muldiv,blank,digit))
     notifyObservers
-  }*/
+  }
   def shufflePile():Unit = {
     game = Gamefield(game.grid, game.pile.shuffle, game.playerList)
     notifyObservers

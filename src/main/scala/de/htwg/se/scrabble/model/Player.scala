@@ -8,13 +8,5 @@ case class Player(name: String, hand: List[Card]){
   def getNrCardsInHand: Integer = hand.size
   def addToHand(cards: List[Card]) =  Player(name, hand ::: cards)
 
-  /*def addToHand(pile: Pile, nr : Int): Boolean = {
-    if (getNrCardsInHand + nr <= handSize) {
-      hand = pile.tilepile.take(nr) :: hand
-      return true
-    }
-    false
-  }*/
-
   override def toString:String = name
 }
