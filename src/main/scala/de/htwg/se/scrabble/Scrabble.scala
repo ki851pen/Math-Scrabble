@@ -17,6 +17,6 @@ object Scrabble {
     do {
       input = readLine()
       tui.processInputLine(input)
-    } while (!List("q","Q","quit","Quit").contains(input))
+    } while (!List("q", "Q", "quit", "Quit").contains(input))
   }
 }
