@@ -15,5 +15,13 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("8 8 3")
       controller.game.grid.cell(7,7).value should be("3")
     }
+    "set a pile and its size on input 'p 1 1 1 1 1'" in {
+      tui.processInputLine("p 1 1 1 1 1")
+      controller.game.pile.size should be(16)
+    }
+    "do nothing on invalid input" in {
+      tui.processInputLine("-")
+      controller.game should be (controller.game)
+    }
   }
 }
