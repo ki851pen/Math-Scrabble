@@ -5,8 +5,10 @@ case class Player(name: String, hand: List[Card]){
   val maxHandSize:Int = 9
 
   def getHand: List[Card] = hand
-  def getNrCardsInHand: Integer = hand.size
-  def addToHand(cards: List[Card]) =  Player(name, hand ::: cards)
+  def getNrCardsInHand: Int = hand.size
+  def addToHand(cards: List[Card]) : Player ={
+    Player(name, hand ::: cards)
+  }
 
   override def toString:String = name
 }

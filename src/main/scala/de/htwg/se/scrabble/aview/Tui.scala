@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble.aview
 
 import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
 import de.htwg.se.scrabble.util.Observer
 
 class Tui(controller: Controller) extends Observer {
@@ -17,16 +16,18 @@ class Tui(controller: Controller) extends Observer {
       //case "next" =>
       case "fh" => controller.fillAllHand()
       case _ => input.split(" ").toList match {
-        case command :: name :: Nil if command=="py+" => controller.addPlayer(name)
-        case command :: name :: Nil if command=="py-" => controller.removePlayer(name)
-        case command :: size :: Nil if command=="g" => if(size.matches(IntRegEx)) controller.createEmptyGrid(size.toInt) else println("size have to be integer")
-        case command :: player :: size :: Nil if command=="t" => if(size.matches(IntRegEx)) controller.takeFromPile(player, size.toInt) else println("size have to be integer")
-        case command :: equal :: plusminus :: muldiv :: blank:: digit:: Nil if command=="p" =>
-          if (List(equal,plusminus,muldiv,blank,digit).forall(_.matches(IntRegEx)))
-          controller.createPile(equal.toInt,plusminus.toInt,muldiv.toInt,blank.toInt,digit.toInt)
+        case command :: name :: Nil if command == "py+" => controller.addPlayer(name)
+        case command :: name :: Nil if command == "py-" => controller.removePlayer(name)
+        case command :: size :: Nil if command == "g" => if(size.matches(IntRegEx)) controller.createEmptyGrid(size.toInt) else println("size have to be integer")
+        case command :: player :: size :: Nil if command == "t" =>
+          if(size.matches(IntRegEx))
+            controller.takeFromPile(player, size.toInt) else println("size have to be integer")
+        case command :: equal :: plusminus :: muldiv :: blank:: digit:: Nil if command == "p" =>
+          if (List(equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
+            controller.createPile(equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
           else println("all characters after p have to be integer")
         case row :: col :: value :: Nil if row.matches(IntRegEx) && col.matches(IntRegEx) => controller.setGrid(row,col,value)
-        case _ => println("invalid input")
+        case _ => println("Invalid input. Type h to get some helps.")
       }
     }
   }
