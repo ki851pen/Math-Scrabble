@@ -23,5 +23,8 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("-")
       controller.game should be (controller.game)
     }
+    "have a help in string form" in {
+      tui.help shouldBe a [String]
+    }
   }
 }
