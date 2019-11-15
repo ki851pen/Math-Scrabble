@@ -8,9 +8,9 @@ case class Pile(tilepile: List[Card]){
     this(List.fill(equal)(Card("=")):::List.fill(plusminus)(Card("+")):::List.fill(plusminus)(Card("-")):::List.fill(muldiv)(Card("*"))
       :::List.fill(muldiv)(Card("/")):::List.fill(blank)(Card("_")):::List.fill(digit)((0 to 9).toList).flatten.map(x => Card(x.toString)))
   def size: Int = tilepile.length
-  def shuffle: Pile = Pile(Random.shuffle(tilepile))
+  def shuffle: Pile = copy(Random.shuffle(tilepile))
+  def drop(value: Int): Pile = copy(tilepile.drop(value))
   def take(value: Int): List[Card] = tilepile.take(value)
-  def drop(value: Int): Pile = Pile(tilepile.drop(value))
   def add(value:String, nr:Int): Pile = if (Card(value).isValid) Pile(tilepile ::: List.fill(nr)(Card(value))) else this
 
   override def toString: String = tilepile.mkString(", ")
