@@ -25,13 +25,13 @@ class Controller(var game: Gamefield) extends Observable{
     notifyObservers
   }
   def takeFromPile(name: String, size:Int): Unit = {
-    shufflePile()
     if (game.playerList.contains(name)) {
-      //game.playerList(name).addToHand(game.pile.take(size))
+      shufflePile()
       game = Gamefield(game.grid, game.pile.drop(size), game.replacePlayer(name, game.playerList(name).addToHand(game.pile.take(size))))
       notifyObservers
-  } else
+    } else {
       println("Player " + name + " doesn't exist")
+    }
   }
 
   def addPlayer(name: String): Unit ={
@@ -50,8 +50,6 @@ class Controller(var game: Gamefield) extends Observable{
     (playername,nrLeftToFill).zipped.foreach((p,n) => takeFromPile(p,n))
     notifyObservers
   }
-
-  def showHand(): Unit = println(game.playerListToString)
 
   def gameToString: String = game.toString
 }

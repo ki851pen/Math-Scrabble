@@ -17,7 +17,7 @@ class GamefieldSpec extends WordSpec with Matchers{
       "have a String representation that include String of Grid,Pile and Playerlist" in {
         game.toString should include(game.grid.toString)
         game.toString should include(game.pile.toString)
-        game.toString should include(game.playerList.keys.map(key => key + ": " + game.playerList(key).getHand).mkString(", "))
+        game.toString should include(game.playerListToString)
       }
     }
     "add a Player" should {
