@@ -1,26 +1,22 @@
 package de.htwg.se.scrabble
 
 import de.htwg.se.scrabble.aview.Tui
-import de.htwg.se.scrabble.model.{Grid, Pile}
+import de.htwg.se.scrabble.controller.Controller
+import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
 
 import scala.io.StdIn.readLine
 object Scrabble {
+  println("This is Scrabble\n")
+  val controller = new Controller(new Gamefield(new Grid(15), new Pile()))
+  val tui = new Tui(controller)
+  controller.notifyObservers
+
   def main(args: Array[String]): Unit = {
-    println("This is Scrabble")
     var input: String = ""
-    var grid = new Grid(15)
-    var pile = new Pile()
-    val tui = new Tui()
+
     do {
-      println("Grid : \n " + grid)
-      println("Pile : " + pile)
       input = readLine()
-      //grid = tui.processInputLine(input, grid, pile)
-      val gridOrPile = tui.processInputLine(input, grid, pile)
-      gridOrPile match {
-        case instanceOfPile: Pile => pile = instanceOfPile
-        case instanceOfGrid: Grid => grid = instanceOfGrid
-      }
-    } while (input != "q")
+      tui.processInputLine(input)
+    } while (!List("q", "Q", "quit", "Quit").contains(input))
   }
 }
