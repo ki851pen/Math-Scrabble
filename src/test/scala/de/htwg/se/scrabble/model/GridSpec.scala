@@ -3,7 +3,7 @@ package de.htwg.se.scrabble.model
 import org.scalatest.{Matchers, WordSpec}
 //TODO:merge gridspec and matrixspec
 
-class GridSpec extends WordSpec with Matchers {
+class GridSpec extends WordSpec with Matchers {/*
   "A Grid is the playing field of Scrabble. A Grid" when {
     "create with size" should {
       val grid = new Grid(15)
@@ -35,5 +35,5 @@ class GridSpec extends WordSpec with Matchers {
         testGrid.size should be (1)
       }
     }
-  }
+  }*/
 }
