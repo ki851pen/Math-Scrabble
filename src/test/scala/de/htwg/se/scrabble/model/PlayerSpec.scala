@@ -24,5 +24,13 @@ class PlayerSpec extends WordSpec with Matchers {
         moreCardPlayer.getHand should be (List(Card("="),Card("+")))
       }
     }
+    "use card in hand" should {
+      val player = Player("name", List(Card("="), Card("="), Card("="), Card("+")))
+      val moreCardPlayer = player.useCard(Card("="))
+      "remove one instance of used card" in {
+        moreCardPlayer.getNrCardsInHand should be (3)
+        moreCardPlayer.getHand should be (List(Card("="),Card("="),Card("+")))
+      }
+    }
   }
 }

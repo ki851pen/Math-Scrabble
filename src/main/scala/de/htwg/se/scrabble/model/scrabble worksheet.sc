@@ -14,7 +14,7 @@ val hand2 = Seq.fill(7)(alpha(Random.nextInt(26)))
 hand1.concat(hand2)
 
 val List1 = List.empty[String]
-val List2 = List1 :+ "a":+"b"
+val List2 = List1 :+ "a":+"b":+"b":+"b"
 val List3 = List2.filter(_!="b")
 def remove(alp: String, list: List[String]) = list diff List(alp)
 remove("b",List2)

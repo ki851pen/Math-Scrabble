@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble.aview
 
 import de.htwg.se.scrabble.controller.Controller
+import de.htwg.se.scrabble.model.Card
 import de.htwg.se.scrabble.util.Observer
 
 class Tui(controller: Controller) extends Observer {
@@ -26,7 +27,7 @@ class Tui(controller: Controller) extends Observer {
           if (List(equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
             controller.createPile(equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
           else println("all characters after p have to be integer")
-        case row :: col :: value :: Nil if row.matches(IntRegEx) && col.matches(IntRegEx) => controller.setGrid(row,col,value)
+        case player :: row :: col :: value :: Nil if row.matches(IntRegEx) && col.matches(IntRegEx) => controller.setGrid(player,row,col,value)
         case _ => println("Invalid input. Type h to get some helps.")
       }
     }

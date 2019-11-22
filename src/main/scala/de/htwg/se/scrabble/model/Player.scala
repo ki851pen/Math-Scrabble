@@ -7,6 +7,7 @@ case class Player(name: String, hand: List[Card]){
   def getHand: List[Card] = hand
   def getNrCardsInHand: Int = hand.size
   def addToHand(cards: List[Card]) : Player = copy(hand = hand ::: cards)
+  def useCard(card: Card): Player = copy(hand = hand diff List(card))
 
   override def toString:String = name
 }

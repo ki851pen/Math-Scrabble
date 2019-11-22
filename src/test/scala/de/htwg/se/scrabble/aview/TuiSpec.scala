@@ -36,10 +36,12 @@ class TuiSpec extends WordSpec with Matchers{
       controller.game.playerList.keys should not contain "B"
       controller.game.playerList.size should be (1)
     }
-    "set a cell on input '8 8 3'" in {
+    "set a cell on input 'A 8 8 3'" in {
       tui.processInputLine("g")
-      tui.processInputLine("8 8 3")
-      controller.game.grid.cell(7,7).value should be("3")
+      tui.processInputLine("p 1 0 0 0 0")
+      tui.processInputLine("fh")
+      tui.processInputLine("A 8 8 =")
+      controller.game.grid.cell(7,7).value should be("=")
     }
     "set a pile and its size on input 'p 1 1 1 1 1'" in {
       tui.processInputLine("p 1 1 1 1 1")

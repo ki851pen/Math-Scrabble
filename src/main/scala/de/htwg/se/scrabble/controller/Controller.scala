@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
+import de.htwg.se.scrabble.model.{Card, Gamefield, Grid, Pile}
 import de.htwg.se.scrabble.util.Observable
 
 class Controller(var game: Gamefield) extends Observable{
@@ -8,12 +8,16 @@ class Controller(var game: Gamefield) extends Observable{
     game = game.copy(grid = new Grid(size.toInt))
     notifyObservers
   }
-  def setGrid(row: String, col: String, value: String): Unit ={
-    if(!game.grid.isEmpty || (row == col && game.grid.size / 2 + 1 == row.toInt)) {
-      game = game.copy(grid = game.grid.set(row.toInt-1, col.toInt-1, value))
-      notifyObservers
+  def setGrid(player: String, row: String, col: String, value: String): Unit ={
+    if(game.playerList(player).hand.contains(Card(value))) {
+      if(!game.grid.isEmpty || (row == col && game.grid.size / 2 + 1 == row.toInt)) {
+        game = game.copy(grid = game.grid.set(row.toInt-1, col.toInt-1, value), playerList = game.replacePlayer(player,game.playerList(player).useCard(Card(value))))
+        notifyObservers
+      } else {
+        println("First Cell to set have to be in Middle of the Grid")
+      }
     } else {
-      println("First Cell to set have to be in Middle of the Grid")
+      println("Can only set card from hand")
     }
   }
   def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {

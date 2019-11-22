@@ -24,15 +24,17 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.reset()
         controller.createEmptyGrid(5)
         observer.reset()
-        controller.setGrid("3","3","4")
+        controller.createPile(1, 0, 0, 0, 0)
+        controller.takeFromPile("A", 1)
+        controller.setGrid("A","3","3","=")
         observer.updated should be(true)
-        controller.game.grid.cell(2,2).value should be ("4") //in input is already + 1
+        controller.game.grid.cell(2,2).value should be ("=") //in input is already + 1
       }
       "not notify its Observer after setting a first cell not in middle" in {
         observer.reset()
         controller.createEmptyGrid(5)
         observer.reset()
-        controller.setGrid("1","1","4")
+        controller.setGrid("A","1","1","4")
         observer.updated should be(false)//<-- not pass
         controller.game.grid.cell(1,1).value should be ("")
       }
