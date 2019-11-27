@@ -7,7 +7,13 @@ case class Card(value: String) {
   val parseValue: Any = if(isValid){value.toString.toIntOption.getOrElse(value)} else {""}
 
   def isValid: Boolean = validSet.contains(value)
-  def getPoint: Int = point(value)
+  def getPoint: Option[Int] = {
+    try {
+      Some(point(value))
+    } catch {
+      case Exception => None
+    }
+  }
 
   override def toString: String = this.parseValue.toString
 }

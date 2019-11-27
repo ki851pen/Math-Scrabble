@@ -4,10 +4,10 @@ import de.htwg.se.scrabble.model.Card
 
 trait Cell {
   val cellType: String
-  def isSet: Boolean
+  val card: Either[Card, String]
   def getPoint: Int
-  def setCell(newValue: String): Cell
-  def getvalue: String
+  def isSet: Boolean = card != ""
+  def setCell(newValue: String): Cell = if (Card(newValue).isValid) Cell(cellType,newValue) else this
 }
 
 object Cell {
