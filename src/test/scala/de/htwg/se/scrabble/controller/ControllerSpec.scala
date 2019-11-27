@@ -1,9 +1,10 @@
 package de.htwg.se.scrabble.controller
+import de.htwg.se.scrabble.model.cell.Cell
 import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
 import de.htwg.se.scrabble.util.Observer
 import org.scalatest.{Matchers, WordSpec}
 
-class ControllerSpec extends WordSpec with Matchers{/*
+class ControllerSpec extends WordSpec with Matchers{
   "A Controller" when {
     "observed by an Observer" should {
       val game = new Gamefield(new Grid(5), new Pile(1,1,1,1,1))
@@ -28,7 +29,7 @@ class ControllerSpec extends WordSpec with Matchers{/*
         controller.takeFromPile("A", 1)
         controller.setGrid("A","3","3","=")
         observer.updated should be(true)
-        controller.game.grid.cell(2,2).value should be ("=") //in input is already + 1
+        controller.game.grid.cell(2,2) shouldEqual Cell("=") //in input is already + 1
       }
       "not notify its Observer after setting a first cell not in middle" in {
         observer.reset()
@@ -36,7 +37,7 @@ class ControllerSpec extends WordSpec with Matchers{/*
         observer.reset()
         controller.setGrid("A","1","1","4")
         observer.updated should be(false)//<-- not pass
-        controller.game.grid.cell(1,1).value should be ("")
+        controller.game.grid.cell(1,1) shouldEqual Cell("")
       }
       "notify its Observer after pile creation" in {
         observer.reset()
@@ -85,7 +86,7 @@ class ControllerSpec extends WordSpec with Matchers{/*
         controller.game.playerList("B").getNrCardsInHand should be (9)
       }
     }
-  }*/
+  }
 }
 
 

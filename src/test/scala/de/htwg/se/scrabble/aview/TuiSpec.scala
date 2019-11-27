@@ -1,9 +1,10 @@
 package de.htwg.se.scrabble.aview
 import de.htwg.se.scrabble.controller.Controller
+import de.htwg.se.scrabble.model.cell.Cell
 import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
 import org.scalatest.{Matchers, WordSpec}
 
-class TuiSpec extends WordSpec with Matchers{/*
+class TuiSpec extends WordSpec with Matchers{
   "A Math-Scrabble Tui" should {
     val controller = new Controller(new Gamefield(new Grid(15), new Pile()))
     val tui = new Tui(controller)
@@ -18,7 +19,7 @@ class TuiSpec extends WordSpec with Matchers{/*
     "create a default pile on input 'p'" in {
       tui.processInputLine("p")
       controller.game.pile.size should be(100)
-      controller.game.pile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("_") and include("5"))
+      controller.game.pile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("?") and include("5"))
     }
     "shuffle a pile on input 's'" in {
       val oldpile = controller.game.pile.tilepile
@@ -41,7 +42,7 @@ class TuiSpec extends WordSpec with Matchers{/*
       tui.processInputLine("p 1 0 0 0 0")
       tui.processInputLine("fh")
       tui.processInputLine("A 8 8 =")
-      controller.game.grid.cell(7,7).value should be("=")
+      controller.game.grid.cell(7,7) shouldEqual Cell("=")
     }
     "set a pile and its size on input 'p 1 1 1 1 1'" in {
       tui.processInputLine("p 1 1 1 1 1")
@@ -54,5 +55,5 @@ class TuiSpec extends WordSpec with Matchers{/*
     "have a help in string form" in {
       tui.help shouldBe a [String]
     }
-  }*/
+  }
 }
