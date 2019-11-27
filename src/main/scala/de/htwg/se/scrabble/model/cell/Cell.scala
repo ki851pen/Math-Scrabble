@@ -2,19 +2,23 @@ package de.htwg.se.scrabble.model.cell
 
 import de.htwg.se.scrabble.model.Card
 
-trait Cell {
+abstract class Cell(val card: Card){
   val cellType: String
-  val card: Either[Card, String]
   def getPoint: Int
-  def isSet: Boolean = card != ""
+
+  def isSet: Boolean = card.parseValue != ""
   def setCell(newValue: String): Cell = if (Card(newValue).isValid) Cell(cellType,newValue) else this
+  override def equals(other: Any): Boolean = other match {
+    case cell: Cell if cell.cellType == cellType => cell.card.equals(card)
+    case _ => false
+  }
 }
 
 object Cell {
   def apply(kind: String, value: String): Cell = kind match {
-    case "n" => NormalCell(value)
-    case "d" => DoubleSingleCell(value)
-    case "t" => TripleSingleCell(value)
+    case "n" => new NormalCell(value)
+    case "d" => new DoubleSingleCell(value)
+    case "t" => new TripleSingleCell(value)
   }
-  def apply(value: String): Cell = NormalCell(value)
+  def apply(value: String): Cell = new NormalCell(value)
 }

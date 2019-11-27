@@ -11,9 +11,13 @@ case class Card(value: String) {
     try {
       Some(point(value))
     } catch {
-      case Exception => None
+      case e:Exception => None
     }
   }
 
   override def toString: String = this.parseValue.toString
+  override def equals(obj: Any): Boolean = obj match {
+    case c: Card => c.parseValue == parseValue
+    case _ => false
+  }
 }
