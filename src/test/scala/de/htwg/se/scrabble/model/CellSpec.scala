@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble.model
 
 import org.scalatest.{Matchers, WordSpec}
-import de.htwg.se.scrabble.util.SpecialCell._
 class CellSpec extends WordSpec with Matchers {
 /*"A Cell" when {
   "normal but have no card" should {

@@ -1,6 +1,7 @@
-package de.htwg.se.scrabble.model
+package de.htwg.se.scrabble.model.cell
 
-import de.htwg.se.scrabble.util.SpecialCell._
+import de.htwg.se.scrabble.model.Card
+
 /*case class Cell(value: String, special: SpecialCell){
   def this(value: String) = this(value, Normal)
   val card = Card(value)

@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble.model
 
 import org.scalatest.{Matchers, WordSpec}
-import de.htwg.se.scrabble.util.SpecialCell._
 class CardSpec extends WordSpec with Matchers {
   "A Card" should {
     val Card = new Card("")

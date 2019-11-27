@@ -1,8 +1,9 @@
 package de.htwg.se.scrabble.model
 
+import de.htwg.se.scrabble.model.cell.Cell
+
 case class Grid(private val cells:Vector[Vector[Cell]]) {
   def this(size:Int) = this(Vector.tabulate(size,size){(row,col) => Cell("n","")})
-  //def this(size:Int, filling: Cell) = this(Vector.tabulate(size,size) {(row,col) => filling})
   val size:Int = cells.size
   def cell(row:Int, col:Int):Cell = cells(row)(col)
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
