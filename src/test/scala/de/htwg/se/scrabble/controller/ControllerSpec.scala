@@ -13,21 +13,15 @@ class ControllerSpec extends WordSpec with Matchers{
       val observer = new Observer {
         var updated: Boolean = false
         def reset(): Unit = updated = false
-        override def update: Unit = updated = true
+        override def update: Boolean = {updated = true; updated}
       }
       controller.add(observer)
       "notify its Observer after grid creation" in {
         observer.reset()
-        controller.createEmptyGrid(5)
+        controller.createFixedSizeGameField(5)
         observer.updated should be(true)
         controller.getGameField.grid.size should be(5)
         controller.gameToString should be(controller.getGameField.toString)
-      }
-      "notify its Observer after grid creation with fixed size" in {
-        observer.reset()
-        controller.createFixedSizeGameField(3)
-        observer.updated should be(true)
-        controller.getGameField.grid.size should be(3)
       }
       "notify its Observer after grid creation with free size" in {
         observer.reset()
@@ -37,7 +31,7 @@ class ControllerSpec extends WordSpec with Matchers{
       }
       "notify its Observer after setting a first cell in middle" in {
         observer.reset()
-        controller.createEmptyGrid(5)
+        controller.createFixedSizeGameField(5)
         observer.reset()
         controller.createPile(1, 0, 0, 0, 0)
         controller.takeFromPile("A", 1)
@@ -47,7 +41,7 @@ class ControllerSpec extends WordSpec with Matchers{
       }
       "not notify its Observer after setting a first cell not in middle" in {
         observer.reset()
-        controller.createEmptyGrid(5)
+        controller.createFixedSizeGameField(5)
         observer.reset()
         controller.setGrid("A","1","1","4")
         observer.updated should be(false)//<-- not pass

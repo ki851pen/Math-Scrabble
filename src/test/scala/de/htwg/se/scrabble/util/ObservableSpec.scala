@@ -7,7 +7,7 @@ class ObservableSpec extends WordSpec with Matchers  {
     val observer = new Observer {
       var updated: Boolean = false
       def isUpdated: Boolean = updated
-      override def update: Unit = {updated = true; print(updated)}
+      override def update: Boolean = {updated = true; updated}
     }
     "add an Observer" in {
       observable.add(observer)

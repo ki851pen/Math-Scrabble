@@ -1,14 +1,32 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.controller.GameStatus.GameStatus
+import GameStatus._
 import de.htwg.se.scrabble.model.gameField._
-import de.htwg.se.scrabble.model.{Card, Pile}
+import de.htwg.se.scrabble.model.{Card, Pile, Player}
 import de.htwg.se.scrabble.util.Observable
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable{
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
-  def createEmptyGrid(size: Int):Unit = {
-    createFixedSizeGameField(size)
+  var gameStatus: GameStatus = INIT
+
+  private var player1: Player = _
+  private var player2: Player = _
+
+  def init(): Unit = {
+    println("------ Start of Initialisation ------")
+    println("How many player(2-4): ")
+    gameStatus = P1
+  }
+
+  def quit(): Unit = {
+    gameStatus = END_GAME
+  }
+
+  def end(): Unit = {
+    gameStatus = gameStatus match {
+      case P1 => P2
+      case P2 => P1
+    }
   }
 
   def createFixedSizeGameField(fixedSize: Int): Unit ={

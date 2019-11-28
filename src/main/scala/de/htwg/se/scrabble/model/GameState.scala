@@ -54,7 +54,6 @@ class endContext extends TestContext{
   }
 }
 
-
 class Game {
   var initialContext: TestContext = new setupContext()
   var setupState: GameState = new SetupState(this, initialContext)
