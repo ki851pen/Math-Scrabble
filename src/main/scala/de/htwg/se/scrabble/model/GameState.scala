@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.model
+/*package de.htwg.se.scrabble.model
 /*
  *
  * This is only for test
@@ -88,3 +88,4 @@ object Test extends App{
     }
   }
 }
+*/
