@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.model.gameField.{GameField, GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy}
+import de.htwg.se.scrabble.controller.GameStatus.GameStatus
+import de.htwg.se.scrabble.model.gameField._
 import de.htwg.se.scrabble.model.{Card, Pile}
 import de.htwg.se.scrabble.util.Observable
 

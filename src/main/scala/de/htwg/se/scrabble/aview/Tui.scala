@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble.aview
 
 import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.Card
 import de.htwg.se.scrabble.util.Observer
 
 class Tui(controller: Controller) extends Observer {
