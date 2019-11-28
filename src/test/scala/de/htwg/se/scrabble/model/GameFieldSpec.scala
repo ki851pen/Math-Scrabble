@@ -1,9 +1,9 @@
 package de.htwg.se.scrabble.model
 import org.scalatest.{Matchers, WordSpec}
 
-class GamefieldSpec extends WordSpec with Matchers{
+class GameFieldSpec extends WordSpec with Matchers{
   "A Gamefield" when {
-    val game = new Gamefield(new Grid(5), new Pile())
+    val game = new GameField(new Grid(5), new Pile())
     "create" should {
       "have automatically have a Player in Playerlist" in {
         game.playerList.isEmpty should be(false)
@@ -21,19 +21,19 @@ class GamefieldSpec extends WordSpec with Matchers{
       }
     }
     "add a Player" should {
-      val moreplayer = Gamefield(game.grid,game.pile,game.createPlayer("Name"))
+      val moreplayer = GameField(game.grid,game.pile,game.createPlayer("Name"))
       "have a bigger size Playerlist" in {
         moreplayer.playerList.size should be > game.playerList.size
       }
     }
     "remove a Player" should {
-      val lessplayer = Gamefield(game.grid,game.pile,game.deletePlayer("A"))
+      val lessplayer = GameField(game.grid,game.pile,game.deletePlayer("A"))
       "have a smaller size Playerlist" in {
         lessplayer.playerList.size should be < game.playerList.size
       }
     }
     "replace a Player" should {
-      val newplayer = Gamefield(game.grid,game.pile,game.replacePlayer("A", new Player("B")))
+      val newplayer = GameField(game.grid,game.pile,game.replacePlayer("A", new Player("B")))
       "have a new Player" in {
         newplayer.playerList.keys should contain ("B")
         newplayer.playerList.values should contain (new Player("B"))
@@ -41,7 +41,7 @@ class GamefieldSpec extends WordSpec with Matchers{
       }
     }
     "create with player" should {
-      val playerGamefield = Gamefield(new Grid(5), new Pile(),Map("Poom"-> new Player("Poom"), "B"->new Player("B")))
+      val playerGamefield = GameField(new Grid(5), new Pile(),Map("Poom"-> new Player("Poom"), "B"->new Player("B")))
       "have that player in playerlist(map)" in {
         playerGamefield.playerList.values should contain(Player("Poom",Nil))
         playerGamefield.playerList.values should contain(Player("B",Nil))

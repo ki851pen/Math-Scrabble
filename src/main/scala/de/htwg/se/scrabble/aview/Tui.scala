@@ -8,6 +8,7 @@ class Tui(controller: Controller) extends Observer {
   controller.add(this)
   def processInputLine(input: String): Unit = {
     val IntRegEx = "(\\d+)"
+    val fixedSizes = List("3", "5", "9", "15")
     input match {
       case "q" | "Q" | "quit" =>
       case "g" => controller.createEmptyGrid(15)
@@ -19,7 +20,16 @@ class Tui(controller: Controller) extends Observer {
       case _ => input.split(" ").toList match {
         case command :: name :: Nil if command == "py+" => controller.addPlayer(name)
         case command :: name :: Nil if command == "py-" => controller.removePlayer(name)
-        case command :: size :: Nil if command == "g" => if(size.matches(IntRegEx)) controller.createEmptyGrid(size.toInt) else println("size have to be integer")
+        case command :: size :: Nil if command == "g" => if(size.matches(IntRegEx))
+          controller.createEmptyGrid(size.toInt)
+        else println("size have to be integer")
+        case command :: size :: Nil if command == "gf" => if (size.matches(IntRegEx) && fixedSizes.contains(size))
+          controller.createFixedSizeGameField(size.toInt)
+        else println("size have to be one of the following: 3, 5, 9 or 15")
+        case command :: size :: equal :: plusminus :: muldiv :: blank:: digit:: Nil if command == "gf" =>
+          if (List(size, equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
+            controller.createFreeSizeGameField(size.toInt, equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
+          else println("size have to be integer")
         case command :: player :: size :: Nil if command == "t" =>
           if(size.matches(IntRegEx))
             controller.takeFromPile(player, size.toInt) else println("size have to be integer")
@@ -37,6 +47,8 @@ class Tui(controller: Controller) extends Observer {
                          || commands               |   function                                                                                                                          |
                          ||                        |                                                                                                                                     |
                          ||  g                     |   create standard size grid                                                                                                         |
+                         ||  gf [size]             |   create a grid with fixed size                                                                                                     |
+                         ||  gf [size] [pile]      |   create a grid with free size and pile                                                                                             |
                          ||                        |                                                                                                                                     |
                          ||  p                     |   create standard size pile                                                                                                         |
                          ||                        |                                                                                                                                     |
