@@ -2,8 +2,9 @@ package de.htwg.se.scrabble.model.cell
 
 import de.htwg.se.scrabble.model.Card
 
-abstract class Cell(val card: Card){
+trait Cell{
   val cellType: String
+  def card: Card
   def getPoint: Int
 
   def isSet: Boolean = card.parseValue != ""
