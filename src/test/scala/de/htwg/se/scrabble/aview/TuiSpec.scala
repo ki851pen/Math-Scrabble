@@ -29,9 +29,7 @@ class TuiSpec extends WordSpec with Matchers{
     "create a default pile on input 'p'" in {
       tui.processInputLine("p")
       controller.getGameField.pile.size should be(100)
-      controller.getGameField.pile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("_") and include("5"))
-      controller.game.pile.size should be(100)
-      controller.game.pile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("?") and include("5"))
+      controller.getGameField.pile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("?") and include("5"))
     }
     "shuffle a pile on input 's'" in {
       val oldpile = controller.getGameField.pile.tilepile
@@ -54,8 +52,7 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("p 1 0 0 0 0")
       tui.processInputLine("fh")
       tui.processInputLine("A 8 8 =")
-      controller.getGameField.grid.cell(7,7).value should be("=")
-      controller.game.grid.cell(7,7) shouldEqual Cell("=")
+      controller.getGameField.grid.cell(7,7) shouldEqual Cell("=")
     }
     "set a pile and its size on input 'p 1 1 1 1 1'" in {
       tui.processInputLine("p 1 1 1 1 1")

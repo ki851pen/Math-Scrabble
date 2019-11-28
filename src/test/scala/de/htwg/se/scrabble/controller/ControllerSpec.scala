@@ -42,8 +42,7 @@ class ControllerSpec extends WordSpec with Matchers{
         controller.takeFromPile("A", 1)
         controller.setGrid("A","3","3","=")
         observer.updated should be(true)
-        controller.getGameField.grid.cell(2,2).value should be ("=") //in input is already + 1
-        controller.game.grid.cell(2,2) shouldEqual Cell("=") //in input is already + 1
+        controller.getGameField.grid.cell(2,2) shouldEqual Cell("=")//in input is already + 1
       }
       "not notify its Observer after setting a first cell not in middle" in {
         observer.reset()
@@ -51,8 +50,7 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.reset()
         controller.setGrid("A","1","1","4")
         observer.updated should be(false)//<-- not pass
-        controller.getGameField.grid.cell(1,1).value should be ("")
-        controller.game.grid.cell(1,1) shouldEqual Cell("")
+        controller.getGameField.grid.cell(1,1) shouldEqual Cell("")
       }
       "notify its Observer after pile creation" in {
         observer.reset()
