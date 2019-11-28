@@ -35,7 +35,7 @@ class GameFieldSpec extends WordSpec with Matchers{
       }
     }
     "replace a Player" should {
-      val newplayer = GameField(game.grid,game.pile,game.replacePlayer("A", new Player("B")))
+      val newplayer = GameField(game.grid,game.pile,game.changePlayerAttr("A", new Player("B")))
       "have a new Player" in {
         newplayer.playerList.keys should contain ("B")
         newplayer.playerList.values should contain (new Player("B"))

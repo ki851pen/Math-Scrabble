@@ -8,8 +8,8 @@ class PlayerSpec extends WordSpec with Matchers {
       "have a name"  in {
         player.name should be("Testname")
       }
-      "have a nice String representation" in {
-        player.toString should be("Testname")
+      "have a String representation" in {
+        player.toString should be("Testname has:  point: 0")
       }
       "dont have card in hand" in {
         player.hand should be (Nil)

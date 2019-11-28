@@ -13,10 +13,7 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("g")
       controller.getGameField.grid should be(new Grid(15))
     }
-    "create 5x5 empty Grid on input 'g 5'" in {
-      tui.processInputLine("g 5")
-      controller.getGameField.grid should be(new Grid(5))
-    }
+
     "create 9x9 empty Grid(one of the fixed size) on input 'gf 9'" in {
       tui.processInputLine("gf 9")
       controller.getGameField.grid should be(new Grid(9))

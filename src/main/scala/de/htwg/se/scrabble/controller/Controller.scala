@@ -12,7 +12,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def init(): Unit = {
     println("------ Start of Initialisation ------")
-    println("How many player(2-4): ")
     gameStatus = P1
   }
 
@@ -20,7 +19,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     gameStatus = END_GAME
   }
 
-  def end(): Unit = {
+  def endturn(): Unit = {
     gameStatus = gameStatus match {
       case P1 => P2
       case P2 => P1
@@ -42,8 +41,9 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def setGrid(player: String, row: String, col: String, value: String): Unit ={
     if(gameField.playerList(player).hand.contains(Card(value))) {
       if(!gameField.grid.isEmpty || (row == col && gameField.grid.size / 2 + 1 == row.toInt)) {
-        gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.replacePlayer(player,gameField.playerList(player).useCard(Card(value))))
+        gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.changePlayerAttr(player,gameField.playerList(player).useCard(Card(value))))
         currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint
+        println(currentSum)
         notifyObservers
       } else {
         println("First Cell to set have to be in Middle of the Grid")
@@ -63,7 +63,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def takeFromPile(name: String, size:Int): Unit = {
     if (gameField.playerList.contains(name)) {
       shufflePile()
-      gameField = GameField(gameField.grid, gameField.pile.drop(size), gameField.replacePlayer(name, gameField.playerList(name).addToHand(gameField.pile.take(size))))
+      gameField = GameField(gameField.grid, gameField.pile.drop(size), gameField.changePlayerAttr(name, gameField.playerList(name).addToHand(gameField.pile.take(size))))
       notifyObservers
       /*if (game.playerList(name).getNrCardsInHand + size < game.playerList(name).maxHandSize) {
         shufflePile()
