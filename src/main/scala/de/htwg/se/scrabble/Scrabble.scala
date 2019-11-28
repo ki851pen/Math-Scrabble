@@ -2,16 +2,16 @@ package de.htwg.se.scrabble
 
 import de.htwg.se.scrabble.aview.Tui
 import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
+import de.htwg.se.scrabble.model.{GameFieldFixedSizeCreateStrategy}
 
 import scala.io.StdIn.readLine
 object Scrabble {
-  val controller = new Controller(new Gamefield(new Grid(15), new Pile()))
+  println("This is Scrabble\n")
+  val controller = new Controller(new GameFieldFixedSizeCreateStrategy())
   val tui = new Tui(controller)
   controller.notifyObservers
 
   def main(args: Array[String]): Unit = {
-    println("This is Scrabble\n")
     var input: String = ""
 
     do {

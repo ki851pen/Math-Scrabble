@@ -1,17 +1,30 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.model.{Card, Gamefield, Grid, Pile}
+import de.htwg.se.scrabble.model.{Card, GameField, GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy, Grid, Pile}
 import de.htwg.se.scrabble.util.Observable
 
-class Controller(var game: Gamefield) extends Observable{
+class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable{
+  private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
   def createEmptyGrid(size: Int):Unit = {
-    game = game.copy(grid = new Grid(size.toInt))
+    createFixedSizeGameField(size)
+  }
+
+  def createFixedSizeGameField(fixedSize: Int) ={
+    gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
+    gameField = gameFieldCreateStrategy.createNewGameField()
     notifyObservers
   }
+
+  def createFreeSizeGameField(sizeGrid: Int, equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int) ={
+    gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
+    gameField = gameFieldCreateStrategy.createNewGameField()
+    notifyObservers
+  }
+
   def setGrid(player: String, row: String, col: String, value: String): Unit ={
-    if(game.playerList(player).hand.contains(Card(value))) {
-      if(!game.grid.isEmpty || (row == col && game.grid.size / 2 + 1 == row.toInt)) {
-        game = game.copy(grid = game.grid.set(row.toInt-1, col.toInt-1, value), playerList = game.replacePlayer(player,game.playerList(player).useCard(Card(value))))
+    if(gameField.playerList(player).hand.contains(Card(value))) {
+      if(!gameField.grid.isEmpty || (row == col && gameField.grid.size / 2 + 1 == row.toInt)) {
+        gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.replacePlayer(player,gameField.playerList(player).useCard(Card(value))))
         notifyObservers
       } else {
         println("First Cell to set have to be in Middle of the Grid")
@@ -21,17 +34,17 @@ class Controller(var game: Gamefield) extends Observable{
     }
   }
   def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {
-    game = game.copy(pile = new Pile(equal,plusminus,muldiv,blank,digit))
+    gameField = gameField.copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
     notifyObservers
   }
   def shufflePile():Unit = {
-    game = game.copy(pile = game.pile.shuffle)
+    gameField = gameField.copy(pile = gameField.pile.shuffle)
     notifyObservers
   }
   def takeFromPile(name: String, size:Int): Unit = {
-    if (game.playerList.contains(name)) {
+    if (gameField.playerList.contains(name)) {
       shufflePile()
-      game = Gamefield(game.grid, game.pile.drop(size), game.replacePlayer(name, game.playerList(name).addToHand(game.pile.take(size))))
+      gameField = GameField(gameField.grid, gameField.pile.drop(size), gameField.replacePlayer(name, gameField.playerList(name).addToHand(gameField.pile.take(size))))
       notifyObservers
       /*if (game.playerList(name).getNrCardsInHand + size < game.playerList(name).maxHandSize) {
         shufflePile()
@@ -45,21 +58,23 @@ class Controller(var game: Gamefield) extends Observable{
   }
 
   def addPlayer(name: String): Unit ={
-    game = game.copy(playerList = game.createPlayer(name))
+    gameField = gameField.copy(playerList = gameField.createPlayer(name))
     notifyObservers
   }
 
   def removePlayer(name: String): Unit ={
-    game = game.copy(playerList = game.deletePlayer(name))
+    gameField = gameField.copy(playerList = gameField.deletePlayer(name))
     notifyObservers
   }
 
   def fillAllHand(): Unit = {
-    val nrLeftToFill: Iterable[Int] = game.playerList.values.map(player => player.maxHandSize - player.getNrCardsInHand)
-    val playername: Iterable[String] = game.playerList.keys
+    val nrLeftToFill: Iterable[Int] = gameField.playerList.values.map(player => player.maxHandSize - player.getNrCardsInHand)
+    val playername: Iterable[String] = gameField.playerList.keys
     (playername,nrLeftToFill).zipped.foreach((p,n) => takeFromPile(p,n))
     notifyObservers
   }
 
-  def gameToString: String = game.toString
+  def getGameField = gameField
+
+  def gameToString: String = gameField.toString
 }
