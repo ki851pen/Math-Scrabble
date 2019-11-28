@@ -1,4 +1,6 @@
-package de.htwg.se.scrabble.model
+package de.htwg.se.scrabble.model.gameField
+
+import de.htwg.se.scrabble.model.{Grid, Pile, Player}
 
 case class GameField(grid: Grid, pile: Pile, playerList: Map[String,Player]) {
   def this(grid: Grid,pile: Pile) = this(grid, pile, Map("A" -> new Player("A")))
@@ -9,4 +11,3 @@ case class GameField(grid: Grid, pile: Pile, playerList: Map[String,Player]) {
     .mkString("\n")
   override def toString: String = "Grid :" + grid.toString + "\nPile: " + pile.toString + "\n" + playerListToString
 }
-

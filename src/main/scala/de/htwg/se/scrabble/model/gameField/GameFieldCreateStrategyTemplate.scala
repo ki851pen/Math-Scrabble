@@ -1,4 +1,6 @@
-package de.htwg.se.scrabble.model
+package de.htwg.se.scrabble.model.gameField
+
+import de.htwg.se.scrabble.model.{Grid, Pile}
 
 trait GameFieldCreateStrategyTemplate {
   def sizeGrid: Int

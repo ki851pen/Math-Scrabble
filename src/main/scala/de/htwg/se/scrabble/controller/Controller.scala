@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.model.{Card, GameField, GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy, Grid, Pile}
+import de.htwg.se.scrabble.model.gameField.{GameField, GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy}
+import de.htwg.se.scrabble.model.{Card, Pile}
 import de.htwg.se.scrabble.util.Observable
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable{
@@ -9,13 +10,13 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     createFixedSizeGameField(size)
   }
 
-  def createFixedSizeGameField(fixedSize: Int) ={
+  def createFixedSizeGameField(fixedSize: Int): Unit ={
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField()
     notifyObservers
   }
 
-  def createFreeSizeGameField(sizeGrid: Int, equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int) ={
+  def createFreeSizeGameField(sizeGrid: Int, equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit ={
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField()
     notifyObservers
@@ -74,7 +75,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     notifyObservers
   }
 
-  def getGameField = gameField
+  def getGameField: GameField = gameField
 
   def gameToString: String = gameField.toString
 }

@@ -1,4 +1,6 @@
-package de.htwg.se.scrabble.model
+package de.htwg.se.scrabble.model.gameField
+
+import de.htwg.se.scrabble.model.Pile
 
 class GameFieldFreeSizeCreateStrategy(sizeGridParam: Int, pileParam: Pile) extends GameFieldCreateStrategyTemplate {
   def this(sizeGrid: Int, equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int) =

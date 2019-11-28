@@ -1,4 +1,6 @@
-package de.htwg.se.scrabble.model
+package de.htwg.se.scrabble.model.gameField
+
+import de.htwg.se.scrabble.model.Pile
 
 class GameFieldFixedSizeCreateStrategy(fixedSize: Int) extends GameFieldCreateStrategyTemplate {
   def this() = this(15)

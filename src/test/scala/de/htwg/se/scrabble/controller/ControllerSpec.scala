@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble.controller
-import de.htwg.se.scrabble.model.{GameField, GameFieldFreeSizeCreateStrategy, Grid, Pile}
+import de.htwg.se.scrabble.model.{Grid, Pile}
 import de.htwg.se.scrabble.model.cell.Cell
+import de.htwg.se.scrabble.model.gameField.GameFieldFreeSizeCreateStrategy
 import de.htwg.se.scrabble.util.Observer
 import org.scalatest.{Matchers, WordSpec}
 
