@@ -9,12 +9,12 @@ class Tui(controller: Controller) extends Observer {
     val IntRegEx = "(\\d+)"
     val fixedSizes = List("3", "5", "9", "15")
     input match {
-      case "q" | "Q" | "quit" =>
-      case "g" => controller.createFixedSizeGameField(15)
+      case "q" | "Q" | "quit" => controller.quit()
+      case "init" => controller.init()
       case "p" => controller.createPile(20,7,5,6,5)
       case "s" => controller.shufflePile()
       case "h" => println(help)
-      case "submit" => controller.gameStatus = GameStatus.END_TURN; println(GameStatus.message(controller.gameStatus))
+      case "submit" => controller.calPoint()
       case "fh" => controller.fillAllHand()
       case _ => input.split(" ").toList match {
         case command :: player :: Nil if command == "clr" =>controller.clearHand(player)

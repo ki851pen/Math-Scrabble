@@ -1,5 +1,11 @@
 package de.htwg.se.scrabble.model
-
+/*
+ *
+ * This is only for test
+ * To learn how state Pattern work
+ *
+ *
+ */
 trait GameState {
   def displayState()
   def changeState()

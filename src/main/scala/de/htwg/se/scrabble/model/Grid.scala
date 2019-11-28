@@ -14,7 +14,7 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
 
   //def checkNeighbor(row:Int, col:Int): List[String] = cells(row-1)(col).value :: cells(row)(col-1).value :: cells(row+1)(col).value :: cells(row)(col+1).value :: Nil
   //def emptyNeighbor(row:Int, col:Int): Boolean = checkNeighbor(row,col).forall(s => s =="")
-  def checkNeighbor(row:Int, col:Int): Boolean = {
+  /*def checkNeighbor(row:Int, col:Int): Boolean = {
     if (row != 0 && cells(row - 1)(col).isSet) {
       true
     }
@@ -30,17 +30,16 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
     else {
       false
     }
-  }
-
+  }*/
 
   def set(row:Int, col:Int, value:String):Grid =  {
-    if (!checkNeighbor(row, col) && !cells.forall(v => v.forall(c => !c.isSet))) {
+    /*if (!checkNeighbor(row, col) && !cells.forall(v => v.forall(c => !c.isSet))) {
       println("\nSteine koennen nur horizontal oder vertikal neben einem bereits auf dem Spielplan liegenden Stein platziert werden!\n" +
         "Bitte geben Sie eine neue Position an!\n")
       this
-    } else {
+    } else {*/
       Grid(cells.updated(row, cells(row).updated(col, cell(row,col).setCell(value))))
-    }
+    //}
   }
 
 

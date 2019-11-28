@@ -6,17 +6,17 @@ import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
 
 import scala.io.StdIn.readLine
 object Scrabble {
-  println("This is Scrabble\n")
+  println("This is Scrabble")
   val controller = new Controller(new GameFieldFixedSizeCreateStrategy())
   val tui = new Tui(controller)
-  controller.notifyObservers
+  println("write init or gf [size] to begin")
 
   def main(args: Array[String]): Unit = {
     var input: String = ""
 
-    do {
+    while (true) {
       input = readLine()
       tui.processInputLine(input)
-    } while (!List("q", "Q", "quit", "Quit").contains(input))
+    }
   }
 }

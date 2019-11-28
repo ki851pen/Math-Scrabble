@@ -1,4 +1,5 @@
 package de.htwg.se.scrabble.controller
+
 import de.htwg.se.scrabble.model.cell.Cell
 import de.htwg.se.scrabble.model.gameField.GameFieldFreeSizeCreateStrategy
 import de.htwg.se.scrabble.util.Observer
@@ -15,6 +16,25 @@ class ControllerSpec extends WordSpec with Matchers{
         override def update: Boolean = {updated = true; updated}
       }
       controller.add(observer)
+      "notify its Observer after init" in {
+        observer.reset()
+        controller.init()
+        observer.updated should be(true)
+        controller.getGameField.grid.size shouldBe 15
+        controller.getGameField.playerList("A").getNrCardsInHand should not be 0
+        controller.getGameField.playerList("B").getNrCardsInHand should not be 0
+        controller.gameStatus = GameStatus.P1
+      }
+      "notify its Observer after calculate point" in {
+        observer.reset()
+        controller.calPoint()
+        observer.updated should be(true)
+        controller.gameStatus = GameStatus.P2
+        observer.reset()
+        controller.calPoint()
+        observer.updated should be(true)
+        controller.gameStatus = GameStatus.P1
+      }
       "notify its Observer after grid creation" in {
         observer.reset()
         controller.createFixedSizeGameField(3)

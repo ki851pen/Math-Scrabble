@@ -46,7 +46,7 @@ class TuiSpec extends WordSpec with Matchers{
       controller.getGameField.playerList.size should be (1)
     }
     "set a cell on input 'A 8 8 3'" in {
-      tui.processInputLine("g")
+      tui.processInputLine("gf 15")
       tui.processInputLine("p 1 0 0 0 0")
       tui.processInputLine("fh")
       tui.processInputLine("A 8 8 =")

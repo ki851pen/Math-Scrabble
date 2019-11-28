@@ -10,48 +10,68 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   var gameStatus: GameStatus = INIT
   private var currentSum: Int = 0
 
-  /*def init(): Unit = {
+  def init(): Unit = {
     println("------ Start of Initialisation ------")
-    gameStatus = P1
+    createFixedSizeGameField(15)
+    fillAllHand()
   }
 
   def quit(): Unit = {
     gameStatus = END_GAME
+    notifyObservers
+    println("Bye")
+    System.exit(0)
   }
-
+  /*
   def endturn(): Unit = {
     gameStatus = gameStatus match {
       case P1 => P2
       case P2 => P1
     }
   }*/
+  def calPoint(): Unit = {
+    //todo check if equation is valid
+    //todo if (double equation -> point *2)
+    gameStatus match {
+      case P1 => gameField = gameField.copy(playerList = gameField.changePlayerAttr("A",gameField.playerList("A").copy(point = gameField.playerList("A").point+currentSum)))
+        gameStatus = P2; fillHand("A")
+      case P2 => gameField = gameField.copy(playerList = gameField.changePlayerAttr("B",gameField.playerList("B").copy(point = gameField.playerList("B").point+currentSum)))
+        gameStatus = P1; fillHand("B")
+    }
+    currentSum = 0
+    notifyObservers
+  }
 
   def createFixedSizeGameField(fixedSize: Int): Unit ={
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField()
+    gameStatus = P1
     notifyObservers
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit ={
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField()
+    gameStatus = P1
     notifyObservers
   }
 
-  def setGrid(player: String, row: String, col: String, value: String): Unit ={
-    if(gameField.playerList(player).hand.contains(Card(value))) {
-      if(!gameField.grid.isEmpty || (row == col && gameField.grid.size / 2 + 1 == row.toInt)) {
+  def setGrid(player: String, row: String, col: String, value: String): Unit = {
+    gameStatus match {
+      case P1 if player != "A" => println("It's A's turn")
+      case P2 if player != "B" => println("It's B's turn")
+      case P1|P2 if !gameField.playerList(player).hand.contains(Card(value)) => println("Can only set card from hand")
+      case P1|P2 if gameField.grid.cell(row.toInt-1, col.toInt-1).isSet => println("can't set already set cell")
+      case P1|P2 if!(!gameField.grid.isEmpty || (row == col && gameField.grid.size / 2 + 1 == row.toInt))=> println("First Cell to set have to be in Middle of the Grid")
+      case P1|P2 =>
         gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.changePlayerAttr(player,gameField.playerList(player).useCard(Card(value))))
         currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint
         println(currentSum)
         notifyObservers
-      } else {
-        println("First Cell to set have to be in Middle of the Grid")
-      }
-    } else {
-      println("Can only set card from hand")
+      case _ => println("cannot set grid if not in player turn")
     }
   }
+
   def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {
     gameField = gameField.copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
     notifyObservers
@@ -72,6 +92,11 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     }
   }
 
+  def fillAllHand(): Unit = {
+    val playerName: Iterable[String] = gameField.playerList.keys
+    playerName.foreach(p => fillHand(p))
+  }
+
   def clearHand(name: String): Unit = {
     if (gameField.playerList.contains(name)) {
       val player = gameField.playerList(name)
@@ -81,12 +106,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     } else{
       println("Player " + name + " doesn't exist")
     }
-  }
-
-  def fillAllHand(): Unit = {
-    val playerName: Iterable[String] = gameField.playerList.keys
-    playerName.foreach(p => fillHand(p))
-    notifyObservers
   }
 
   def addPlayer(name: String): Unit ={
