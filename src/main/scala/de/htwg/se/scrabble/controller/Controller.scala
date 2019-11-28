@@ -60,20 +60,22 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     gameField = gameField.copy(pile = gameField.pile.shuffle)
     notifyObservers
   }
-  def takeFromPile(name: String, size:Int): Unit = {
+  def fillHand(name: String): Unit = {
     if (gameField.playerList.contains(name)) {
+      val player = gameField.playerList(name)
+      val nrLeftToFill = player.maxHandSize - player.getNrCardsInHand
       shufflePile()
-      gameField = GameField(gameField.grid, gameField.pile.drop(size), gameField.changePlayerAttr(name, gameField.playerList(name).addToHand(gameField.pile.take(size))))
+      gameField = GameField(gameField.grid, gameField.pile.drop(nrLeftToFill), gameField.changePlayerAttr(name, gameField.playerList(name).addToHand(gameField.pile.take(nrLeftToFill))))
       notifyObservers
-      /*if (game.playerList(name).getNrCardsInHand + size < game.playerList(name).maxHandSize) {
-        shufflePile()
-        game = Gamefield(game.grid, game.pile.drop(size), game.replacePlayer(name, game.playerList(name).addToHand(game.pile.take(size))))
-        notifyObservers
-      }
-      else {println("Maximun Cards in Hand is 9")}*/
     } else {
       println("Player " + name + " doesn't exist")
     }
+  }
+
+  def fillAllHand(): Unit = {
+    val playerName: Iterable[String] = gameField.playerList.keys
+    playerName.foreach(p => fillHand(p))
+    notifyObservers
   }
 
   def addPlayer(name: String): Unit ={
@@ -83,13 +85,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def removePlayer(name: String): Unit ={
     gameField = gameField.copy(playerList = gameField.deletePlayer(name))
-    notifyObservers
-  }
-
-  def fillAllHand(): Unit = {
-    val nrLeftToFill: Iterable[Int] = gameField.playerList.values.map(player => player.maxHandSize - player.getNrCardsInHand)
-    val playername: Iterable[String] = gameField.playerList.keys
-    (playername,nrLeftToFill).zipped.foreach((p,n) => takeFromPile(p,n))
     notifyObservers
   }
 

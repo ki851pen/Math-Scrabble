@@ -33,7 +33,7 @@ class ControllerSpec extends WordSpec with Matchers{
         controller.createFixedSizeGameField(5)
         observer.reset()
         controller.createPile(1, 0, 0, 0, 0)
-        controller.takeFromPile("A", 1)
+        controller.fillHand("A")
         controller.setGrid("A","3","3","=")
         observer.updated should be(true)
         controller.getGameField.grid.cell(2,2) shouldEqual Cell("=")//in input is already + 1
@@ -62,14 +62,14 @@ class ControllerSpec extends WordSpec with Matchers{
       "notify its Observer after existing player take cards from pile" in {
         observer.reset()
         val oldgame = controller.getGameField
-        controller.takeFromPile("A", 3)
+        controller.fillHand("A")
         observer.updated should be(true)
         controller.getGameField.playerList("A").getNrCardsInHand should be (3)
         controller.getGameField.pile.size should be (oldgame.pile.size -3)
       }
       "not notify its Observer after player that not in the list try take cards from pile" in {
         observer.reset()
-        controller.takeFromPile("C", 3)
+        controller.fillHand("C")
         observer.updated should be(false)
       }/*
       "notify its Observer after addition of new player" in {

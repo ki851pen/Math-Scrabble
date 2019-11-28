@@ -17,6 +17,7 @@ class Tui(controller: Controller) extends Observer {
       case "submit" => controller.gameStatus = GameStatus.END_TURN; println(GameStatus.message(controller.gameStatus))
       case "fh" => controller.fillAllHand()
       case _ => input.split(" ").toList match {
+        case command :: player :: Nil if command == "fh" =>controller.fillHand(player)
         case command :: name :: Nil if command == "py+" => controller.addPlayer(name)
         case command :: name :: Nil if command == "py-" => controller.removePlayer(name)
         case command :: size :: Nil if command == "gf" => if (size.matches(IntRegEx) && fixedSizes.contains(size))
@@ -25,8 +26,6 @@ class Tui(controller: Controller) extends Observer {
           if (List(size, equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
             controller.createFreeSizeGameField(size.toInt, equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
           else println("size have to be integer")
-        case command :: player :: size :: Nil if command == "t" =>
-          if(size.matches(IntRegEx)) controller.takeFromPile(player, size.toInt) else println("size have to be integer")
         case command :: equal :: plusminus :: muldiv :: blank:: digit:: Nil if command == "p" =>
           if (List(equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
             controller.createPile(equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
