@@ -27,31 +27,31 @@ class CellSpec extends WordSpec with Matchers {
       }
     }
     "set correctly" should {
-      val testcell = Cell("")
-      val testdoublecell = Cell("d","")
-      val testtripplecell = Cell("t","")
-      val changedcell = testcell.setCell("1")
-      val changeddoublecell = testdoublecell.setCell("7")
-      val changedtripplecell = testtripplecell.setCell("?")
+      val testCell = Cell("")
+      val testDoubleCell = Cell("d","")
+      val testTripleCell = Cell("t","")
+      val changedCell = testCell.setCell("1")
+      val changedDoubleCell = testDoubleCell.setCell("7")
+      val changedTripleCell = testTripleCell.setCell("?")
       "have changed value" in {
-        changedcell.card shouldBe Card("1")
-        changeddoublecell.card shouldBe Card("7")
-        changedtripplecell.card shouldBe Card("?")
+        changedCell.card shouldBe Card("1")
+        changedDoubleCell.card shouldBe Card("7")
+        changedTripleCell.card shouldBe Card("?")
       }
       "be set" in {
-        changedcell.isSet shouldBe true
-        changeddoublecell.isSet shouldBe true
-        changedtripplecell.isSet shouldBe true
+        changedCell.isSet shouldBe true
+        changedDoubleCell.isSet shouldBe true
+        changedTripleCell.isSet shouldBe true
       }
       "have a point assign to them" in {
-        changedcell.getPoint shouldBe 1
-        changeddoublecell.getPoint shouldBe 8
-        changedtripplecell.getPoint shouldBe 0
+        changedCell.getPoint shouldBe 1
+        changedDoubleCell.getPoint shouldBe 8
+        changedTripleCell.getPoint shouldBe 0
       }
       "have a String representation" in {
-        changedcell.toString shouldBe "1"
-        changeddoublecell.toString shouldBe "7x2"
-        changedtripplecell.toString shouldBe "?x3"
+        changedCell.toString shouldBe "1"
+        changedDoubleCell.toString shouldBe "7x2"
+        changedTripleCell.toString shouldBe "?x3"
       }
     }
     "set incorrectly" should {

@@ -10,6 +10,11 @@ class CardSpec extends WordSpec with Matchers {
     "and contain arithmetic operation as String" in {
       Card.validSet.contains("=") should be(true)
     }
+    "be able to compare to other card" in {
+      val otherCard = new Card("")
+      Card shouldEqual otherCard
+      Card should not equal ""
+    }
   }
   "A Card" when{
     "set to 1 digit number" should{
