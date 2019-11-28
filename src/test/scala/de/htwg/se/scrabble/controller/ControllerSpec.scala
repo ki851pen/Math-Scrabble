@@ -16,9 +16,9 @@ class ControllerSpec extends WordSpec with Matchers{
       controller.add(observer)
       "notify its Observer after grid creation" in {
         observer.reset()
-        controller.createEmptyGrid(4)
+        controller.createEmptyGrid(5)
         observer.updated should be(true)
-        controller.getGameField.grid.size should be(4)
+        controller.getGameField.grid.size should be(5)
         controller.gameToString should be(controller.getGameField.toString)
       }
       "notify its Observer after grid creation with fixed size" in {
