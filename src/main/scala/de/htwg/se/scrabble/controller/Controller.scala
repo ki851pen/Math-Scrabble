@@ -8,9 +8,7 @@ import de.htwg.se.scrabble.util.Observable
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable{
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
   var gameStatus: GameStatus = INIT
-
-  private var player1: Player = _
-  private var player2: Player = _
+  private var currentSum: Int = 0
 
   def init(): Unit = {
     println("------ Start of Initialisation ------")
@@ -45,6 +43,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     if(gameField.playerList(player).hand.contains(Card(value))) {
       if(!gameField.grid.isEmpty || (row == col && gameField.grid.size / 2 + 1 == row.toInt)) {
         gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.replacePlayer(player,gameField.playerList(player).useCard(Card(value))))
+        currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint
         notifyObservers
       } else {
         println("First Cell to set have to be in Middle of the Grid")

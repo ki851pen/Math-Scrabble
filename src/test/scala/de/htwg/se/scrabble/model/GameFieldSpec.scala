@@ -45,8 +45,8 @@ class GameFieldSpec extends WordSpec with Matchers{
     "create with player" should {
       val playerGamefield = gameField.GameField(new Grid(5), new Pile(),Map("Poom"-> new Player("Poom"), "B"->new Player("B")))
       "have that player in playerlist(map)" in {
-        playerGamefield.playerList.values should contain(Player("Poom",Nil))
-        playerGamefield.playerList.values should contain(Player("B",Nil))
+        playerGamefield.playerList.values should contain(Player("Poom",Nil,0))
+        playerGamefield.playerList.values should contain(Player("B",Nil,0))
         playerGamefield.playerList.size should be (2)
       }
     }
