@@ -7,10 +7,10 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
   val size:Int = cells.size
   def cell(row:Int, col:Int):Cell = cells(row)(col)
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
-  def setCellType(row:Int, col:Int, typ: String): Grid = typ match {
+  /*def setCellType(row:Int, col:Int, typ: String): Grid = typ match {
     case "n" | "d" | "t" => Grid(cells.updated(row, cells(row).updated(col, Cell(typ,cell(row,col).card.toString))))
     case _ => this
-  }
+  }*/
 
   //def checkNeighbor(row:Int, col:Int): List[String] = cells(row-1)(col).value :: cells(row)(col-1).value :: cells(row+1)(col).value :: cells(row)(col+1).value :: Nil
   //def emptyNeighbor(row:Int, col:Int): Boolean = checkNeighbor(row,col).forall(s => s =="")

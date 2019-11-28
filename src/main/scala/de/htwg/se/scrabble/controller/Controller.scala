@@ -10,7 +10,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   var gameStatus: GameStatus = INIT
   private var currentSum: Int = 0
 
-  def init(): Unit = {
+  /*def init(): Unit = {
     println("------ Start of Initialisation ------")
     gameStatus = P1
   }
@@ -24,7 +24,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       case P1 => P2
       case P2 => P1
     }
-  }
+  }*/
 
   def createFixedSizeGameField(fixedSize: Int): Unit ={
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
@@ -68,6 +68,17 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       gameField = GameField(gameField.grid, gameField.pile.drop(nrLeftToFill), gameField.changePlayerAttr(name, gameField.playerList(name).addToHand(gameField.pile.take(nrLeftToFill))))
       notifyObservers
     } else {
+      println("Player " + name + " doesn't exist")
+    }
+  }
+
+  def clearHand(name: String): Unit = {
+    if (gameField.playerList.contains(name)) {
+      val player = gameField.playerList(name)
+      gameField = gameField.copy(pile = Pile(gameField.pile.tilepile ::: player.hand), playerList = gameField.changePlayerAttr(player.name, gameField.playerList(player.name).copy(hand = Nil)))
+      shufflePile()
+      notifyObservers
+    } else{
       println("Player " + name + " doesn't exist")
     }
   }

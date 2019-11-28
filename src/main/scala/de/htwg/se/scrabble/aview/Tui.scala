@@ -17,6 +17,7 @@ class Tui(controller: Controller) extends Observer {
       case "submit" => controller.gameStatus = GameStatus.END_TURN; println(GameStatus.message(controller.gameStatus))
       case "fh" => controller.fillAllHand()
       case _ => input.split(" ").toList match {
+        case command :: player :: Nil if command == "clr" =>controller.clearHand(player)
         case command :: player :: Nil if command == "fh" =>controller.fillHand(player)
         case command :: name :: Nil if command == "py+" => controller.addPlayer(name)
         case command :: name :: Nil if command == "py-" => controller.removePlayer(name)

@@ -17,9 +17,9 @@ class ControllerSpec extends WordSpec with Matchers{
       controller.add(observer)
       "notify its Observer after grid creation" in {
         observer.reset()
-        controller.createFixedSizeGameField(5)
+        controller.createFixedSizeGameField(3)
         observer.updated should be(true)
-        controller.getGameField.grid.size should be(5)
+        controller.getGameField.grid.size should be(3)
         controller.gameToString should be(controller.getGameField.toString)
       }
       "notify its Observer after grid creation with free size" in {
@@ -64,14 +64,14 @@ class ControllerSpec extends WordSpec with Matchers{
         val oldgame = controller.getGameField
         controller.fillHand("A")
         observer.updated should be(true)
-        controller.getGameField.playerList("A").getNrCardsInHand should be (3)
-        controller.getGameField.pile.size should be (oldgame.pile.size -3)
+        controller.getGameField.playerList("A").getNrCardsInHand should be (9)
+        controller.getGameField.pile.size should be (oldgame.pile.size -9)
       }
       "not notify its Observer after player that not in the list try take cards from pile" in {
         observer.reset()
         controller.fillHand("C")
         observer.updated should be(false)
-      }/*
+      }
       "notify its Observer after addition of new player" in {
         observer.reset()
         controller.addPlayer("B")
@@ -85,12 +85,20 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.updated should be(true)
         controller.getGameField.playerList.keys should not contain "A"
         controller.getGameField.playerList.size should be (1)
-      }*/
+      }
       "notify its Observer after fill all player hands" in {
         observer.reset()
         controller.fillAllHand()
         observer.updated should be(true)
         controller.getGameField.playerList("B").getNrCardsInHand should be (9)
+      }
+      "notify its Observer after clear a player hand" in {
+        val oldPileSize: Int = controller.getGameField.pile.size
+        observer.reset()
+        controller.clearHand("B")
+        observer.updated should be(true)
+        controller.getGameField.playerList("B").getNrCardsInHand should be (0)
+        controller.getGameField.pile.size should be (oldPileSize + 9)
       }
     }
   }

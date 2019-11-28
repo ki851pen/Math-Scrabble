@@ -8,7 +8,7 @@ trait GameFieldCreateStrategyTemplate {
   def pile: Pile
   def createNewGameField(): GameField ={
     var gameField = new GameField(new Grid(sizeGrid), pile)
-    gameField = gameField.copy(grid = initSpecialCell(gameField.grid))
+    //gameField = gameField.copy(grid = initSpecialCell(gameField.grid))
     gameField
   }
 
