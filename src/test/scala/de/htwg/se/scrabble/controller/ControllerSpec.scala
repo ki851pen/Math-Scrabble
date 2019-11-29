@@ -40,7 +40,9 @@ class ControllerSpec extends WordSpec with Matchers{
         controller.createFixedSizeGameField(3)
         observer.updated should be(true)
         controller.getGameField.grid.size should be(3)
-        controller.gameToString should be(controller.getGameField.toString)
+        controller.gameToString should be(controller.getGameField.gameToString("A"))
+        controller.calPoint()
+        controller.gameToString should be(controller.getGameField.gameToString("B"))
       }
       "notify its Observer after grid creation with free size" in {
         observer.reset()

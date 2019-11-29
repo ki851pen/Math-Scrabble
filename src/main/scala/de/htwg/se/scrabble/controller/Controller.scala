@@ -22,13 +22,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     println("Bye")
     System.exit(0)
   }
-  /*
-  def endturn(): Unit = {
-    gameStatus = gameStatus match {
-      case P1 => P2
-      case P2 => P1
-    }
-  }*/
+
   def calPoint(): Unit = {
     //todo check if equation is valid
     //todo if (double equation -> point *2)
@@ -58,11 +52,12 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def setGrid(player: String, row: String, col: String, value: String): Unit = {
     gameStatus match {
+      //case FIRST_CARD if !(row == col && gameField.grid.size / 2 + 1 == row.toInt) => println("First Cell to set have to be in Middle of the Grid")
+      //case FIRST_CARD if player == "B" => gameStatus = P2
       case P1 if player != "A" => println("It's A's turn")
       case P2 if player != "B" => println("It's B's turn")
       case P1|P2 if !gameField.playerList(player).hand.contains(Card(value)) => println("Can only set card from hand")
       case P1|P2 if gameField.grid.cell(row.toInt-1, col.toInt-1).isSet => println("can't set already set cell")
-      case P1|P2 if!(!gameField.grid.isEmpty || (row == col && gameField.grid.size / 2 + 1 == row.toInt))=> println("First Cell to set have to be in Middle of the Grid")
       case P1|P2 =>
         gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.changePlayerAttr(player,gameField.playerList(player).useCard(Card(value))))
         currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint
@@ -120,5 +115,8 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def getGameField: GameField = gameField
 
-  def gameToString: String = gameField.toString
+  def gameToString: String = gameStatus match {
+    case P1 =>gameField.gameToString("A")
+    case P2 =>gameField.gameToString("B")
+  }
 }
