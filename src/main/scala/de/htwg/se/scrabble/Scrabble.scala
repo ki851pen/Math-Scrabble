@@ -2,21 +2,21 @@ package de.htwg.se.scrabble
 
 import de.htwg.se.scrabble.aview.Tui
 import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.{Gamefield, Grid, Pile}
+import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
 
 import scala.io.StdIn.readLine
 object Scrabble {
-  println("This is Scrabble\n")
-  val controller = new Controller(new Gamefield(new Grid(15), new Pile()))
+  println("This is Scrabble")
+  val controller = new Controller(new GameFieldFixedSizeCreateStrategy())
   val tui = new Tui(controller)
-  controller.notifyObservers
+  println("write init or gf [size] to begin")
 
   def main(args: Array[String]): Unit = {
     var input: String = ""
 
-    do {
+    while (true) {
       input = readLine()
       tui.processInputLine(input)
-    } while (!List("q", "Q", "quit", "Quit").contains(input))
+    }
   }
 }

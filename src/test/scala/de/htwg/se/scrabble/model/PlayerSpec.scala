@@ -8,20 +8,28 @@ class PlayerSpec extends WordSpec with Matchers {
       "have a name"  in {
         player.name should be("Testname")
       }
-      "have a nice String representation" in {
-        player.toString should be("Testname")
+      "have a String representation" in {
+        player.toString should be("Testname has:  point: 0")
       }
       "dont have card in hand" in {
-        player.getHand should be (Nil)
+        player.hand should be (Nil)
         player.getNrCardsInHand should be (0)
       }
     }
     "add card in hand" should {
-      val player = Player("name", List(Card("=")))
+      val player = Player("name", List(Card("=")),0)
       val moreCardPlayer = player.addToHand(List(Card("+")))
       "have more cards in hand" in {
         moreCardPlayer.getNrCardsInHand should be (2)
-        moreCardPlayer.getHand should be (List(Card("="),Card("+")))
+        moreCardPlayer.hand should be (List(Card("="),Card("+")))
+      }
+    }
+    "use card in hand" should {
+      val player = Player("name", List(Card("="), Card("="), Card("="), Card("+")),0)
+      val moreCardPlayer = player.useCard(Card("="))
+      "remove one instance of used card" in {
+        moreCardPlayer.getNrCardsInHand should be (3)
+        moreCardPlayer.hand should be (List(Card("="),Card("="),Card("+")))
       }
     }
   }

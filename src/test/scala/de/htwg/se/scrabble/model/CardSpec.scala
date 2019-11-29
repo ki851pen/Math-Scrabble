@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble.model
 
 import org.scalatest.{Matchers, WordSpec}
-import de.htwg.se.scrabble.util.SpecialCell._
 class CardSpec extends WordSpec with Matchers {
   "A Card" should {
     val Card = new Card("")
@@ -10,6 +9,11 @@ class CardSpec extends WordSpec with Matchers {
     }
     "and contain arithmetic operation as String" in {
       Card.validSet.contains("=") should be(true)
+    }
+    "be able to compare to other card" in {
+      val otherCard = new Card("")
+      Card shouldEqual otherCard
+      Card should not equal ""
     }
   }
   "A Card" when{
@@ -65,8 +69,8 @@ class CardSpec extends WordSpec with Matchers {
       val validCard = Card("=")
       val secondvalidCard = Card("7")
       "have a point assign to them" in {
-        validCard.getPoint should be (1)
-        secondvalidCard.getPoint should be (4)
+        validCard.getPoint.get should be (1)
+        secondvalidCard.getPoint.get should be (4)
       }
     }
   }
