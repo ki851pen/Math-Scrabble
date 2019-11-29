@@ -18,3 +18,21 @@ object GameStatus extends Enumeration{
     map(gameStatus)
   }
 }
+
+object state {
+  trait State {
+    def handle(func)
+  }
+  case class P1() extends State {
+    override def handle(): Unit = ???
+  }
+  case class P2() extends State {
+    override def handle(): Unit = ???
+  }
+  case class firstCard() extends State {
+    override def handle(): Unit = ???
+  }
+  case class Init() extends State {
+    override def handle(): Unit = ???
+  }
+}
