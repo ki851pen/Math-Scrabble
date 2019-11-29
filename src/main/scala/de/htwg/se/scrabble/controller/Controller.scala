@@ -1,8 +1,8 @@
 package de.htwg.se.scrabble.controller
 
-import GameStatus._
+import de.htwg.se.scrabble.controller.GameStatus._
 import de.htwg.se.scrabble.model.gameField._
-import de.htwg.se.scrabble.model.{Card, Pile, Player}
+import de.htwg.se.scrabble.model.{Card, Pile}
 import de.htwg.se.scrabble.util.Observable
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable{
@@ -59,7 +59,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       case P1|P2 if !gameField.playerList(player).hand.contains(Card(value)) => println("Can only set card from hand")
       case P1|P2 if gameField.grid.cell(row.toInt-1, col.toInt-1).isSet => println("can't set already set cell")
       case P1|P2 =>
-        gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.changePlayerAttr(player,gameField.playerList(player).useCard(Card(value))))
+        //gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.changePlayerAttr(player,gameField.playerList(player).useCard(Card(value))))
         currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint
         println(currentSum)
         notifyObservers
@@ -115,8 +115,5 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def getGameField: GameField = gameField
 
-  def gameToString: String = gameStatus match {
-    case P1 =>gameField.gameToString("A")
-    case P2 =>gameField.gameToString("B")
-  }
+  def gameToString: String = GameStatus.gameToString(this)
 }
