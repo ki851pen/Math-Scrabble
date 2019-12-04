@@ -14,13 +14,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     gameStatus.init(this)
   }
 
-  def quit(): Unit = {
-    //gameStatus = END_GAME
-    notifyObservers
-    println("Bye")
-    System.exit(0)
-  }
-
   def endTurn(): Unit = {
     //todo check if equation is valid
     //todo if (double equation -> point *2)

@@ -10,7 +10,7 @@ class Tui(controller: Controller) extends Observer {
     val IntRegEx = "(\\d+)"
     val fixedSizes = List("3", "5", "9", "15")
     input match {
-      case "q" | "Q" | "quit" => controller.quit()
+      case "q" | "Q" | "quit" => quit()
       case "init" => controller.init()
       case "p" => controller.createPile(20,7,5,6,5)
       case "s" => controller.shufflePile()
@@ -44,7 +44,8 @@ class Tui(controller: Controller) extends Observer {
   def help: String = """
                          || commands               |   function                                                        |
                          ||                        |                                                                   |
-                         ||  g                     |   create standard size grid                                       |
+                         ||  init                  |   start a standard game                                           |
+                         ||                        |                                                                   |
                          ||  gf [size]             |   create a grid with fixed size                                   |
                          ||  gf [size] [pile]      |   create a grid with free size and pile                           |
                          ||                        |                                                                   |
@@ -58,5 +59,10 @@ class Tui(controller: Controller) extends Observer {
     println(controller.gameToString)
     //println(GameStatus.message(controller))
     true
+  }
+
+  def quit(): Unit = {
+    println("Bye")
+    System.exit(0)
   }
 }
