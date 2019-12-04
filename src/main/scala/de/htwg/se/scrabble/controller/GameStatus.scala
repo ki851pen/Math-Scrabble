@@ -6,17 +6,8 @@ import de.htwg.se.scrabble.model.gameField.GameField
 /*object GameStatus extends Enumeration{
   type GameStatus = Value
   val P1, P2, FIRST_CARD, INIT, VALID, INVALID, END_GAME = Value
-
-  val map: Map[GameStatus, String] = Map[GameStatus, String](
-    P1 -> "A's turn",
-    P2 -> "B's turn",
-    INIT -> "Initialisation",
-    FIRST_CARD -> "first card",
-    /*VALID-> "valid equation",
+    VALID-> "valid equation",
     INVALID-> "invalid equation",*/
-    END_GAME ->"Game ended"
-  )
-}*/
 
 object GameStatus {
 
@@ -46,7 +37,7 @@ object GameStatus {
   case class firstCard() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
       val gameField = controller.getGameField
-      val gridMiddle: Int = gameField.grid.size / 2 + 1
+      val gridMiddle: Int = controller.gridSize() / 2 + 1
       (row.toInt, col.toInt) match {
         case (a:Int,b:Int) if a == b && a == gridMiddle =>
           if (gameField.playerList("A").hand.contains(Card(value))) {

@@ -11,15 +11,12 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   private var currentSum: Int = 0
   var gameStatus: State = Init()
 
+  def getGameField: GameField = gameField
   def gridSize(): Int = gameField.grid.size
-
   def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
-
   def isSet(row:Int, col:Int): Boolean = gameField.grid.cell(row, col).isSet
 
-  def init(): Unit = {
-    gameStatus.init(this)
-  }
+  def init(): Unit = gameStatus.init(this)
 
   def endTurn(): Unit = {
     //todo check if equation is valid
@@ -99,8 +96,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     gameField = gameField.copy(playerList = gameField.deletePlayer(name))
     notifyObservers
   }
-
-  def getGameField: GameField = gameField
 
   def gameToString: String = gameStatus.gameToString(this)
 }
