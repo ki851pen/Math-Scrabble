@@ -7,7 +7,7 @@ import de.htwg.se.scrabble.util.Observable
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable{
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
-  var currentSum: Int = 0
+  private var currentSum: Int = 0
   var gameStatus: State = Init()
 
   def init(): Unit = {
@@ -26,6 +26,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     //todo if (double equation -> point *2)
     gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
     currentSum = 0
+    fillAllHand()
     notifyObservers
   }
 
@@ -46,7 +47,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def setGrid(row: String, col: String, value: String): Unit = {
     val either = gameStatus.setGrid(this, row, col, value)
     either match {
-      case Left(x) => gameField = x; notifyObservers
+      case Left(x) => gameField = x; currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint; notifyObservers;
       case Right(x) => println(x)
     }
   }

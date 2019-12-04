@@ -18,17 +18,6 @@ import de.htwg.se.scrabble.model.gameField.GameField
   )
 }*/
 
-/*gameStatus match {
-     case P1|P2 if !gameField.playerList(player).hand.contains(Card(value)) => println("Can only set card from hand")
-     case P1|P2 if gameField.grid.cell(row.toInt-1, col.toInt-1).isSet => println("can't set already set cell")
-     case P1|P2 =>
-       //gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.changePlayerAttr(player,gameField.playerList(player).useCard(Card(value))))
-       currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint
-       println(currentSum)
-       notifyObservers
-     case _ => println("cannot set grid if not in player turn")
-    }*/
-
 object GameStatus {
 
   trait State {
@@ -61,8 +50,7 @@ object GameStatus {
       (row.toInt, col.toInt) match {
         case (a:Int,b:Int) if a == b && a == gridMiddle =>
           if (gameField.playerList("A").hand.contains(Card(value))) {
-            controller.gameStatus = P1() //WIRD NICHT HOCH GEZÄHLT
-            controller.currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint
+            controller.gameStatus = P1()
             Left(setGridConcrete("A",controller.getGameField,row.toInt-1,col.toInt-1,value))
           } else {
             Right("Can only set card from hand")
@@ -90,7 +78,6 @@ object GameStatus {
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
       val game = controller.getGameField
       controller.gameStatus = P2()
-      controller.fillHand("A")
       Some(game.copy(playerList = game.changePlayerAttr("A",game.playerList("A").copy(point = game.playerList("A").point+currentSum))))
     }
 
@@ -109,7 +96,6 @@ object GameStatus {
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
       val game = controller.getGameField
       controller.gameStatus = P1()
-      controller.fillHand("B")
       Some(game.copy(playerList = game.changePlayerAttr("B",game.playerList("B").copy(point = game.playerList("B").point+currentSum))))
     }
   }

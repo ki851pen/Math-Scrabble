@@ -41,8 +41,6 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.updated should be(true)
         controller.getGameField.grid.size should be(3)
         controller.gameToString should be(controller.getGameField.gameToString("A"))
-        controller.endTurn()
-        controller.gameToString should be(controller.getGameField.gameToString("B"))
       }
       "notify its Observer after grid creation with free size" in {
         observer.reset()
