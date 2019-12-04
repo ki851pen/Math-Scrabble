@@ -5,7 +5,7 @@ import de.htwg.se.scrabble.model.gameField._
 import de.htwg.se.scrabble.model.{Card, Pile, Player}
 import de.htwg.se.scrabble.util.Observable
 
-class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable{
+class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable {
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
   var gameStatus: GameStatus = INIT
   private var currentSum: Int = 0
@@ -27,23 +27,25 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     //todo check if equation is valid
     //todo if (double equation -> point *2)
     gameStatus match {
-      case P1 => gameField = gameField.copy(playerList = gameField.changePlayerAttr("A",gameField.playerList("A").copy(point = gameField.playerList("A").point+currentSum)))
-        gameStatus = P2; fillHand("A")
-      case P2 => gameField = gameField.copy(playerList = gameField.changePlayerAttr("B",gameField.playerList("B").copy(point = gameField.playerList("B").point+currentSum)))
-        gameStatus = P1; fillHand("B")
+      case P1 => gameField = gameField.copy(playerList = gameField.changePlayerAttr("A", gameField.playerList("A").copy(point = gameField.playerList("A").point + currentSum)))
+        gameStatus = P2;
+        fillHand("A")
+      case P2 => gameField = gameField.copy(playerList = gameField.changePlayerAttr("B", gameField.playerList("B").copy(point = gameField.playerList("B").point + currentSum)))
+        gameStatus = P1;
+        fillHand("B")
     }
     currentSum = 0
     notifyObservers
   }
 
-  def createFixedSizeGameField(fixedSize: Int): Unit ={
+  def createFixedSizeGameField(fixedSize: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField()
     gameStatus = P1
     notifyObservers
   }
 
-  def createFreeSizeGameField(sizeGrid: Int, equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit ={
+  def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField()
     gameStatus = P1
@@ -56,25 +58,27 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       //case FIRST_CARD if player == "B" => gameStatus = P2
       case P1 if player != "A" => println("It's A's turn")
       case P2 if player != "B" => println("It's B's turn")
-      case P1|P2 if !gameField.playerList(player).hand.contains(Card(value)) => println("Can only set card from hand")
-      case P1|P2 if gameField.grid.cell(row.toInt-1, col.toInt-1).isSet => println("can't set already set cell")
-      case P1|P2 =>
-        gameField = gameField.copy(grid = gameField.grid.set(row.toInt-1, col.toInt-1, value), playerList = gameField.changePlayerAttr(player,gameField.playerList(player).useCard(Card(value))))
-        currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint
+      case P1 | P2 if !gameField.playerList(player).hand.contains(Card(value)) => println("Can only set card from hand")
+      case P1 | P2 if gameField.grid.cell(row.toInt - 1, col.toInt - 1).isSet => println("can't set already set cell")
+      case P1 | P2 =>
+        gameField = gameField.copy(grid = gameField.grid.set(row.toInt - 1, col.toInt - 1, value), playerList = gameField.changePlayerAttr(player, gameField.playerList(player).useCard(Card(value))))
+        currentSum += gameField.grid.cell(row.toInt - 1, col.toInt - 1).getPoint
         println(currentSum)
         notifyObservers
       case _ => println("cannot set grid if not in player turn")
     }
   }
 
-  def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {
+  def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameField = gameField.copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
     notifyObservers
   }
-  def shufflePile():Unit = {
+
+  def shufflePile(): Unit = {
     gameField = gameField.copy(pile = gameField.pile.shuffle)
     notifyObservers
   }
+
   def fillHand(name: String): Unit = {
     if (gameField.playerList.contains(name)) {
       val player = gameField.playerList(name)
@@ -98,17 +102,17 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       gameField = gameField.copy(pile = Pile(gameField.pile.tilepile ::: player.hand), playerList = gameField.changePlayerAttr(player.name, gameField.playerList(player.name).copy(hand = Nil)))
       shufflePile()
       notifyObservers
-    } else{
+    } else {
       println("Player " + name + " doesn't exist")
     }
   }
 
-  def addPlayer(name: String): Unit ={
+  def addPlayer(name: String): Unit = {
     gameField = gameField.copy(playerList = gameField.createPlayer(name))
     notifyObservers
   }
 
-  def removePlayer(name: String): Unit ={
+  def removePlayer(name: String): Unit = {
     gameField = gameField.copy(playerList = gameField.deletePlayer(name))
     notifyObservers
   }
@@ -116,7 +120,8 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def getGameField: GameField = gameField
 
   def gameToString: String = gameStatus match {
-    case P1 =>gameField.gameToString("A")
-    case P2 =>gameField.gameToString("B")
+    case P1 => gameField.gameToString("A")
+    case P2 => gameField.gameToString("B")
+    case _ => gameField.gameToString("A")
   }
 }
