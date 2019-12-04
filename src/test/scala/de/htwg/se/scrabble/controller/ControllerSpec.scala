@@ -23,17 +23,17 @@ class ControllerSpec extends WordSpec with Matchers{
         controller.getGameField.grid.size shouldBe 15
         controller.getGameField.playerList("A").getNrCardsInHand should not be 0
         controller.getGameField.playerList("B").getNrCardsInHand should not be 0
-        controller.gameStatus = GameStatus.P1
+        controller.gameStatus = GameStatus.P1()
       }
       "notify its Observer after calculate point" in {
         observer.reset()
-        controller.calPoint()
+        controller.endTurn()
         observer.updated should be(true)
-        controller.gameStatus = GameStatus.P2
+        controller.gameStatus = GameStatus.P2()
         observer.reset()
-        controller.calPoint()
+        controller.endTurn()
         observer.updated should be(true)
-        controller.gameStatus = GameStatus.P1
+        controller.gameStatus = GameStatus.P1()
       }
       "notify its Observer after grid creation" in {
         observer.reset()
@@ -41,7 +41,7 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.updated should be(true)
         controller.getGameField.grid.size should be(3)
         controller.gameToString should be(controller.getGameField.gameToString("A"))
-        controller.calPoint()
+        controller.endTurn()
         controller.gameToString should be(controller.getGameField.gameToString("B"))
       }
       "notify its Observer after grid creation with free size" in {
@@ -56,7 +56,7 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.reset()
         controller.createPile(1, 0, 0, 0, 0)
         controller.fillHand("A")
-        controller.setGrid("A","3","3","=")
+        controller.setGrid("3","3","=")
         observer.updated should be(true)
         controller.getGameField.grid.cell(2,2) shouldEqual Cell("=")//in input is already + 1
       }
@@ -64,7 +64,7 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.reset()
         controller.createFixedSizeGameField(5)
         observer.reset()
-        controller.setGrid("A","1","1","4")
+        controller.setGrid("1","1","4")
         observer.updated should be(false)//<-- not pass
         controller.getGameField.grid.cell(1,1) shouldEqual Cell("")
       }

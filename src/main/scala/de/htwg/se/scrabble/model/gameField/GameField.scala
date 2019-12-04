@@ -8,8 +8,9 @@ case class GameField(grid: Grid, pile: Pile, playerList: Map[String,Player]) {
   def createPlayer(name:String): Map[String, Player] = playerList + (name -> new Player(name))
   def deletePlayer(name:String): Map[String, Player] = playerList - name
 
+  def gameToStringWOPlayer: String = "Grid :" + grid.toString + "\nPile: " + pile.toString + "\n" +
+    playerList.values.map(p => p.name +"'s points: "+ p.point.toString).mkString("    ") + "\n"
   def playerListToString: String = playerList.values.map(_.toString).mkString("\n")
-  def gameToStringWOPlayer: String = "Grid :" + grid.toString + "\nPile: " + pile.toString + "\n"
   def gameToString(name:String): String = gameToStringWOPlayer + playerList(name).toString
   override def toString: String = gameToStringWOPlayer + playerListToString
 }

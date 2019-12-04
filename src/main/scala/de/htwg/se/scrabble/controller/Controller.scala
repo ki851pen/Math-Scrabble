@@ -7,7 +7,7 @@ import de.htwg.se.scrabble.util.Observable
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable{
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
-  private var currentSum: Int = 0
+  var currentSum: Int = 0
   var gameStatus: State = Init()
 
   def init(): Unit = {
@@ -43,9 +43,12 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     notifyObservers
   }
 
-  def setGrid(player: String, row: String, col: String, value: String): Unit = {
-    gameField = gameStatus.setGrid(this, row, col, value).getOrElse(gameField)
-    notifyObservers
+  def setGrid(row: String, col: String, value: String): Unit = {
+    val either = gameStatus.setGrid(this, row, col, value)
+    either match {
+      case Left(x) => gameField = x; notifyObservers
+      case Right(x) => println(x)
+    }
   }
 
   def createPile(equal:Int, plusminus:Int, muldiv:Int, blank:Int, digit:Int): Unit = {
@@ -69,32 +72,32 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   def fillAllHand(): Unit = {
-  val playerName: Iterable[String] = gameField.playerList.keys
-  playerName.foreach(p => fillHand(p))
+    val playerName: Iterable[String] = gameField.playerList.keys
+    playerName.foreach(p => fillHand(p))
   }
 
   def clearHand(name: String): Unit = {
-  if (gameField.playerList.contains(name)) {
-   val player = gameField.playerList(name)
-   gameField = gameField.copy(pile = Pile(gameField.pile.tilepile ::: player.hand), playerList = gameField.changePlayerAttr(player.name, gameField.playerList(player.name).copy(hand = Nil)))
-   shufflePile()
-   notifyObservers
-  } else{
-   println("Player " + name + " doesn't exist")
-  }
+    if (gameField.playerList.contains(name)) {
+      val player = gameField.playerList(name)
+      gameField = gameField.copy(pile = Pile(gameField.pile.tilepile ::: player.hand), playerList = gameField.changePlayerAttr(player.name, gameField.playerList(player.name).copy(hand = Nil)))
+      shufflePile()
+      notifyObservers
+    } else{
+      println("Player " + name + " doesn't exist")
+    }
   }
 
   def addPlayer(name: String): Unit ={
-  gameField = gameField.copy(playerList = gameField.createPlayer(name))
-  notifyObservers
+    gameField = gameField.copy(playerList = gameField.createPlayer(name))
+    notifyObservers
   }
 
   def removePlayer(name: String): Unit ={
-  gameField = gameField.copy(playerList = gameField.deletePlayer(name))
-  notifyObservers
+    gameField = gameField.copy(playerList = gameField.deletePlayer(name))
+    notifyObservers
   }
 
   def getGameField: GameField = gameField
 
   def gameToString: String = gameStatus.gameToString(this)
-  }
+}

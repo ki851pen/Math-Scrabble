@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble.aview
 
 import de.htwg.se.scrabble.controller.{Controller, GameStatus}
+import de.htwg.se.scrabble.model.Card
 import de.htwg.se.scrabble.util.Observer
 
 class Tui(controller: Controller) extends Observer {
@@ -16,6 +17,7 @@ class Tui(controller: Controller) extends Observer {
       case "h" => println(help)
       case "submit" => controller.endTurn()
       case "fh" => controller.fillAllHand()
+        //case "giveup"
       case _ => input.split(" ").toList match {
         case command :: player :: Nil if command == "clr" =>controller.clearHand(player)
         case command :: player :: Nil if command == "fh" =>controller.fillHand(player)
@@ -31,7 +33,9 @@ class Tui(controller: Controller) extends Observer {
           if (List(equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
             controller.createPile(equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
           else println("all characters after p have to be integer")
-        case player :: row :: col :: value :: Nil if row.matches(IntRegEx) && col.matches(IntRegEx) => controller.setGrid(player,row,col,value)
+        case command :: row :: col :: value :: Nil if command == "set" && row.matches(IntRegEx) && col.matches(IntRegEx) =>
+          if (Card(value).isValid) controller.setGrid(row,col,value)
+          else println("value not valid")
         case _ => println("Invalid input. Type h to get some helps.")
       }
     }
@@ -52,7 +56,7 @@ class Tui(controller: Controller) extends Observer {
 
   override def update: Boolean = {
     println(controller.gameToString)
-    println(GameStatus.message(controller.gameStatus))
+    //println(GameStatus.message(controller))
     true
   }
 }
