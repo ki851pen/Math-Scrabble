@@ -4,6 +4,7 @@ import GameStatus._
 import de.htwg.se.scrabble.model.gameField._
 import de.htwg.se.scrabble.model.{Card, Pile, Player, Grid}
 import de.htwg.se.scrabble.util.Observable
+import de.htwg.se.scrabble.model.cell.Cell
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable {
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
@@ -11,6 +12,8 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   private var currentSum: Int = 0
 
   def gridSize(): Int = gameField.grid.size
+
+  def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
 
   def init(): Unit = {
     println("------ Start of Initialisation ------")
