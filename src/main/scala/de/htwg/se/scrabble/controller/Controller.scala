@@ -2,13 +2,15 @@ package de.htwg.se.scrabble.controller
 
 import GameStatus._
 import de.htwg.se.scrabble.model.gameField._
-import de.htwg.se.scrabble.model.{Card, Pile, Player}
+import de.htwg.se.scrabble.model.{Card, Pile, Player, Grid}
 import de.htwg.se.scrabble.util.Observable
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable {
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
   var gameStatus: GameStatus = INIT
   private var currentSum: Int = 0
+
+  def gridSize(): Int = gameField.grid.size
 
   def init(): Unit = {
     println("------ Start of Initialisation ------")
