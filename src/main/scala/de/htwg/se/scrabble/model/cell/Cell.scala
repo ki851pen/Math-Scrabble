@@ -2,6 +2,7 @@ package de.htwg.se.scrabble.model.cell
 
 import de.htwg.se.scrabble.model.Card
 
+
 trait Cell{
   val cellType: String
   def card: Card
@@ -17,6 +18,7 @@ trait Cell{
 }
 
 object Cell {
+
   def apply(kind: String, value: String): Cell = kind match {
     case "n" => new NormalCell(value)
     case "d" => new DoubleSingleCell(value)

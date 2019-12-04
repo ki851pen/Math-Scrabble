@@ -9,10 +9,29 @@ import de.htwg.se.scrabble.model.gameField.GameField
     VALID-> "valid equation",
     INVALID-> "invalid equation",*/
 
-object GameStatus {
+/*
+trait teststate
+case class init() extends teststate
+case class P1() extends teststate
+case class P2() extends teststate
 
+object testcontext {
+  var state = P1State
+  def handle(s: teststate) = {
+    s match {
+      case P1() => state = P1State
+      case P2() => state = P2State
+    }
+    state
+  }
+  def init: Unit = println("")
+  def P1State: Unit = ???
+  def P2State: Unit = ???
+
+}*/
+
+object GameStatus {
   trait State {
-    def init(controller: Controller): Unit
     def calPoint(controller: Controller, currentSum: Int): Option[GameField]
     def setGrid(controller: Controller,row:String,col:String,value:String): Either[GameField, String]
     def gameToString(controller: Controller): String
@@ -21,18 +40,9 @@ object GameStatus {
   case class Init() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String]
     = Right("can't set grid when in init phase")
-
     override def gameToString(controller: Controller): String = "write init or gf [size] to begin"
-
-    override def init(controller: Controller): Unit = {
-      println("------ Start of Initialisation ------")
-      controller.createFixedSizeGameField(15)
-      controller.fillAllHand()
-    }
-
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = None
   }
-
 
   case class firstCard() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
@@ -50,47 +60,35 @@ object GameStatus {
       }
     }
     override def gameToString(controller: Controller): String = controller.gameField.gameToString("A")
-
-    override def init(controller: Controller): Unit = println("can't init again")
-
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
       println("To end turn please set equation first. If you can't do it write clr to clear hand and fh to fill hand and try again")
       None
     }
   }
 
-
   case class P1() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
       Left(setGridConcrete("A", controller.gameField, row.toInt-1, col.toInt-1, value))
     }
     override def gameToString(controller: Controller): String = controller.gameField.gameToString("A")
-
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
       val game = controller.gameField
       controller.gameStatus = P2()
       Some(game.copy(playerList = game.changePlayerAttr("A",game.playerList("A").copy(point = game.playerList("A").point+currentSum))))
     }
-
-    override def init(controller: Controller): Unit = println("can't init again")
   }
-
 
   case class P2() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
       Left(setGridConcrete("B", controller.gameField, row.toInt-1, col.toInt-1, value))
     }
     override def gameToString(controller: Controller): String = controller.gameField.gameToString("B")
-
-    override def init(controller: Controller): Unit = println("can't init again")
-
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
       val game = controller.gameField
       controller.gameStatus = P1()
       Some(game.copy(playerList = game.changePlayerAttr("B",game.playerList("B").copy(point = game.playerList("B").point+currentSum))))
     }
   }
-
 
   def setGridConcrete(player: String, gameField: GameField, row: Int, col: Int, value: String): GameField =
     gameField.copy(grid = gameField.grid.set(row, col, value), playerList = gameField.changePlayerAttr(player, gameField.playerList(player).useCard(Card(value))))

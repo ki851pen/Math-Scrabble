@@ -20,7 +20,11 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def gameToString: String = gameStatus.gameToString(this)
 
-  def init(): Unit = gameStatus.init(this)
+  def init(): Unit = {
+    println("------ Start of Initialisation ------")
+    createFixedSizeGameField(15)
+    fillAllHand()
+  }
 
   def endTurn(): Unit = {
     //todo check if equation is valid
@@ -47,6 +51,15 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def setGrid(row: String, col: String, value: String): Unit = {
     undoManager.doStep(new SetCommand(row: String, col: String, value: String, this))
+  }
+  def undo(): Unit = {
+    undoManager.undoStep()
+    notifyObservers
+  }
+
+  def redo(): Unit = {
+    undoManager.redoStep()
+    notifyObservers
   }
 
   def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
@@ -94,16 +107,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def removePlayer(name: String): Unit = {
     gameField = gameField.copy(playerList = gameField.deletePlayer(name))
-    notifyObservers
-  }
-
-  def undo(): Unit = {
-    undoManager.undoStep()
-    notifyObservers
-  }
-
-  def redo(): Unit = {
-    undoManager.redoStep()
     notifyObservers
   }
 }
