@@ -15,6 +15,8 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
 
+  def isSet(row:Int, col:Int): Boolean = gameField.grid.cell(row, col).isSet
+
   def init(): Unit = {
     println("------ Start of Initialisation ------")
     createFixedSizeGameField(15)
