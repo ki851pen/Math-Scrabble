@@ -10,6 +10,8 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   var gameStatus: GameStatus = INIT
   private var currentSum: Int = 0
 
+  def gridSize = gameField.grid.size
+  def cell(row: Int, col: Int) = gameField.grid.cell(row, col)
   def init(): Unit = {
     println("------ Start of Initialisation ------")
     createFixedSizeGameField(15)
