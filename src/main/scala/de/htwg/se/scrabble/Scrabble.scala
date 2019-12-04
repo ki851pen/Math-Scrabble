@@ -9,7 +9,6 @@ object Scrabble {
   println("This is Scrabble")
   val controller = new Controller(new GameFieldFixedSizeCreateStrategy())
   val tui = new Tui(controller)
-  println("write init or gf [size] to begin")
 
   def main(args: Array[String]): Unit = {
     var input: String = ""

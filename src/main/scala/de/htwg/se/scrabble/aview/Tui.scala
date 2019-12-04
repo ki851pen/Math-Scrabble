@@ -14,7 +14,7 @@ class Tui(controller: Controller) extends Observer {
       case "p" => controller.createPile(20,7,5,6,5)
       case "s" => controller.shufflePile()
       case "h" => println(help)
-      case "submit" => controller.calPoint()
+      case "submit" => controller.endTurn()
       case "fh" => controller.fillAllHand()
       case _ => input.split(" ").toList match {
         case command :: player :: Nil if command == "clr" =>controller.clearHand(player)
