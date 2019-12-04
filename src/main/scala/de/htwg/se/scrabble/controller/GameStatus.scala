@@ -36,20 +36,20 @@ object GameStatus {
 
   case class firstCard() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
-      val gameField = controller.getGameField
+      val gameField = controller.gameField
       val gridMiddle: Int = controller.gridSize() / 2 + 1
       (row.toInt, col.toInt) match {
         case (a:Int,b:Int) if a == b && a == gridMiddle =>
           if (gameField.playerList("A").hand.contains(Card(value))) {
             controller.gameStatus = P1()
-            Left(setGridConcrete("A",controller.getGameField,row.toInt-1,col.toInt-1,value))
+            Left(setGridConcrete("A",controller.gameField,row.toInt-1,col.toInt-1,value))
           } else {
             Right("Can only set card from hand")
           }
         case _ => Right("Your first move have to be in the middle of the grid")
       }
     }
-    override def gameToString(controller: Controller): String = controller.getGameField.gameToString("A")
+    override def gameToString(controller: Controller): String = controller.gameField.gameToString("A")
 
     override def init(controller: Controller): Unit = println("can't init again")
 
@@ -62,12 +62,12 @@ object GameStatus {
 
   case class P1() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
-      Left(setGridConcrete("A", controller.getGameField, row.toInt-1, col.toInt-1, value))
+      Left(setGridConcrete("A", controller.gameField, row.toInt-1, col.toInt-1, value))
     }
-    override def gameToString(controller: Controller): String = controller.getGameField.gameToString("A")
+    override def gameToString(controller: Controller): String = controller.gameField.gameToString("A")
 
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
-      val game = controller.getGameField
+      val game = controller.gameField
       controller.gameStatus = P2()
       Some(game.copy(playerList = game.changePlayerAttr("A",game.playerList("A").copy(point = game.playerList("A").point+currentSum))))
     }
@@ -78,14 +78,14 @@ object GameStatus {
 
   case class P2() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
-      Left(setGridConcrete("B", controller.getGameField, row.toInt-1, col.toInt-1, value))
+      Left(setGridConcrete("B", controller.gameField, row.toInt-1, col.toInt-1, value))
     }
-    override def gameToString(controller: Controller): String = controller.getGameField.gameToString("B")
+    override def gameToString(controller: Controller): String = controller.gameField.gameToString("B")
 
     override def init(controller: Controller): Unit = println("can't init again")
 
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
-      val game = controller.getGameField
+      val game = controller.gameField
       controller.gameStatus = P1()
       Some(game.copy(playerList = game.changePlayerAttr("B",game.playerList("B").copy(point = game.playerList("B").point+currentSum))))
     }

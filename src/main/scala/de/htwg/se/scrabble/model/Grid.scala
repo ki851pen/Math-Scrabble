@@ -42,6 +42,9 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
     //}
   }
 
+  def setEmpty(row:Int, col:Int):Grid =  {
+    Grid(cells.updated(row, cells(row).updated(col, cell(row,col).makeEmpty)))
+  }
 
   override def toString: String = {
     val numCol = "      " + List.range(1, size + 1).filter(_<10).mkString("     ") + "    " + List.range(1, size + 1).filter(_>9).mkString("    ") +  "  \n"

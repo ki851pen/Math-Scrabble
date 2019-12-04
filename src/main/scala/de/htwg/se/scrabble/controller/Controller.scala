@@ -1,20 +1,24 @@
 package de.htwg.se.scrabble.controller
 
 import de.htwg.se.scrabble.controller.GameStatus._
-import de.htwg.se.scrabble.model.gameField._
-import de.htwg.se.scrabble.model.{Card, Pile, Player, Grid}
-import de.htwg.se.scrabble.util.Observable
+import de.htwg.se.scrabble.model.Pile
 import de.htwg.se.scrabble.model.cell.Cell
+import de.htwg.se.scrabble.model.gameField._
+import de.htwg.se.scrabble.util.{Observable, UndoManager}
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable {
-  private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
-  private var currentSum: Int = 0
+  var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
   var gameStatus: State = Init()
+  private val undoManager = new UndoManager
+  private var currentSum: Int = 0
 
-  def getGameField: GameField = gameField
   def gridSize(): Int = gameField.grid.size
   def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
   def isSet(row:Int, col:Int): Boolean = gameField.grid.cell(row, col).isSet
+  def addToSum(point: Int): Unit = currentSum += point
+  def reduceSum(point: Int): Unit = currentSum -= point
+
+  def gameToString: String = gameStatus.gameToString(this)
 
   def init(): Unit = gameStatus.init(this)
 
@@ -42,11 +46,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   def setGrid(row: String, col: String, value: String): Unit = {
-    val either = gameStatus.setGrid(this, row, col, value)
-    either match {
-      case Left(x) => gameField = x; currentSum += gameField.grid.cell(row.toInt-1, col.toInt-1).getPoint; notifyObservers;
-      case Right(x) => println(x)
-    }
+    undoManager.doStep(new SetCommand(row: String, col: String, value: String, this))
   }
 
   def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
@@ -97,5 +97,13 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     notifyObservers
   }
 
-  def gameToString: String = gameStatus.gameToString(this)
+  def undo(): Unit = {
+    undoManager.undoStep()
+    notifyObservers
+  }
+
+  def redo(): Unit = {
+    undoManager.redoStep()
+    notifyObservers
+  }
 }
