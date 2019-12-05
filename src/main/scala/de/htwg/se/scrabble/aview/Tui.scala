@@ -23,8 +23,6 @@ class Tui(controller: Controller) extends Observer {
       case _ => input.split(" ").toList match {
         case command :: player :: Nil if command == "clr" =>controller.clearHand(player)
         case command :: player :: Nil if command == "fh" =>controller.fillHand(player)
-        case command :: name :: Nil if command == "py+" => controller.addPlayer(name)
-        case command :: name :: Nil if command == "py-" => controller.removePlayer(name)
         case command :: size :: Nil if command == "gf" => if (size.matches(IntRegEx) && fixedSizes.contains(size))
           controller.createFixedSizeGameField(size.toInt) else println("size have to be one of the following: 3, 5, 9 or 15")
         case command :: size :: equal :: plusminus :: muldiv :: blank:: digit:: Nil if command == "gf" =>

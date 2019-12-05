@@ -112,14 +112,4 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       println("Player " + name + " doesn't exist")
     }
   }
-
-  def addPlayer(name: String): Unit = {
-    gameField = gameField.copy(playerList = gameField.createPlayer(name))
-    notifyObservers
-  }
-
-  def removePlayer(name: String): Unit = {
-    gameField = gameField.copy(playerList = gameField.deletePlayer(name))
-    notifyObservers
-  }
 }
