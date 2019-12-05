@@ -7,16 +7,17 @@ import de.htwg.se.scrabble.model.gameField._
 import de.htwg.se.scrabble.util.{Memento, Observable, UndoManager}
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable {
-  var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
+  private var gameField: GameField = gameFieldCreateStrategy.createNewGameField
   var gameStatus: State = Init()
   private val undoManager = new UndoManager
   private var currentSum: Int = 0
 
-  def gridSize(): Int = gameField.grid.size
+  def gridSize: Int = gameField.grid.size
   def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
   def isSet(row:Int, col:Int): Boolean = gameField.grid.cell(row, col).isSet
   def addToSum(point: Int): Unit = currentSum += point
-
+  def getGameField() = gameField
+  def setGameField(gameField: GameField) = this.gameField = gameField
   def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
     this.gameField = gameField
     this.gameStatus = gameStatus
@@ -33,13 +34,16 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   //cant set a grid when corner cell and cell nearby are already set
   def setGrid(row: String, col: String, value: String): Unit = {
     undoManager.doStep(new SetCommand(row: String, col: String, value: String, this))
+    notifyObservers
+
   }
+
   def undo(): Unit = {
-    undoManager.undoStep()
+    undoManager.undoStep
     notifyObservers
   }
   def redo(): Unit = {
-    undoManager.redoStep()
+    undoManager.redoStep
     notifyObservers
   }
 
@@ -48,7 +52,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def init(): Unit = {
     println("------ Start of Initialisation ------")
     createFixedSizeGameField(15)
-    fillAllHand()
   }
 
   def endTurn(): Unit = {
@@ -56,23 +59,23 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     //todo if (double equation -> point *2)
     gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
     currentSum = 0
-    fillAllHand()
+    fillAllHand
     undoManager.resetStack()
     notifyObservers
   }
 
   def createFixedSizeGameField(fixedSize: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
-    gameField = gameFieldCreateStrategy.createNewGameField()
+    gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = firstCard()
-    notifyObservers
+    fillAllHand
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
-    gameField = gameFieldCreateStrategy.createNewGameField()
+    gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = firstCard()
-    notifyObservers
+    fillAllHand
   }
 
   def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
@@ -97,7 +100,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     }
   }
 
-  def fillAllHand(): Unit = {
+  def fillAllHand: Unit = {
     val playerName: Iterable[String] = gameField.playerList.keys
     playerName.foreach(p => fillHand(p))
   }

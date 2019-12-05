@@ -10,8 +10,10 @@ class SetCommand(row: String, col: String, value: String, controller: Controller
     futureStates = Nil
     val either = controller.gameStatus.setGrid(controller, row, col, value)
     either match {
-      case Left(x) => controller.gameField = x; controller.addToSum(controller.cell(row.toInt-1, col.toInt-1).getPoint); controller.notifyObservers;
-      case Right(x) => println(x)
+      case Left(gameField) =>
+        controller.setGameField(gameField);
+        controller.addToSum(controller.cell(row.toInt-1, col.toInt-1).getPoint)
+      case Right(someString) => println(someString)
     }
   }
 
@@ -23,7 +25,6 @@ class SetCommand(row: String, col: String, value: String, controller: Controller
         controller.restoreFromMemento(head)
         pastStates = stack
     }
-    controller.notifyObservers
   }
 
   override def redoStep: Unit = {
@@ -34,6 +35,5 @@ class SetCommand(row: String, col: String, value: String, controller: Controller
         controller.restoreFromMemento(head)
         futureStates = stack
     }
-    controller.notifyObservers
   }
 }

@@ -16,7 +16,7 @@ class Tui(controller: Controller) extends Observer {
       case "s" => controller.shufflePile()
       case "h" => println(help)
       case "submit" => controller.endTurn()
-      case "fh" => controller.fillAllHand()
+      case "fh" => controller.fillAllHand
       case "z" => controller.undo()
       case "y" => controller.redo()
         //case "giveup"
@@ -52,7 +52,7 @@ class Tui(controller: Controller) extends Observer {
                          ||  gf [size]             |   create a grid with fixed size                                   |
                          ||  gf [size] [pile]      |   create a grid with free size and pile                           |
                          ||                        |                                                                   |
-                         ||  p                     |   create standard size pile                                       |
+                         ||  p                     |   create a pile of standard size                             |
                          ||                        |                                                                   |
                          ||  h                     |   displays the command list                                       |
                          ||                        |                                                                   |

@@ -11,7 +11,7 @@ class UndoManager {
     undoStack = command::undoStack
     command.doStep
   }
-  def undoStep(): Unit = {
+  def undoStep: Unit = {
     undoStack match {
       case Nil => println("can't undo")
       case head::stack =>
@@ -20,7 +20,7 @@ class UndoManager {
         redoStack= head::redoStack
     }
   }
-  def redoStep(): Unit = {
+  def redoStep: Unit = {
     redoStack match {
       case Nil => println("can't redo")
       case head::stack =>
