@@ -7,41 +7,58 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
   val size:Int = cells.size
   def cell(row:Int, col:Int):Cell = cells(row)(col)
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
-  /*def setCellType(row:Int, col:Int, typ: String): Grid = typ match {
-    case "n" | "d" | "t" => Grid(cells.updated(row, cells(row).updated(col, Cell(typ,cell(row,col).card.toString))))
-    case _ => this
+  def initSpecialCell: Grid = {
+    val max: Int = size - 1
+    val half: Int = max / 2
+    Grid(Vector.tabulate(size,size){(row,col) => (row,col) match {
+      case (a,b) if (a==0 | a ==max | a ==half) & (b==0 | b ==max | b==half) => Cell("t","")
+      case (a,b) if a == b || a == max-b => Cell("d","")
+      case _ => Cell("n","")
+    }})
+  }
+  def getRow(row: Int): Vector[Cell] = cells(row)
+  def getCol(col: Int): Vector[Cell] = cells.map(x => x(col))
+  /*
+  def getNeighbors (row : Int, col: Int): List[Cell] = {
+    val ROW = List(row - 1, row, row + 1).filter(_ > - 1).filter(_ < size)
+    val COL = List(col - 1, col, col + 1).filter(_ > - 1).filter(_ < size)
+    println(ROW)
+    println(COL)
+    for {
+      nrow <- ROW
+      ncol <- COL
+    } yield cell(nrow, ncol)
   }*/
 
-  //def checkNeighbor(row:Int, col:Int): List[String] = cells(row-1)(col).value :: cells(row)(col-1).value :: cells(row+1)(col).value :: cells(row)(col+1).value :: Nil
-  //def emptyNeighbor(row:Int, col:Int): Boolean = checkNeighbor(row,col).forall(s => s =="")
-  /*def checkNeighbor(row:Int, col:Int): Boolean = {
-    if (row != 0 && cells(row - 1)(col).isSet) {
-      true
+  /*def checkCorners(row: Int, col: Int) = {
+    getNeighbors(row, col)
+  }*/
+
+    /*var corners = List(1,2,3,4)
+    if (row == 0) {
+      corners = corners.filter(x => x == 1 | x == 2)
     }
-    else if (col != 0 && cells(row)(col - 1).isSet) {
-      true
+    if (col == 0) {
+      corners = corners.filter(x => x == 1 | x == 4)
     }
-    else if (row != this.size - 1 && cells(row + 1)(col).isSet) {
-      true
+    if (row == size - 1) {
+      corners = corners.filter(x => x == 3 | x == 4)
     }
-    else if (col != this.size - 1 && cells(row)(col + 1).isSet) {
-      true
+    if (col == size - 1) {
+      corners = corners.filter(x => x == 2 | x == 3)
     }
-    else {
-      false
+    corners.forall(nr => checkCorner(row, col, nr))
+
+  def checkCorner(row: Int, col: Int, nr: Int): Boolean ={
+    nr match {
+
     }
   }*/
 
   def set(row:Int, col:Int, value:String):Grid =  {
-    /*if (!checkNeighbor(row, col) && !cells.forall(v => v.forall(c => !c.isSet))) {
-      println("\nSteine koennen nur horizontal oder vertikal neben einem bereits auf dem Spielplan liegenden Stein platziert werden!\n" +
-        "Bitte geben Sie eine neue Position an!\n")
-      this
-    } else {*/
-      Grid(cells.updated(row, cells(row).updated(col, cell(row,col).setCell(value))))
-    //}
+    //if set have to have at least one neighbor. cant have 3 neighbors in the corner
+    Grid(cells.updated(row, cells(row).updated(col, cell(row,col).setCell(value))))
   }
-
 
   override def toString: String = {
     val numCol = "      " + List.range(1, size + 1).filter(_<10).mkString("     ") + "    " + List.range(1, size + 1).filter(_>9).mkString("    ") +  "  \n"

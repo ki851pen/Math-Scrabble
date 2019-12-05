@@ -1,74 +1,78 @@
 package de.htwg.se.scrabble.controller
 
-import GameStatus._
+import de.htwg.se.scrabble.controller.GameStatus._
+import de.htwg.se.scrabble.model.Pile
+import de.htwg.se.scrabble.model.cell.Cell
 import de.htwg.se.scrabble.model.gameField._
-import de.htwg.se.scrabble.model.{Card, Pile, Player}
-import de.htwg.se.scrabble.util.Observable
+import de.htwg.se.scrabble.util.{Memento, Observable, UndoManager}
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable {
-  private var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
-  var gameStatus: GameStatus = INIT
+  var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
+  var gameStatus: State = Init()
+  private val undoManager = new UndoManager
   private var currentSum: Int = 0
 
-  def gridSize = gameField.grid.size
-  def cell(row: Int, col: Int) = gameField.grid.cell(row, col)
+  def gridSize(): Int = gameField.grid.size
+  def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
+  def isSet(row:Int, col:Int): Boolean = gameField.grid.cell(row, col).isSet
+  def addToSum(point: Int): Unit = currentSum += point
+
+  def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
+    this.gameField = gameField
+    this.gameStatus = gameStatus
+    this.currentSum = currentSum
+  }
+  def createMemento(): Memento = Memento(gameField, gameStatus, currentSum)
+  def restoreFromMemento(restore: Memento): Unit = {
+    this.gameField = restore.gameField
+    this.gameStatus = restore.gameStatus
+    this.currentSum = restore.currentSum
+  }
+
+  //when set a grid when have ? can use everything set ?2
+  //cant set a grid when corner cell and cell nearby are already set
+  def setGrid(row: String, col: String, value: String): Unit = {
+    undoManager.doStep(new SetCommand(row: String, col: String, value: String, this))
+  }
+  def undo(): Unit = {
+    undoManager.undoStep()
+    notifyObservers
+  }
+  def redo(): Unit = {
+    undoManager.redoStep()
+    notifyObservers
+  }
+
+  def gameToString: String = gameStatus.gameToString(this)
+
   def init(): Unit = {
     println("------ Start of Initialisation ------")
     createFixedSizeGameField(15)
     fillAllHand()
   }
 
-  def quit(): Unit = {
-    gameStatus = END_GAME
-    notifyObservers
-    println("Bye")
-    System.exit(0)
-  }
-
-  def calPoint(): Unit = {
+  def endTurn(): Unit = {
     //todo check if equation is valid
     //todo if (double equation -> point *2)
-    gameStatus match {
-      case P1 => gameField = gameField.copy(playerList = gameField.changePlayerAttr("A", gameField.playerList("A").copy(point = gameField.playerList("A").point + currentSum)))
-        gameStatus = P2;
-        fillHand("A")
-      case P2 => gameField = gameField.copy(playerList = gameField.changePlayerAttr("B", gameField.playerList("B").copy(point = gameField.playerList("B").point + currentSum)))
-        gameStatus = P1;
-        fillHand("B")
-    }
+    gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
     currentSum = 0
+    fillAllHand()
+    undoManager.resetStack()
     notifyObservers
   }
 
   def createFixedSizeGameField(fixedSize: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField()
-    gameStatus = P1
+    gameStatus = firstCard()
     notifyObservers
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField()
-    gameStatus = P1
+    gameStatus = firstCard()
     notifyObservers
-  }
-
-  def setGrid(player: String, row: String, col: String, value: String): Unit = {
-    gameStatus match {
-      //case FIRST_CARD if !(row == col && gameField.grid.size / 2 + 1 == row.toInt) => println("First Cell to set have to be in Middle of the Grid")
-      //case FIRST_CARD if player == "B" => gameStatus = P2
-      case P1 if player != "A" => println("It's A's turn")
-      case P2 if player != "B" => println("It's B's turn")
-      case P1 | P2 if !gameField.playerList(player).hand.contains(Card(value)) => println("Can only set card from hand")
-      case P1 | P2 if gameField.grid.cell(row.toInt - 1, col.toInt - 1).isSet => println("can't set already set cell")
-      case P1 | P2 =>
-        gameField = gameField.copy(grid = gameField.grid.set(row.toInt - 1, col.toInt - 1, value), playerList = gameField.changePlayerAttr(player, gameField.playerList(player).useCard(Card(value))))
-        currentSum += gameField.grid.cell(row.toInt - 1, col.toInt - 1).getPoint
-        println(currentSum)
-        notifyObservers
-      case _ => println("cannot set grid if not in player turn")
-    }
   }
 
   def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
@@ -109,21 +113,16 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     }
   }
 
-  def addPlayer(name: String): Unit = {
-    gameField = gameField.copy(playerList = gameField.createPlayer(name))
-    notifyObservers
+  /// Nur zum Testen da
+  def CgetRow(row: String): Unit = {
+    println(gameField.grid.getRow(row.toInt -1).mkString(", "))
   }
 
-  def removePlayer(name: String): Unit = {
-    gameField = gameField.copy(playerList = gameField.deletePlayer(name))
-    notifyObservers
+  def CgetCol(col: String): Unit = {
+    println(gameField.grid.getCol(col.toInt -1).mkString(", "))
   }
 
-  def getGameField: GameField = gameField
-
-  def gameToString: String = gameStatus match {
-    case P1 => gameField.gameToString("A")
-    case P2 => gameField.gameToString("B")
-    case _ => gameField.gameToString("A")
-  }
+  /*def getNeighbors(row: String,col: String) = {
+    println(gameField.grid.getNeighbors(row.toInt -1, col.toInt -1))
+  }*/
 }

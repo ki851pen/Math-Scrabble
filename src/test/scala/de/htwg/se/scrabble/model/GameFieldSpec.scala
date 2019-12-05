@@ -22,18 +22,6 @@ class GameFieldSpec extends WordSpec with Matchers{
         game.toString should include(game.playerListToString)
       }
     }
-    "add a Player" should {
-      val moreplayer = GameField(game.grid,game.pile,game.createPlayer("Name"))
-      "have a bigger size Playerlist" in {
-        moreplayer.playerList.size should be > game.playerList.size
-      }
-    }
-    "remove a Player" should {
-      val lessplayer = GameField(game.grid,game.pile,game.deletePlayer("A"))
-      "have a smaller size Playerlist" in {
-        lessplayer.playerList.size should be < game.playerList.size
-      }
-    }
     "replace a Player" should {
       val newplayer = GameField(game.grid,game.pile,game.changePlayerAttr("A", new Player("B")))
       "have a new Player" in {
