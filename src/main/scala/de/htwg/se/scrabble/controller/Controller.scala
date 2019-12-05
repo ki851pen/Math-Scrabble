@@ -112,4 +112,17 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       println("Player " + name + " doesn't exist")
     }
   }
+
+  /// Nur zum Testen da
+  def getRow(row: String) = {
+    println(gameField.grid.getRow(row.toInt -1).mkString(", "))
+  }
+
+  def getCol(col: String) = {
+    println(gameField.grid.getCol(col.toInt -1).mkString(", "))
+  }
+
+  def getNeighbors(row: String,col: String) = {
+    println(gameField.grid.getNeighbors(row.toInt -1, col.toInt -1))
+  }
 }

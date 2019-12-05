@@ -16,40 +16,48 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
       case _ => Cell("n","")
     }})
   }
-  def getRow(row: Int) = cells(row)
-  def getCol(col: Int) = ???
-  //def checkNeighbor(row:Int, col:Int): List[String] = cells(row-1)(col).value :: cells(row)(col-1).value :: cells(row+1)(col).value :: cells(row)(col+1).value :: Nil
-  //def emptyNeighbor(row:Int, col:Int): Boolean = checkNeighbor(row,col).forall(s => s =="")
-  /*def checkNeighbor(row:Int, col:Int): Boolean = {
-    if (row != 0 && cells(row - 1)(col).isSet) {
-      true
+  def getRow(row: Int): Vector[Cell] = cells(row)
+  def getCol(col: Int): Vector[Cell] = cells.map(x => x(col))
+  /*
+  def getNeighbors (row : Int, col: Int): List[Cell] = {
+    val ROW = List(row - 1, row, row + 1).filter(_ > - 1).filter(_ < size)
+    val COL = List(col - 1, col, col + 1).filter(_ > - 1).filter(_ < size)
+    println(ROW)
+    println(COL)
+    for {
+      nrow <- ROW
+      ncol <- COL
+    } yield cell(nrow, ncol)
+  }*/
+
+  /*def checkCorners(row: Int, col: Int) = {
+    getNeighbors(row, col)
+  }*/
+
+    /*var corners = List(1,2,3,4)
+    if (row == 0) {
+      corners = corners.filter(x => x == 1 | x == 2)
     }
-    else if (col != 0 && cells(row)(col - 1).isSet) {
-      true
+    if (col == 0) {
+      corners = corners.filter(x => x == 1 | x == 4)
     }
-    else if (row != this.size - 1 && cells(row + 1)(col).isSet) {
-      true
+    if (row == size - 1) {
+      corners = corners.filter(x => x == 3 | x == 4)
     }
-    else if (col != this.size - 1 && cells(row)(col + 1).isSet) {
-      true
+    if (col == size - 1) {
+      corners = corners.filter(x => x == 2 | x == 3)
     }
-    else {
-      false
+    corners.forall(nr => checkCorner(row, col, nr))
+
+  def checkCorner(row: Int, col: Int, nr: Int): Boolean ={
+    nr match {
+
     }
   }*/
 
   def set(row:Int, col:Int, value:String):Grid =  {
-    /*if (!checkNeighbor(row, col) && !cells.forall(v => v.forall(c => !c.isSet))) {
-      println("\nSteine koennen nur horizontal oder vertikal neben einem bereits auf dem Spielplan liegenden Stein platziert werden!\n" +
-        "Bitte geben Sie eine neue Position an!\n")
-      this
-    } else {*/
-      Grid(cells.updated(row, cells(row).updated(col, cell(row,col).setCell(value))))
-    //}
-  }
-
-  def setEmpty(row:Int, col:Int):Grid =  {
-    Grid(cells.updated(row, cells(row).updated(col, cell(row,col).makeEmpty)))
+    //if set have to have at least one neighbor. cant have 3 neighbors in the corner
+    Grid(cells.updated(row, cells(row).updated(col, cell(row,col).setCell(value))))
   }
 
   override def toString: String = {
