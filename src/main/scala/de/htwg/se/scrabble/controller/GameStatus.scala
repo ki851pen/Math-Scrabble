@@ -32,16 +32,16 @@ object testcontext {
 
 object GameStatus {
   trait State {
-    def calPoint(controller: Controller, currentSum: Int): Option[GameField]
     def setGrid(controller: Controller,row:String,col:String,value:String): Either[GameField, String]
+    def calPoint(controller: Controller, currentSum: Int): Option[GameField]
     def gameToString(controller: Controller): String
   }
 
   case class Init() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String]
     = Right("can't set grid when in init phase")
-    override def gameToString(controller: Controller): String = "write init or gf [size] to begin"
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = None
+    override def gameToString(controller: Controller): String = "write init or gf [size] to begin"
   }
 
   case class firstCard() extends State {
@@ -59,35 +59,43 @@ object GameStatus {
         case _ => Right("Your first move have to be in the middle of the grid")
       }
     }
-    override def gameToString(controller: Controller): String = controller.gameField.gameToString("A")
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
       println("To end turn please set equation first. If you can't do it write clr to clear hand and fh to fill hand and try again")
       None
     }
+    override def gameToString(controller: Controller): String = controller.gameField.gameToString("A")
   }
 
   case class P1() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
-      Left(setGridConcrete("A", controller.gameField, row.toInt-1, col.toInt-1, value))
+      if (controller.cell(row.toInt - 1, col.toInt - 1).isSet) {
+        Right("can't set already set cell")
+      } else {
+        Left(setGridConcrete("A", controller.gameField, row.toInt-1, col.toInt-1, value))
+      }
     }
-    override def gameToString(controller: Controller): String = controller.gameField.gameToString("A")
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
       val game = controller.gameField
       controller.gameStatus = P2()
       Some(game.copy(playerList = game.changePlayerAttr("A",game.playerList("A").copy(point = game.playerList("A").point+currentSum))))
     }
+    override def gameToString(controller: Controller): String = controller.gameField.gameToString("A")
   }
 
   case class P2() extends State {
     override def setGrid(controller: Controller, row: String, col: String, value: String): Either[GameField, String] = {
-      Left(setGridConcrete("B", controller.gameField, row.toInt-1, col.toInt-1, value))
+      if (controller.cell(row.toInt - 1, col.toInt - 1).isSet) {
+        Right("can't set already set cell")
+      } else {
+        Left(setGridConcrete("B", controller.gameField, row.toInt-1, col.toInt-1, value))
+      }
     }
-    override def gameToString(controller: Controller): String = controller.gameField.gameToString("B")
     override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
       val game = controller.gameField
       controller.gameStatus = P1()
       Some(game.copy(playerList = game.changePlayerAttr("B",game.playerList("B").copy(point = game.playerList("B").point+currentSum))))
     }
+    override def gameToString(controller: Controller): String = controller.gameField.gameToString("B")
   }
 
   def setGridConcrete(player: String, gameField: GameField, row: Int, col: Int, value: String): GameField =

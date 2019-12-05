@@ -7,6 +7,7 @@ class SetCommand(row: String, col: String, value: String, controller: Controller
   var futureStates: List[Memento] = Nil
   override def doStep: Unit = {
     pastStates = controller.createMemento() :: pastStates
+    futureStates = Nil
     val either = controller.gameStatus.setGrid(controller, row, col, value)
     either match {
       case Left(x) => controller.gameField = x; controller.addToSum(controller.cell(row.toInt-1, col.toInt-1).getPoint); controller.notifyObservers;
@@ -16,7 +17,7 @@ class SetCommand(row: String, col: String, value: String, controller: Controller
 
   override def undoStep: Unit = {
     pastStates match {
-      case Nil => println("can't undo")
+      case Nil =>
       case head :: stack =>
         futureStates = controller.createMemento() :: futureStates
         controller.restoreFromMemento(head)
@@ -27,7 +28,7 @@ class SetCommand(row: String, col: String, value: String, controller: Controller
 
   override def redoStep: Unit = {
     futureStates match {
-      case Nil => println("can't redo")
+      case Nil =>
       case head :: stack =>
         pastStates = head :: pastStates
         controller.restoreFromMemento(head)

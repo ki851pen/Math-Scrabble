@@ -12,6 +12,11 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   private val undoManager = new UndoManager
   private var currentSum: Int = 0
 
+  def gridSize(): Int = gameField.grid.size
+  def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
+  def isSet(row:Int, col:Int): Boolean = gameField.grid.cell(row, col).isSet
+  def addToSum(point: Int): Unit = currentSum += point
+
   def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
     this.gameField = gameField
     this.gameStatus = gameStatus
@@ -24,11 +29,19 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     this.currentSum = restore.currentSum
   }
 
-  def gridSize(): Int = gameField.grid.size
-  def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
-  def isSet(row:Int, col:Int): Boolean = gameField.grid.cell(row, col).isSet
-  def addToSum(point: Int): Unit = currentSum += point
-  def reduceSum(point: Int): Unit = currentSum -= point
+  //when set a grid when have ? can use everything set ?2
+  //cant set a grid when corner cell and cell nearby are already set
+  def setGrid(row: String, col: String, value: String): Unit = {
+    undoManager.doStep(new SetCommand(row: String, col: String, value: String, this))
+  }
+  def undo(): Unit = {
+    undoManager.undoStep()
+    notifyObservers
+  }
+  def redo(): Unit = {
+    undoManager.redoStep()
+    notifyObservers
+  }
 
   def gameToString: String = gameStatus.gameToString(this)
 
@@ -44,6 +57,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
     currentSum = 0
     fillAllHand()
+    undoManager.resetStack()
     notifyObservers
   }
 
@@ -58,20 +72,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField()
     gameStatus = firstCard()
-    notifyObservers
-  }
-
-  def setGrid(row: String, col: String, value: String): Unit = {
-    undoManager.doStep(new SetCommand(row: String, col: String, value: String, this))
-  }
-
-  def undo(): Unit = {
-    undoManager.undoStep()
-    notifyObservers
-  }
-
-  def redo(): Unit = {
-    undoManager.redoStep()
     notifyObservers
   }
 

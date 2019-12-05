@@ -16,11 +16,8 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
       case _ => Cell("n","")
     }})
   }
-  /*def setCellType(row:Int, col:Int, typ: String): Grid = typ match {
-    case "n" | "d" | "t" => Grid(cells.updated(row, cells(row).updated(col, Cell(typ,cell(row,col).card.toString))))
-    case _ => this
-  }*/
-
+  def getRow(row: Int) = cells(row)
+  def getCol(col: Int) = ???
   //def checkNeighbor(row:Int, col:Int): List[String] = cells(row-1)(col).value :: cells(row)(col-1).value :: cells(row+1)(col).value :: cells(row)(col+1).value :: Nil
   //def emptyNeighbor(row:Int, col:Int): Boolean = checkNeighbor(row,col).forall(s => s =="")
   /*def checkNeighbor(row:Int, col:Int): Boolean = {

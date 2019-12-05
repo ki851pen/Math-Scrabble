@@ -92,20 +92,6 @@ class ControllerSpec extends WordSpec with Matchers{
         controller.fillHand("C")
         observer.updated should be(false)
       }
-      "notify its Observer after addition of new player" in {
-        observer.reset()
-        controller.addPlayer("B")
-        observer.updated should be(true)
-        controller.gameField.playerList.keys should contain ("B")
-        controller.gameField.playerList.size should be (2)
-      }
-      "notify its Observer after removal of old player" in {
-        observer.reset()
-        controller.removePlayer("A")
-        observer.updated should be(true)
-        controller.gameField.playerList.keys should not contain "A"
-        controller.gameField.playerList.size should be (1)
-      }
       "notify its Observer after fill all player hands" in {
         observer.reset()
         controller.fillAllHand()
