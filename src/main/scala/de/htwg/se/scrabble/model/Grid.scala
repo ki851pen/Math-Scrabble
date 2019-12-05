@@ -7,6 +7,15 @@ case class Grid(private val cells:Vector[Vector[Cell]]) {
   val size:Int = cells.size
   def cell(row:Int, col:Int):Cell = cells(row)(col)
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
+  def initSpecialCell: Grid = {
+    val max: Int = size - 1
+    val half: Int = max / 2
+    Grid(Vector.tabulate(size,size){(row,col) => (row,col) match {
+      case (a,b) if (a==0 | a ==max | a ==half) & (b==0 | b ==max | b==half) => Cell("t","")
+      case (a,b) if a == b || a == max-b => Cell("d","")
+      case _ => Cell("n","")
+    }})
+  }
   /*def setCellType(row:Int, col:Int, typ: String): Grid = typ match {
     case "n" | "d" | "t" => Grid(cells.updated(row, cells(row).updated(col, Cell(typ,cell(row,col).card.toString))))
     case _ => this

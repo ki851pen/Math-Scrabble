@@ -9,19 +9,19 @@ class TuiSpec extends WordSpec with Matchers{
   "A Math-Scrabble Tui" should {
     val controller = new Controller(new GameFieldFixedSizeCreateStrategy())
     val tui = new Tui(controller)
-    "create and empty Grid on input 'g'" in {
-      tui.processInputLine("g")
-      controller.gameField.grid should be(new Grid(15))
+    "create and empty Grid on input 'init'" in {
+      tui.processInputLine("init")
+      controller.gameField.grid should be(new Grid(15).initSpecialCell)
     }
 
     "create 9x9 empty Grid(one of the fixed size) on input 'gf 9'" in {
       tui.processInputLine("gf 9")
-      controller.gameField.grid should be(new Grid(9))
+      controller.gameField.grid should be(new Grid(9).initSpecialCell)
     }
 
     "create 6x6 empty Grid(free size) on input 'gf 6 1 1 1 1 1' and set the pile as desired" in {
       tui.processInputLine("gf 6 1 1 1 1 1")
-      controller.gameField.grid should be(new Grid(6))
+      controller.gameField.grid should be(new Grid(6).initSpecialCell)
       controller.gameField.pile.size should be(16)
     }
     "create a default pile on input 'p'" in {
@@ -50,7 +50,7 @@ class TuiSpec extends WordSpec with Matchers{
       tui.processInputLine("p 1 0 0 0 0")
       tui.processInputLine("fh")
       tui.processInputLine("set 8 8 =")
-      controller.gameField.grid.cell(7,7) shouldEqual Cell("=")
+      controller.gameField.grid.cell(7,7) shouldEqual Cell("t","=")
     }
     "set a pile and its size on input 'p 1 1 1 1 1'" in {
       tui.processInputLine("p 1 1 1 1 1")
