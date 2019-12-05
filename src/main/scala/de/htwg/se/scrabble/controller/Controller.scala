@@ -114,15 +114,15 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   /// Nur zum Testen da
-  def getRow(row: String) = {
+  def CgetRow(row: String): Unit = {
     println(gameField.grid.getRow(row.toInt -1).mkString(", "))
   }
 
-  def getCol(col: String) = {
+  def CgetCol(col: String): Unit = {
     println(gameField.grid.getCol(col.toInt -1).mkString(", "))
   }
 
-  def getNeighbors(row: String,col: String) = {
+  /*def getNeighbors(row: String,col: String) = {
     println(gameField.grid.getNeighbors(row.toInt -1, col.toInt -1))
-  }
+  }*/
 }
