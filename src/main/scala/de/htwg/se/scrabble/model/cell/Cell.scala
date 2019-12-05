@@ -7,7 +7,7 @@ trait Cell{
   val cellType: String
   def card: Card
   def getPoint: Int
-  def isNormal: Boolean = this.isInstanceOf[NormalCell]
+  //def isNormal: Boolean = this.isInstanceOf[NormalCell]
   def isSet: Boolean = card.parseValue != ""
   def makeEmpty: Cell = Cell(cellType,"")
   def setCell(newValue: String): Cell = if (Card(newValue).isValid) Cell(cellType,newValue) else this

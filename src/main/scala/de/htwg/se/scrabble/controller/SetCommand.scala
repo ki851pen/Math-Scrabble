@@ -1,11 +1,12 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.controller.GameStatus._
-import de.htwg.se.scrabble.model.Card
-import de.htwg.se.scrabble.util.Command
+import de.htwg.se.scrabble.util.{Command, Memento}
 
-class SetCommand(row: String, col: String, value: String, controller: Controller) extends Command{
+class SetCommand(row: String, col: String, value: String, controller: Controller) extends Command {
+  var pastStates: List[Memento] = Nil
+  var futureStates: List[Memento] = Nil
   override def doStep: Unit = {
+    pastStates = controller.createMemento() :: pastStates
     val either = controller.gameStatus.setGrid(controller, row, col, value)
     either match {
       case Left(x) => controller.gameField = x; controller.addToSum(controller.cell(row.toInt-1, col.toInt-1).getPoint); controller.notifyObservers;
@@ -14,19 +15,24 @@ class SetCommand(row: String, col: String, value: String, controller: Controller
   }
 
   override def undoStep: Unit = {
-    controller.reduceSum(controller.cell(row.toInt-1, col.toInt-1).getPoint)
-    controller.gameStatus match {
-      case P1() => controller.gameField = controller.gameField.copy(grid = controller.gameField.grid.setEmpty(row.toInt-1, col.toInt-1),
-        playerList = controller.gameField.changePlayerAttr("A", controller.gameField.playerList("A").addToHand(Card(value) :: Nil)))
-      case P2() => controller.gameField = controller.gameField.copy(grid = controller.gameField.grid.setEmpty(row.toInt-1, col.toInt-1),
-        playerList = controller.gameField.changePlayerAttr("B", controller.gameField.playerList("B").addToHand(Card(value) :: Nil)))
+    pastStates match {
+      case Nil => println("can't undo")
+      case head :: stack =>
+        futureStates = controller.createMemento() :: futureStates
+        controller.restoreFromMemento(head)
+        pastStates = stack
     }
     controller.notifyObservers
   }
 
   override def redoStep: Unit = {
-    //controller.gameField.copy(grid = controller.gameField.grid.setEmpty(row.toInt-1, col.toInt-1))
-    controller.addToSum(controller.cell(row.toInt-1, col.toInt-1).getPoint)
+    futureStates match {
+      case Nil => println("can't redo")
+      case head :: stack =>
+        pastStates = head :: pastStates
+        controller.restoreFromMemento(head)
+        futureStates = stack
+    }
     controller.notifyObservers
   }
 }

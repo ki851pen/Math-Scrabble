@@ -4,13 +4,25 @@ import de.htwg.se.scrabble.controller.GameStatus._
 import de.htwg.se.scrabble.model.Pile
 import de.htwg.se.scrabble.model.cell.Cell
 import de.htwg.se.scrabble.model.gameField._
-import de.htwg.se.scrabble.util.{Observable, UndoManager}
+import de.htwg.se.scrabble.util.{Memento, Observable, UndoManager}
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable {
   var gameField: GameField = gameFieldCreateStrategy.createNewGameField()
   var gameStatus: State = Init()
   private val undoManager = new UndoManager
   private var currentSum: Int = 0
+
+  def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
+    this.gameField = gameField
+    this.gameStatus = gameStatus
+    this.currentSum = currentSum
+  }
+  def createMemento(): Memento = Memento(gameField, gameStatus, currentSum)
+  def restoreFromMemento(restore: Memento): Unit = {
+    this.gameField = restore.gameField
+    this.gameStatus = restore.gameStatus
+    this.currentSum = restore.currentSum
+  }
 
   def gridSize(): Int = gameField.grid.size
   def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
@@ -52,6 +64,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def setGrid(row: String, col: String, value: String): Unit = {
     undoManager.doStep(new SetCommand(row: String, col: String, value: String, this))
   }
+
   def undo(): Unit = {
     undoManager.undoStep()
     notifyObservers
