@@ -61,8 +61,12 @@ object GameStatus {
       if (controller.cell(row, col).isSet) {
         Failure(new Exception("can't set already set cell"))
       } else {
-        newCellsOfTurn = (row , col) :: newCellsOfTurn
-        Success(setGridConcrete(player, controller.getGameField, row, col, value))
+        if (controller.getGameField.grid.getNeighborsOf(row, col).values.forall(!_.isSet)) {
+          Failure(new Exception("you have to set near already set Cell"))
+        } else {
+          newCellsOfTurn = (row , col) :: newCellsOfTurn
+          Success(setGridConcrete(player, controller.getGameField, row, col, value))
+        }
       }
     }
 
