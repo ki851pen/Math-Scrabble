@@ -11,6 +11,15 @@ class UndoManagerSpec extends WordSpec with Matchers {
       override def redoStep: Unit = number += 1
     }
 
+    "can't undo or redo if did't do anything" in {
+      val command = new testCommand
+      command.number should be (0)
+      undoManager.undoStep
+      command.number should be (0)
+      undoManager.redoStep
+      command.number should be (0)
+    }
+
     "have a do, undo and redo" in {
       val command = new testCommand
       command.number should be (0)

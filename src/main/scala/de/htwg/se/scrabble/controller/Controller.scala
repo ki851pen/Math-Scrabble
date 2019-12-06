@@ -28,7 +28,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     notifyObservers
   }
 
-
   def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
     this.gameField = gameField
     this.gameStatus = gameStatus
