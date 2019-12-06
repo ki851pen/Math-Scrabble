@@ -54,7 +54,7 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.reset()
         controller.createPile(1, 0, 0, 0, 0)
         controller.fillHand("A")
-        controller.setGrid(3,3,"=")
+        controller.setGrid(2,2,"=")
         observer.updated should be(true)
         controller.getGameField().grid.cell(2,2) shouldEqual Cell("t","=")//in input is already + 1
       }
