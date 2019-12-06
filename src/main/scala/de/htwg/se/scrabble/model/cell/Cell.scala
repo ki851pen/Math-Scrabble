@@ -15,7 +15,6 @@ trait Cell{
 }
 
 object Cell {
-
   def apply(kind: String, value: String): Cell = kind match {
     case "n" => new NormalCell(value)
     case "d" => new DoubleSingleCell(value)

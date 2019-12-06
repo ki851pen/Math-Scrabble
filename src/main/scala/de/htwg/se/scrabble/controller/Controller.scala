@@ -21,9 +21,9 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def addToSum(point: Int): Unit = currentSum += point
 
-  def getGameField() = gameField
+  def getGameField: GameField = gameField
 
-  def setGameField(gameField: GameField) = {
+  def setGameField(gameField: GameField): Unit = {
     this.gameField = gameField
     notifyObservers
   }
@@ -64,10 +64,10 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def init(): Unit = {
     println("------ Start of Initialisation ------")
     createFixedSizeGameField(15)
-    fillAllHand
+    fillAllHand()
   }
 
-  def checkQuation(): Boolean = {
+  def checkEquation(): Boolean = {
     //funktioniert noch nicht
     val newCells = gameStatus.asInstanceOf[P].getNewCells
     for (cell <- newCells) {
@@ -82,7 +82,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     true
   }
 
-  private def takeCardsBack = {
+  private def takeCardsBack(): Unit = {
     val cardsToTakeBack = gameStatus.asInstanceOf[P].getNewCells
     val currentPlayer = "A"
     gameField = gameField.copy(grid = gameField.grid.clearCells(cardsToTakeBack),
@@ -93,10 +93,10 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def endTurn(): Unit = {
     //todo check if equation is valid
     //todo if (double equation -> point *2)
-    if (!checkQuation()) takeCardsBack
+    if (!checkEquation()) takeCardsBack()
     gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
     currentSum = 0
-    fillAllHand
+    fillAllHand()
     undoManager.resetStack()
     notifyObservers
   }
@@ -137,7 +137,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     }
   }
 
-  def fillAllHand: Unit = {
+  def fillAllHand(): Unit = {
     val playerName: Iterable[String] = gameField.playerList.keys
     playerName.foreach(p => fillHand(p))
   }
