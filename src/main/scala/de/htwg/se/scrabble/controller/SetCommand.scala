@@ -12,7 +12,7 @@ class SetCommand(row: Int, col: Int, value: String, controller: Controller) exte
     either match {
       case Left(gameField) =>
         controller.setGameField(gameField);
-        controller.addToSum(controller.cell(row - 1, col-1).getPoint)
+        controller.addToSum(controller.cell(row, col).getPoint)
       case Right(someString) => println(someString)
     }
   }

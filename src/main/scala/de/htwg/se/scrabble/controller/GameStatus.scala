@@ -32,12 +32,12 @@ object GameStatus {
   case class firstCard() extends State {
     override def setGrid(controller: Controller, row: Int, col: Int, value: String): Either[GameField, String] = {
       val gameField = controller.getGameField
-      val gridMiddle: Int = controller.gridSize / 2 + 1
-      (row.toInt, col.toInt) match {
+      val gridMiddle: Int = controller.gridSize / 2
+      (row, col) match {
         case (a: Int, b: Int) if a == b && a == gridMiddle =>
           if (gameField.playerList("A").hand.contains(Card(value))) {
             controller.gameStatus = P("A")
-            Left(setGridConcrete("A", controller.getGameField, row.toInt - 1, col.toInt - 1, value))
+            Left(setGridConcrete("A", controller.getGameField, row, col, value))
           } else {
             Right("Can only set card from hand")
           }
@@ -56,13 +56,11 @@ object GameStatus {
   case class P(player: String) extends State {
     private var newCellsOfTurn: List[(Int, Int)] = Nil
     override def setGrid(controller: Controller, row: Int, col: Int, value: String): Either[GameField, String] = {
-      var intRow = row.toInt
-      val intCol = col.toInt
-      if (controller.cell(intRow, intCol).isSet) {
+      if (controller.cell(row, col).isSet) {
         Right("can't set already set cell")
       } else {
-        newCellsOfTurn = (intRow, intCol) :: newCellsOfTurn
-        Left(setGridConcrete(player, controller.getGameField(), row.toInt - 1, col.toInt - 1, value))
+        newCellsOfTurn = (row , col) :: newCellsOfTurn
+        Left(setGridConcrete(player, controller.getGameField(), row, col, value))
       }
     }
 

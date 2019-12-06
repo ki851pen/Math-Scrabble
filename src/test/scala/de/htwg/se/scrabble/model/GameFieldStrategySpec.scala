@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 class GameFieldStrategySpec extends WordSpec with Matchers{
   "A Gamefield" should {
     val gameFieldStrat = new GameFieldFixedSizeCreateStrategy()
-    val gameField = gameFieldStrat.createNewGameField()
+    val gameField = gameFieldStrat.createNewGameField
     "modified with specialcell" in {
       val grid = gameField.grid
       grid.cell(0,0).cellType shouldBe "t"

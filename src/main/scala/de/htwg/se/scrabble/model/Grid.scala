@@ -50,13 +50,13 @@ case class Grid(private val cells: Vector[Vector[Cell]]) {
     neighbors.toMap
   }
 
-  private def isOnTop(row: Int) = row == 1
+  private def isOnTop(row: Int) = row == 0
 
-  private def isExtremLeft(col: Int) = col == 1
+  private def isExtremLeft(col: Int) = col == 0
 
-  private def isAtBottom(row: Int) = row == size
+  private def isAtBottom(row: Int) = row == size - 1
 
-  private def isExtremRight(col: Int) = col == size
+  private def isExtremRight(col: Int) = col == size - 1
 
   /*
   def getNeighbors (row : Int, col: Int): List[Cell] = {
