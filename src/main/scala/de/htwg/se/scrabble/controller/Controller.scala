@@ -15,7 +15,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def gridSize: Int = gameField.grid.size
 
-  def cell(row: Int, col: Int): Cell = gameField.grid.cell(row - 1, col - 1)
+  def cell(row: Int, col: Int): Cell = gameField.grid.cell(row, col)
 
   def isSet(row: Int, col: Int): Boolean = gameField.grid.cell(row, col).isSet
 
@@ -68,11 +68,12 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   def checkQuation(): Boolean = {
+    //funktioniert noch nicht
     val newCells = gameStatus.asInstanceOf[P].getNewCells
     for (cell <- newCells) {
       breakable {
         if (this.cell(cell._1, cell._2).card.isQuestionMark) break
-        var neighbors = gameField.grid.getNeighborsOf(cell._1, cell._2)
+        val neighbors = gameField.grid.getNeighborsOf(cell._1, cell._2)
         for (neighbor <- neighbors) {
           if (this.cell(cell._1, cell._2).card.isOperator && neighbor._2.card.isOperator) return false
         }
@@ -153,12 +154,12 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   /// Nur zum Testen da
-  def CgetRow(row: String): Unit = {
-    println(gameField.grid.getRow(row.toInt - 1).mkString(", "))
+  def CgetRow(row: Int): Unit = {
+    println(gameField.grid.getRow(row).mkString(", "))
   }
 
-  def CgetCol(col: String): Unit = {
-    println(gameField.grid.getCol(col.toInt - 1).mkString(", "))
+  def CgetCol(col: Int): Unit = {
+    println(gameField.grid.getCol(col).mkString(", "))
   }
 
   /*def getNeighbors(row: String,col: String) = {

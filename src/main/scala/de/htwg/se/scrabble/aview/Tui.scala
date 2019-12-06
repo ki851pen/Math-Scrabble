@@ -23,8 +23,8 @@ class Tui(controller: Controller) extends Observer {
       //case "giveup"
       case _ => input.split(" ").toList match {
         //case command :: row :: col :: Nil if command == "nb" =>controller.getNeighbors(row,col) // für test
-        case command :: row :: Nil if command == "row" => controller.CgetRow(row) // für test
-        case command :: col :: Nil if command == "col" => controller.CgetCol(col) // für test
+        case command :: row :: Nil if command == "row" => controller.CgetRow(row.toInt - 1) // für test
+        case command :: col :: Nil if command == "col" => controller.CgetCol(col.toInt - 1) // für test
         case command :: player :: Nil if command == "clr" => controller.clearHand(player)
         case command :: player :: Nil if command == "fh" => controller.fillHand(player)
         case command :: size :: Nil if command == "gf" => if (size.matches(IntRegEx) && fixedSizes.contains(size))
@@ -38,7 +38,7 @@ class Tui(controller: Controller) extends Observer {
             controller.createPile(equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
           else println("all characters after p have to be integer")
         case command :: row :: col :: value :: Nil if command == "set" && row.matches(IntRegEx) && col.matches(IntRegEx) =>
-          if (Card(value).isValid) controller.setGrid(row.toInt, col.toInt, value)
+          if (Card(value).isValid) controller.setGrid(row.toInt - 1, col.toInt - 1, value)
           else println("value not valid")
         case _ => println("Invalid input. Type h to get some helps.")
       }
