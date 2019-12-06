@@ -23,17 +23,17 @@ class ControllerSpec extends WordSpec with Matchers{
         controller.getGameField().grid.size shouldBe 15
         controller.getGameField().playerList("A").getNrCardsInHand should not be 0
         controller.getGameField().playerList("B").getNrCardsInHand should not be 0
-        controller.gameStatus = GameStatus.P1()
+        controller.gameStatus = GameStatus.P("A")
       }
       "notify its Observer after calculate point" in {
         observer.reset()
         controller.endTurn()
         observer.updated should be(true)
-        controller.gameStatus = GameStatus.P2()
+        controller.gameStatus = GameStatus.P("B")
         observer.reset()
         controller.endTurn()
         observer.updated should be(true)
-        controller.gameStatus = GameStatus.P1()
+        controller.gameStatus = GameStatus.P("A")
       }
       "notify its Observer after grid creation" in {
         observer.reset()
@@ -54,7 +54,7 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.reset()
         controller.createPile(1, 0, 0, 0, 0)
         controller.fillHand("A")
-        controller.setGrid("3","3","=")
+        controller.setGrid(3,3,"=")
         observer.updated should be(true)
         controller.getGameField().grid.cell(2,2) shouldEqual Cell("t","=")//in input is already + 1
       }
@@ -62,7 +62,7 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.reset()
         controller.createFixedSizeGameField(5)
         observer.reset()
-        controller.setGrid("1","1","4")
+        controller.setGrid(1,1,"4")
         observer.updated should be(false)//<-- not pass
         controller.getGameField().grid.cell(1,1) shouldEqual Cell("d","")
       }
@@ -85,7 +85,7 @@ class ControllerSpec extends WordSpec with Matchers{
         controller.fillHand("A")
         observer.updated should be(true)
         controller.getGameField().playerList("A").getNrCardsInHand should be (9)
-        controller.getGameField().pile.size should be (oldgame.pile.size -9)
+        controller.getGameField().pile.size should be (oldgame.pile.size - 9)
       }
       "not notify its Observer after player that not in the list try take cards from pile" in {
         observer.reset()
@@ -94,7 +94,7 @@ class ControllerSpec extends WordSpec with Matchers{
       }
       "notify its Observer after fill all player hands" in {
         observer.reset()
-        controller.fillAllHand()
+        controller.fillAllHand
         observer.updated should be(true)
         controller.getGameField().playerList("B").getNrCardsInHand should be (9)
       }

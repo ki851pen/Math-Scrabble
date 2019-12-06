@@ -2,7 +2,7 @@ package de.htwg.se.scrabble.controller
 
 import de.htwg.se.scrabble.util.{Command, Memento}
 
-class SetCommand(row: String, col: String, value: String, controller: Controller) extends Command {
+class SetCommand(row: Int, col: Int, value: String, controller: Controller) extends Command {
   var pastStates: List[Memento] = Nil
   var futureStates: List[Memento] = Nil
   override def doStep: Unit = {
@@ -12,7 +12,7 @@ class SetCommand(row: String, col: String, value: String, controller: Controller
     either match {
       case Left(gameField) =>
         controller.setGameField(gameField);
-        controller.addToSum(controller.cell(row.toInt-1, col.toInt-1).getPoint)
+        controller.addToSum(controller.cell(row - 1, col-1).getPoint)
       case Right(someString) => println(someString)
     }
   }

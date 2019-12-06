@@ -22,7 +22,6 @@ class TuiSpec extends WordSpec with Matchers{
     "create 6x6 empty Grid(free size) on input 'gf 6 1 1 1 1 1' and set the pile as desired" in {
       tui.processInputLine("gf 6 1 1 1 1 1")
       controller.getGameField().grid should be(new Grid(6).initSpecialCell)
-      controller.getGameField().pile.size should be(16)
     }
     "create a default pile on input 'p'" in {
       tui.processInputLine("p")

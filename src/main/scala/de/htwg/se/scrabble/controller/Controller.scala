@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.controller
 
+import util.control.Breaks._
 import de.htwg.se.scrabble.controller.GameStatus._
 import de.htwg.se.scrabble.model.Pile
 import de.htwg.se.scrabble.model.cell.Cell
@@ -13,17 +14,29 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   private var currentSum: Int = 0
 
   def gridSize: Int = gameField.grid.size
-  def cell(row:Int, col:Int): Cell = gameField.grid.cell(row, col)
-  def isSet(row:Int, col:Int): Boolean = gameField.grid.cell(row, col).isSet
+
+  def cell(row: Int, col: Int): Cell = gameField.grid.cell(row - 1, col - 1)
+
+  def isSet(row: Int, col: Int): Boolean = gameField.grid.cell(row, col).isSet
+
   def addToSum(point: Int): Unit = currentSum += point
+
   def getGameField() = gameField
-  def setGameField(gameField: GameField) = this.gameField = gameField
+
+  def setGameField(gameField: GameField) = {
+    this.gameField = gameField
+    notifyObservers
+  }
+
+
   def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
     this.gameField = gameField
     this.gameStatus = gameStatus
     this.currentSum = currentSum
   }
+
   def createMemento(): Memento = Memento(gameField, gameStatus, currentSum)
+
   def restoreFromMemento(restore: Memento): Unit = {
     this.gameField = restore.gameField
     this.gameStatus = restore.gameStatus
@@ -32,16 +45,15 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   //when set a grid when have ? can use everything set ?2
   //cant set a grid when corner cell and cell nearby are already set
-  def setGrid(row: String, col: String, value: String): Unit = {
-    undoManager.doStep(new SetCommand(row: String, col: String, value: String, this))
-    notifyObservers
-
+  def setGrid(row: Int, col: Int, value: String): Unit = {
+    undoManager.doStep(new SetCommand(row, col, value: String, this))
   }
 
   def undo(): Unit = {
     undoManager.undoStep
     notifyObservers
   }
+
   def redo(): Unit = {
     undoManager.redoStep
     notifyObservers
@@ -52,11 +64,35 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def init(): Unit = {
     println("------ Start of Initialisation ------")
     createFixedSizeGameField(15)
+    fillAllHand
+  }
+
+  def checkQuation(): Boolean = {
+    val newCells = gameStatus.asInstanceOf[P].getNewCells
+    for (cell <- newCells) {
+      breakable {
+        if (this.cell(cell._1, cell._2).card.isQuestionMark) break
+        var neighbors = gameField.grid.getNeighborsOf(cell._1, cell._2)
+        for (neighbor <- neighbors) {
+          if (this.cell(cell._1, cell._2).card.isOperator && neighbor._2.card.isOperator) return false
+        }
+      }
+    }
+    true
+  }
+
+  private def takeCardsBack = {
+    val cardsToTakeBack = gameStatus.asInstanceOf[P].getNewCells
+    val currentPlayer = "A"
+    gameField = gameField.copy(grid = gameField.grid.clearCells(cardsToTakeBack),
+      playerList = gameField.changePlayerAttr(currentPlayer, gameField.playerList(currentPlayer).addToHand(cardsToTakeBack.map(pos => cell(pos._1, pos._2).card))))
+  //not done
   }
 
   def endTurn(): Unit = {
     //todo check if equation is valid
     //todo if (double equation -> point *2)
+    if (!checkQuation()) takeCardsBack
     gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
     currentSum = 0
     fillAllHand
@@ -68,14 +104,14 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = firstCard()
-    fillAllHand
+    notifyObservers
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = firstCard()
-    fillAllHand
+    notifyObservers
   }
 
   def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
@@ -118,11 +154,11 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   /// Nur zum Testen da
   def CgetRow(row: String): Unit = {
-    println(gameField.grid.getRow(row.toInt -1).mkString(", "))
+    println(gameField.grid.getRow(row.toInt - 1).mkString(", "))
   }
 
   def CgetCol(col: String): Unit = {
-    println(gameField.grid.getCol(col.toInt -1).mkString(", "))
+    println(gameField.grid.getCol(col.toInt - 1).mkString(", "))
   }
 
   /*def getNeighbors(row: String,col: String) = {
