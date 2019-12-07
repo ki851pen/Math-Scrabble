@@ -7,12 +7,12 @@ import org.scalatest.{Matchers, WordSpec}
 class GameFieldStrategySpec extends WordSpec with Matchers{
   "A Gamefield" should {
     val gameFieldStrat = new GameFieldFixedSizeCreateStrategy()
-    val gameField = gameFieldStrat.createNewGameField()
+    val gameField = gameFieldStrat.createNewGameField
     "modified with specialcell" in {
-      val newgrid = gameFieldStrat.initSpecialCell(gameField.grid)
-      newgrid.cell(0,0).cellType shouldBe "t"
-      newgrid.cell(1,1).cellType shouldBe "d"
-      newgrid.cell(gameFieldStrat.sizeGrid-1, gameFieldStrat.sizeGrid-1).cellType shouldBe "t"
+      val grid = gameField.grid
+      grid.cell(0,0).cellType shouldBe "t"
+      grid.cell(1,1).cellType shouldBe "d"
+      grid.cell(gameFieldStrat.sizeGrid-1, gameFieldStrat.sizeGrid-1).cellType shouldBe "t"
     }
   }
 }
