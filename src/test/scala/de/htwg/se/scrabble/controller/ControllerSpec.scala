@@ -7,9 +7,9 @@ import org.scalatest.{Matchers, WordSpec}
 
 class ControllerSpec extends WordSpec with Matchers{
   "A Controller" when {
+    val gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(5, 1, 1, 1, 1,1)
+    val controller = new Controller(gameFieldCreateStrategy)
     "observed by an Observer" should {
-      val gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(5, 1, 1, 1, 1,1)
-      val controller = new Controller(gameFieldCreateStrategy)
       val observer = new Observer {
         var updated: Boolean = false
         def reset(): Unit = updated = false
@@ -105,6 +105,12 @@ class ControllerSpec extends WordSpec with Matchers{
         observer.updated should be(true)
         controller.getGameField.playerList("B").getNrCardsInHand should be (0)
         controller.getGameField.pile.size should be (oldPileSize + 9)
+      }
+    }
+    "check if specific cell is set" should{
+      val res = controller.isSet(2,2)
+      "return Boolean" in {
+        res shouldBe false
       }
     }
   }

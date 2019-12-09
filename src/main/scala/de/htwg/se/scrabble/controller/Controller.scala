@@ -43,7 +43,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   //when set a grid when have ? can use everything set ?2
-  //cant set a grid when corner cell and cell nearby are already set
+  //can only set a grid when cell nearby are already set
   def setGrid(row: Int, col: Int, value: String): Unit = {
     undoManager.doStep(new SetCommand(row, col, value: String, this))
   }
