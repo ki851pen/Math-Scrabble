@@ -103,14 +103,14 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def createFixedSizeGameField(fixedSize: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField
-    gameStatus = firstCard()
+    gameStatus = FirstCard()
     notifyObservers
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField
-    gameStatus = firstCard()
+    gameStatus = FirstCard()
     notifyObservers
   }
 

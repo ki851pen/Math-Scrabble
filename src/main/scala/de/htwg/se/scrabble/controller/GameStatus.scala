@@ -15,12 +15,12 @@ object GameStatus {
     def gameToString(controller: Controller): String
 
   }
-
+/*
   def apply(player: String) = {
     if(player == "A" || player == "B")
       P(player)
     else println("Please user either P(\"A\") or P(\"B\")" )
-  }
+  }*/
 
   case class Init() extends State {
     override def setGrid(controller: Controller, row: Int, col: Int, value: String): Try[GameField]
@@ -31,7 +31,7 @@ object GameStatus {
     override def gameToString(controller: Controller): String = "write init or gf [size] to begin"
   }
 
-  case class firstCard() extends State {
+  case class FirstCard() extends State {
     override def setGrid(controller: Controller, row: Int, col: Int, value: String): Try[GameField] = {
       val gameField = controller.getGameField
       val gridMiddle: Int = controller.gridSize / 2
