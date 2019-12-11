@@ -1,17 +1,20 @@
 package de.htwg.se.scrabble.aview
 
-import de.htwg.se.scrabble.controller.{Controller, GameStatus}
+import de.htwg.se.scrabble.controller._
 import de.htwg.se.scrabble.model.Card
 import de.htwg.se.scrabble.util.Observer
 
-class Tui(controller: Controller) extends Observer {
-  controller.add(this)
+import scala.swing.Reactor
+import scala.swing.event.Event
+
+class Tui(controller: Controller) extends Reactor {
+  listenTo(controller)
 
   def processInputLine(input: String): Unit = {
     val IntRegEx = "(\\d+)"
     val fixedSizes = List("3", "5", "9", "15")
     input match {
-      case "q" | "Q" | "quit" => quit()
+      case "q" =>
       case "init" => controller.init()
       case "p" => controller.createPile(20, 7, 5, 6, 5)
       case "s" => controller.shufflePile()
@@ -20,11 +23,10 @@ class Tui(controller: Controller) extends Observer {
       case "fh" => controller.fillAllHand
       case "z" => controller.undo()
       case "y" => controller.redo()
-      //case "giveup"
       case _ => input.split(" ").toList match {
         //case command :: row :: col :: Nil if command == "nb" =>controller.getNeighbors(row,col) // für test
-        case command :: row :: Nil if command == "row" => controller.CgetRow(row.toInt - 1) // für test
-        case command :: col :: Nil if command == "col" => controller.CgetCol(col.toInt - 1) // für test
+        //case command :: row :: Nil if command == "row" => controller.CgetRow(row.toInt - 1) // für test
+        //case command :: col :: Nil if command == "col" => controller.CgetCol(col.toInt - 1) // für test
         case command :: player :: Nil if command == "clr" => controller.clearHand(player)
         case command :: player :: Nil if command == "fh" => controller.fillHand(player)
         case command :: size :: Nil if command == "gf" => if (size.matches(IntRegEx) && fixedSizes.contains(size))
@@ -45,6 +47,18 @@ class Tui(controller: Controller) extends Observer {
     }
   }
 
+  reactions += {
+    case event: GridChanged => printTui
+    case event: StatusChanged => printTui
+    case event: PileChanged => printTui
+    case event: PlayerChanged => printTui
+    case event: CardsChanged => printTui
+  }
+
+  def printTui: Unit = {
+    println(controller.gameToString)
+  }
+
   def help: String =
     """
       || commands               |   function                                                        |
@@ -59,12 +73,6 @@ class Tui(controller: Controller) extends Observer {
       ||  h                     |   displays the command list                                       |
       ||                        |                                                                   |
       ||  q                     |   quit math-scrabble                                              |""".stripMargin
-
-  override def update: Boolean = {
-    println(controller.gameToString)
-    //println(GameStatus.message(controller))
-    true
-  }
 
   def quit(): Unit = {
     println("Bye")

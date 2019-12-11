@@ -1,13 +1,15 @@
 package de.htwg.se.scrabble.controller
 
-import util.control.Breaks._
 import de.htwg.se.scrabble.controller.GameStatus._
 import de.htwg.se.scrabble.model.Pile
 import de.htwg.se.scrabble.model.cell.Cell
 import de.htwg.se.scrabble.model.gameField._
-import de.htwg.se.scrabble.util.{Memento, Observable, UndoManager}
+import de.htwg.se.scrabble.util.{Memento, UndoManager}
 
-class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Observable {
+import scala.swing.Publisher
+import scala.util.control.Breaks._
+
+class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Publisher {
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField
   var gameStatus: State = Init()
   private val undoManager = new UndoManager
@@ -25,7 +27,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def setGameField(gameField: GameField): Unit = {
     this.gameField = gameField
-    notifyObservers
+    publish(new StatusChanged)
   }
 
   def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
@@ -42,7 +44,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     this.currentSum = restore.currentSum
   }
 
-  //when set a grid when have ? can use everything set ?2
   //can only set a grid when cell nearby are already set
   def setGrid(row: Int, col: Int, value: String): Unit = {
     undoManager.doStep(new SetCommand(row, col, value: String, this))
@@ -50,12 +51,12 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def undo(): Unit = {
     undoManager.undoStep
-    notifyObservers
+    publish(new StatusChanged)
   }
 
   def redo(): Unit = {
     undoManager.redoStep
-    notifyObservers
+    publish(new StatusChanged)
   }
 
   def gameToString: String = gameStatus.gameToString(this)
@@ -97,31 +98,31 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     currentSum = 0
     fillAllHand()
     undoManager.resetStack()
-    notifyObservers
+    publish(new StatusChanged)
   }
 
   def createFixedSizeGameField(fixedSize: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = FirstCard()
-    notifyObservers
+    publish(new StatusChanged)
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = FirstCard()
-    notifyObservers
+    publish(new StatusChanged)
   }
 
   def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameField = gameField.copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
-    notifyObservers
+    publish(new PileChanged)
   }
 
   def shufflePile(): Unit = {
     gameField = gameField.copy(pile = gameField.pile.shuffle)
-    notifyObservers
+    publish(new PileChanged)
   }
 
   def fillHand(name: String): Unit = {
@@ -130,7 +131,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       val nrLeftToFill = player.maxHandSize - player.getNrCardsInHand
       shufflePile()
       gameField = GameField(gameField.grid, gameField.pile.drop(nrLeftToFill), gameField.changePlayerAttr(name, gameField.playerList(name).addToHand(gameField.pile.take(nrLeftToFill))))
-      notifyObservers
+      publish(new PlayerChanged)
     } else {
       println("Player " + name + " doesn't exist")
     }
@@ -146,7 +147,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       val player = gameField.playerList(name)
       gameField = gameField.copy(pile = Pile(gameField.pile.tilepile ::: player.hand), playerList = gameField.changePlayerAttr(player.name, gameField.playerList(player.name).copy(hand = Nil)))
       shufflePile()
-      notifyObservers
+      publish(new PlayerChanged)
     } else {
       println("Player " + name + " doesn't exist")
     }
