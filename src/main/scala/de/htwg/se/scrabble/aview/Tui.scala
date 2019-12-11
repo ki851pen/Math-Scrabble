@@ -48,11 +48,7 @@ class Tui(controller: Controller) extends Reactor {
   }
 
   reactions += {
-    case event: GridChanged => printTui
-    case event: StatusChanged => printTui
-    case event: PileChanged => printTui
-    case event: PlayerChanged => printTui
-    case event: CardsChanged => printTui
+    case _: Event => printTui
   }
 
   def printTui: Unit = {

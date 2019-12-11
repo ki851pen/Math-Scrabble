@@ -131,7 +131,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       val nrLeftToFill = player.maxHandSize - player.getNrCardsInHand
       shufflePile()
       gameField = GameField(gameField.grid, gameField.pile.drop(nrLeftToFill), gameField.changePlayerAttr(name, gameField.playerList(name).addToHand(gameField.pile.take(nrLeftToFill))))
-      publish(new PlayerChanged)
+      publish(new StatusChanged)
     } else {
       println("Player " + name + " doesn't exist")
     }
@@ -147,7 +147,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       val player = gameField.playerList(name)
       gameField = gameField.copy(pile = Pile(gameField.pile.tilepile ::: player.hand), playerList = gameField.changePlayerAttr(player.name, gameField.playerList(player.name).copy(hand = Nil)))
       shufflePile()
-      publish(new PlayerChanged)
+      publish(new StatusChanged)
     } else {
       println("Player " + name + " doesn't exist")
     }

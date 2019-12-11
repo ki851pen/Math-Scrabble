@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.aview.gui
 
-import de.htwg.se.scrabble.controller.{CardsChanged, Controller, GridChanged, PileChanged, PlayerChanged, StatusChanged}
+import de.htwg.se.scrabble.controller._
 
 import scala.swing.Swing.LineBorder
 import scala.swing._
@@ -38,7 +38,6 @@ class SwingGui(controller: Controller) extends MainFrame {
     case event: GridChanged => gridPanel.paintField
     case event: StatusChanged => redraw
     case event: PileChanged => redraw
-    case event: PlayerChanged => redraw
     case event: CardsChanged => redraw
   }
 }
