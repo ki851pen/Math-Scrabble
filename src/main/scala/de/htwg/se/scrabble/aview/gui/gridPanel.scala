@@ -21,32 +21,16 @@ class gridPanel (controller: Controller) extends GridPanel(controller.gridSize,c
   var highlightedCell: Button = _
 
   def paintField {
-    contents += new Label(){
-      preferredSize = btnSize
-      text = ""
-      background = WHITE
-    }
-    for (col <- 0 until controller.gridSize-1) {
-      contents += new Label(){
-        preferredSize = btnSize
-        text = (col + 65).toChar.toString
-        background = WHITE
-      }}
-    for (row <- 0 until controller.gridSize-1) {
-      contents += new Label(){
-        preferredSize = btnSize
-        text = (1+row).toString
-        background = WHITE
-      }
-      for (col <- 0 until controller.gridSize-1) {
+    for (row <- 1 until controller.gridSize +1) {
+      for (col <- 1 until controller.gridSize +1) {
           val button = new Button() {
             preferredSize = btnSize
             background = customBlue
-            val cell = controller.cell(col, row)
+            val cell = controller.cell(col-1, row-1)
             if (cell.isSet) text = cell.toString
             else text = ""
           }
-        cells(col)(row) = button
+        cells(col -1)(row-1) = button
         contents += button
         listenTo(button)
       }
@@ -54,4 +38,4 @@ class gridPanel (controller: Controller) extends GridPanel(controller.gridSize,c
   }
   paintField
   visible = true
-  }
+}
