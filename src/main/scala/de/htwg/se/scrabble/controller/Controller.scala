@@ -154,4 +154,15 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       println("Player " + name + " doesn't exist")
     }
   }
+
+  def changeClick(row: Int, col: Int): Unit = {
+    guirow = row - 1
+    guicol = col - 1
+    publish(new ClickChanged)
+  }
+  def changeHand(player: String): Unit = {
+    clearHand(player)
+    fillHand(player)
+    publish(new CardsChanged)
+  }
 }
