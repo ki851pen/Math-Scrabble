@@ -80,7 +80,7 @@ class SwingGui(controller: Controller) extends MainFrame {
 
   reactions += {
     case _: GameFieldChanged => redraw
-    case _: GridSizeChanged => resize
+    case _: GridSizeChanged => redraw //should be resize
     case _: CardsChanged => redrawWithoutGrid
     case _: ClickChanged => redrawWithoutGrid
   }

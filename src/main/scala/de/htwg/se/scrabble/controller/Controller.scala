@@ -47,9 +47,9 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     this.currentSum = restore.currentSum
   }
 
-  //can only set a grid when cell nearby are already set
   def setGrid(row: Int, col: Int, value: String): Unit = {
     undoManager.doStep(new SetCommand(row, col, value: String, this))
+    publish(new GameFieldChanged)
   }
 
   def undo(): Unit = {
@@ -94,13 +94,12 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   def endTurn(): Unit = {
-    //todo check if equation is valid
-    //todo if (double equation -> point *2)
-    if (!checkEquation()) takeCardsBack()
-    gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
-    currentSum = 0
-    fillAllHand()
-    undoManager.resetStack()
+    ProcessEquation(this)
+    //if (!checkEquation()) takeCardsBack()
+    //gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
+    //currentSum = 0
+    //fillAllHand()
+    //undoManager.resetStack()
     publish(new GameFieldChanged)
   }
 

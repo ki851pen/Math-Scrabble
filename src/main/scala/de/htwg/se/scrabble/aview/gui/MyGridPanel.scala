@@ -8,10 +8,8 @@ import scala.swing.event._
 import scala.swing.{Button, Dimension, GridPanel}
 
 class MyGridPanel (controller: Controller) extends GridPanel(controller.gridSize,controller.gridSize){
-  vGap = 0
   val btnSize = new Dimension(48,48)
-  var cells = Array.ofDim[swing.Button](controller.gridSize, controller.gridSize)
-  var highlightedCell: Button = _
+  var cells = Array.ofDim[Button](controller.gridSize, controller.gridSize)
 
   def paintField {
     for (row <- 1 until controller.gridSize+1) {
