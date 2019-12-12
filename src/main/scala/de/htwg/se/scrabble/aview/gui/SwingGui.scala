@@ -56,7 +56,7 @@ class SwingGui(controller: Controller) extends MainFrame {
     handPanel.contents.clear()
     handPanel.contents += new Label("status: "+ controller.gameStatus.toString)
     handPanel.contents += new Label(" Your hand: ")
-    controller.gameFacade.playerList("A").hand.foreach(card => {
+    controller.getGameField.playerList("A").hand.foreach(card => {
       val button= new Button() {
         background = CustomColors.Blue
         preferredSize = new Dimension(45,45)

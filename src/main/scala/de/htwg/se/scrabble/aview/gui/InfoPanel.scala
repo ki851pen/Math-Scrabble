@@ -22,15 +22,15 @@ class InfoPanel(controller: Controller) extends FlowPanel {
   }
 
   val PointA = new Label {
-    text = "Player A: " + controller.gameFacade.playerList("A").point.toString
+    text = "Player A: " + controller.getGameField.playerList("A").point.toString
   }
   contents += PointA
   val PointB = new Label {
-    text = "Player B: " + controller.gameFacade.playerList("B").point.toString
+    text = "Player B: " + controller.getGameField.playerList("B").point.toString
   }
   contents += PointB
   val stackL = new Label {
-    text = "cards in stack: " + controller.gameFacade.pile.size.toString
+    text = "cards in stack: " + controller.getGameField.pile.size.toString
   }
   contents += stackL
   contents += new FreeSpace
@@ -66,9 +66,9 @@ class InfoPanel(controller: Controller) extends FlowPanel {
   visible = true
 
   def redraw: Unit = {
-    stackL.text = "cards in stack: " + controller.gameFacade.pile.size.toString
-    PointA.text = "Player A: " + controller.gameFacade.playerList("A").point.toString
-    PointB.text = "Player B: " + controller.gameFacade.playerList("B").point.toString
+    stackL.text = "cards in stack: " + controller.getGameField.pile.size.toString
+    PointA.text = "Player A: " + controller.getGameField.playerList("A").point.toString
+    PointB.text = "Player B: " + controller.getGameField.playerList("B").point.toString
     rowClicked.text = "clicked row: " + (controller.guirow + 1)
     colClicked.text = "clicked col: " + (controller.guicol + 1)
     repaint
