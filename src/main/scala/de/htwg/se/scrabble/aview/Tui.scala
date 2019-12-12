@@ -24,9 +24,6 @@ class Tui(controller: Controller) extends Reactor {
       case "z" => controller.undo()
       case "y" => controller.redo()
       case _ => input.split(" ").toList match {
-        //case command :: row :: col :: Nil if command == "nb" =>controller.getNeighbors(row,col) // für test
-        //case command :: row :: Nil if command == "row" => controller.CgetRow(row.toInt - 1) // für test
-        //case command :: col :: Nil if command == "col" => controller.CgetCol(col.toInt - 1) // für test
         case command :: player :: Nil if command == "clr" => controller.clearHand(player)
         case command :: player :: Nil if command == "fh" => controller.fillHand(player)
         case command :: size :: Nil if command == "gf" => if (size.matches(IntRegEx) && fixedSizes.contains(size))

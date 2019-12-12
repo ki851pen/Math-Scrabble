@@ -33,10 +33,10 @@ class SwingGui(controller: Controller) extends MainFrame {
       contents += new MenuItem(Action("Redo") { controller.redo() })
     }
     contents += new Menu("Game size") {
-      contents += new MenuItem(Action("3x3") { controller.newGame(3) })
-      contents += new MenuItem(Action("5x5") { controller.newGame(5) })
-      contents += new MenuItem(Action("9x9") { controller.newGame(9) })
-      contents += new MenuItem(Action("15x15") { controller.newGame(15) })
+      contents += new MenuItem(Action("3x3") { controller.createFixedSizeGameField(3) })
+      contents += new MenuItem(Action("5x5") { controller.createFixedSizeGameField(5) })
+      contents += new MenuItem(Action("9x9") { controller.createFixedSizeGameField(9) })
+      contents += new MenuItem(Action("15x15") { controller.createFixedSizeGameField(15) })
     }
   }
 
@@ -79,7 +79,7 @@ class SwingGui(controller: Controller) extends MainFrame {
   }
 
   reactions += {
-    case _: GameFacadeChanged => redraw
+    case _: GameFieldChanged => redraw
     case _: GridSizeChanged => resize
     case _: CardsChanged => redrawWithoutGrid
     case _: ClickChanged => redrawWithoutGrid

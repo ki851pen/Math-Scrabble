@@ -2,7 +2,7 @@ package de.htwg.se.scrabble
 
 import de.htwg.se.scrabble.aview.Tui
 import de.htwg.se.scrabble.aview.gui.SwingGui
-import de.htwg.se.scrabble.controller.{Controller, StatusChanged}
+import de.htwg.se.scrabble.controller._
 import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
 
 import scala.io.StdIn.readLine
@@ -12,7 +12,7 @@ object Scrabble {
   val controller = new Controller(new GameFieldFixedSizeCreateStrategy())
   val tui = new Tui(controller)
   val gui = new SwingGui(controller)
-  controller.publish(new StatusChanged)
+  controller.publish(new GameFieldChanged)
 
   def main(args: Array[String]): Unit = {
     var input: String = ""

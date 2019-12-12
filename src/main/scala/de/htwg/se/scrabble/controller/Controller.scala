@@ -14,6 +14,9 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   var gameStatus: State = Init()
   private val undoManager = new UndoManager
   private var currentSum: Int = 0
+  var guival = ""
+  var guirow = 0
+  var guicol = 0
 
   def gridSize: Int = gameField.grid.size
 
@@ -27,7 +30,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def setGameField(gameField: GameField): Unit = {
     this.gameField = gameField
-    publish(new StatusChanged)
+    publish(new GameFieldChanged)
   }
 
   def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
@@ -51,12 +54,12 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def undo(): Unit = {
     undoManager.undoStep
-    publish(new StatusChanged)
+    publish(new GameFieldChanged)
   }
 
   def redo(): Unit = {
     undoManager.redoStep
-    publish(new StatusChanged)
+    publish(new GameFieldChanged)
   }
 
   def gameToString: String = gameStatus.gameToString(this)
@@ -98,31 +101,30 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     currentSum = 0
     fillAllHand()
     undoManager.resetStack()
-    publish(new StatusChanged)
+    publish(new GameFieldChanged)
   }
 
   def createFixedSizeGameField(fixedSize: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = FirstCard()
-    publish(new StatusChanged)
+    publish(new GridSizeChanged)
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = FirstCard()
-    publish(new StatusChanged)
+    publish(new GridSizeChanged)
   }
 
   def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameField = gameField.copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
-    publish(new PileChanged)
+    publish(new CardsChanged)
   }
 
   def shufflePile(): Unit = {
     gameField = gameField.copy(pile = gameField.pile.shuffle)
-    publish(new PileChanged)
   }
 
   def fillHand(name: String): Unit = {
@@ -131,7 +133,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       val nrLeftToFill = player.maxHandSize - player.getNrCardsInHand
       shufflePile()
       gameField = GameField(gameField.grid, gameField.pile.drop(nrLeftToFill), gameField.changePlayerAttr(name, gameField.playerList(name).addToHand(gameField.pile.take(nrLeftToFill))))
-      publish(new StatusChanged)
+      publish(new CardsChanged)
     } else {
       println("Player " + name + " doesn't exist")
     }
@@ -147,22 +149,9 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       val player = gameField.playerList(name)
       gameField = gameField.copy(pile = Pile(gameField.pile.tilepile ::: player.hand), playerList = gameField.changePlayerAttr(player.name, gameField.playerList(player.name).copy(hand = Nil)))
       shufflePile()
-      publish(new StatusChanged)
+      publish(new CardsChanged)
     } else {
       println("Player " + name + " doesn't exist")
     }
   }
-
-  /// Nur zum Testen da
-  def CgetRow(row: Int): Unit = {
-    println(gameField.grid.getRow(row).mkString(", "))
-  }
-
-  def CgetCol(col: Int): Unit = {
-    println(gameField.grid.getCol(col).mkString(", "))
-  }
-
-  /*def getNeighbors(row: String,col: String) = {
-    println(gameField.grid.getNeighbors(row.toInt -1, col.toInt -1))
-  }*/
 }
