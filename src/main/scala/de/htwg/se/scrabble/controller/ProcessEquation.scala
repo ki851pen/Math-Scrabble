@@ -1,5 +1,5 @@
 package de.htwg.se.scrabble.controller
-
+/*
 import de.htwg.se.scrabble.controller.GameStatus.P
 import de.htwg.se.scrabble.model.cell.Cell
 import scala.reflect.runtime.currentMirror
@@ -52,4 +52,4 @@ case class ProcessEquation(controller: Controller){
   // parse card to arithmetic
   // check if eqution is valid
   // calculate point
-}
+}*/

@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.aview.gui
 
+import de.htwg.se.scrabble.controller.GameStatus.{FirstCard, Init, P}
 import de.htwg.se.scrabble.controller._
 import de.htwg.se.scrabble.util.CustomColors
 
@@ -33,10 +34,10 @@ class SwingGui(controller: Controller) extends MainFrame {
       contents += new MenuItem(Action("Redo") { controller.redo() })
     }
     contents += new Menu("Game size") {
-      contents += new MenuItem(Action("3x3") { controller.createFixedSizeGameField(3) })
-      contents += new MenuItem(Action("5x5") { controller.createFixedSizeGameField(5) })
-      contents += new MenuItem(Action("9x9") { controller.createFixedSizeGameField(9) })
-      contents += new MenuItem(Action("15x15") { controller.createFixedSizeGameField(15) })
+      contents += new MenuItem(Action("3x3") { controller.createFixedSizeGameField(3); controller.fillAllHand()})
+      contents += new MenuItem(Action("5x5") { controller.createFixedSizeGameField(5); controller.fillAllHand() })
+      contents += new MenuItem(Action("9x9") { controller.createFixedSizeGameField(9); controller.fillAllHand() })
+      contents += new MenuItem(Action("15x15") { controller.createFixedSizeGameField(15); controller.fillAllHand() })
     }
   }
 
@@ -53,10 +54,15 @@ class SwingGui(controller: Controller) extends MainFrame {
   }
 
   def redrawWithoutGrid: Unit = {
+    var p = "A"
+    controller.gameStatus match {
+      case P(player) => p = player
+      case FirstCard()|Init() => p = "A"
+    }
     handPanel.contents.clear()
     handPanel.contents += new Label("status: "+ controller.gameStatus.toString)
     handPanel.contents += new Label(" Your hand: ")
-    controller.getGameField.playerList("A").hand.foreach(card => {
+    controller.getGameField.playerList(p).hand.foreach(card => {
       val button= new Button() {
         background = CustomColors.Blue
         preferredSize = new Dimension(45,45)
@@ -80,7 +86,7 @@ class SwingGui(controller: Controller) extends MainFrame {
 
   reactions += {
     case _: GameFieldChanged => redraw
-    case _: GridSizeChanged => redraw //should be resize
+    case _: GridSizeChanged => resize
     case _: CardsChanged => redrawWithoutGrid
     case _: ClickChanged => redrawWithoutGrid
   }
