@@ -1,22 +1,25 @@
 package de.htwg.se.scrabble
 
 import de.htwg.se.scrabble.aview.Tui
-import de.htwg.se.scrabble.controller.Controller
+import de.htwg.se.scrabble.aview.gui.SwingGui
+import de.htwg.se.scrabble.controller._
 import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
 
 import scala.io.StdIn.readLine
+
 object Scrabble {
   println("This is Scrabble")
   val controller = new Controller(new GameFieldFixedSizeCreateStrategy())
   val tui = new Tui(controller)
-  controller.notifyObservers
+  val gui = new SwingGui(controller)
+  controller.publish(new GameFieldChanged)
 
   def main(args: Array[String]): Unit = {
     var input: String = ""
 
-    while (true) {
+    do {
       input = readLine()
       tui.processInputLine(input)
-    }
+    } while (input != "q")
   }
 }
