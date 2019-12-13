@@ -7,6 +7,9 @@ trait Cell{
   def card: Card
   def getPoint: Int
   def isSet: Boolean = card.parseValue != ""
+  def isNormal = cellType == "n"
+  def isDouble = cellType == "d"
+  def isTriple = cellType == "t"
   def setCell(newValue: String): Cell = if (Card(newValue).isValid) Cell(cellType,newValue) else this
   override def equals(other: Any): Boolean = other match {
     case cell: Cell if cell.cellType == cellType => cell.card.equals(card)
