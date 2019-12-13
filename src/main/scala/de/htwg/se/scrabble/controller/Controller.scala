@@ -94,20 +94,21 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   def endTurn(): Unit = {
-    ProcessEquation(this)
+    //ProcessEquation(this)
     //if (!checkEquation()) takeCardsBack()
-    //gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
-    //currentSum = 0
-    //fillAllHand()
-    //undoManager.resetStack()
+    gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
+    currentSum = 0
+    fillAllHand()
+    undoManager.resetStack()
     publish(new GameFieldChanged)
   }
 
   def createFixedSizeGameField(fixedSize: Int): Unit = {
+    val oldsize = gameField.grid.size
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameStatus = FirstCard()
-    publish(new GridSizeChanged)
+    if (gameField.grid.size == oldsize) publish(new GameFieldChanged) else publish(new GridSizeChanged)
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
