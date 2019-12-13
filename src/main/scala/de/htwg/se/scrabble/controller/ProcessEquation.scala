@@ -2,8 +2,7 @@ package de.htwg.se.scrabble.controller
 /*
 import de.htwg.se.scrabble.controller.GameStatus.P
 import de.htwg.se.scrabble.model.cell.Cell
-import scala.reflect.runtime.currentMirror
-import scala.tools.reflect.ToolBox
+//import scala.tools.reflect.ToolBox
 
 case class ProcessEquation(controller: Controller){
   var newcell: List[(Int, Int)] = Nil
@@ -39,8 +38,8 @@ case class ProcessEquation(controller: Controller){
 
   val expr = "2*(2+3)"
 
-  val toolbox = currentMirror.mkToolBox()
-  val calc = toolbox.eval(toolbox.parse(expr))
+//  val toolbox = currentMirror.mkToolBox()
+//  val calc = toolbox.eval(toolbox.parse(expr))
 
 
 //TODO: check if equation is valid then calculate the point

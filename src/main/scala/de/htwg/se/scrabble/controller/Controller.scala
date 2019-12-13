@@ -49,6 +49,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def setGrid(row: Int, col: Int, value: String): Unit = {
     undoManager.doStep(new SetCommand(row, col, value: String, this))
+    publish(ButtonSet(row, col))
     publish(new GameFieldChanged)
   }
 
