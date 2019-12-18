@@ -7,5 +7,5 @@ private class TripleSingleCell(value: String) extends Cell {
 
   override def card: Card = Card(value)
   override def getPoint: Int = card.getPoint.getOrElse(0) * 3
-  override def toString: String = if(isSet) {value + "x3"} else{"x3"}
+  override def toString: String = if(isSet) {value} else{"x3"}
 }

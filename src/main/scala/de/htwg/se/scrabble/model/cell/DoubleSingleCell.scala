@@ -8,5 +8,5 @@ private class DoubleSingleCell(value: String) extends Cell{
 
   override def card: Card = Card(value)
   override def getPoint: Int = card.getPoint.getOrElse(0) * 2
-  override def toString: String = if(isSet) {value + "x2"} else{"x2"}
+  override def toString: String = if(isSet) {value} else{"x2"}
 }

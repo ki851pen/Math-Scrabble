@@ -12,7 +12,7 @@ case class Card(value: String) {
 
   def isValid: Boolean = validSet.contains(value)
 
-  def isDigit: Boolean = value.toIntOption != None
+  def isDigit: Boolean = parseValue.isInstanceOf[Int]
 
   def isQuestionMark: Boolean = value == "?"
 

@@ -2,18 +2,19 @@ package de.htwg.se.scrabble.controller
 
 import de.htwg.se.scrabble.util.{Command, Memento}
 
+import scala.util.{Failure, Success}
+
 class SetCommand(row: Int, col: Int, value: String, controller: Controller) extends Command {
   var pastStates: List[Memento] = Nil
   var futureStates: List[Memento] = Nil
   override def doStep: Unit = {
     pastStates = controller.createMemento() :: pastStates
     futureStates = Nil
-    val either = controller.gameStatus.setGrid(controller, row, col, value)
-    either match {
-      case Left(gameField) =>
-        controller.setGameField(gameField);
+    controller.gameStatus.setGrid(controller, row, col, value) match {
+      case Success(gameField) =>
+        controller.setGameField(gameField)
         controller.addToSum(controller.cell(row, col).getPoint)
-      case Right(someString) => println(someString)
+      case Failure(f) => println(f.getMessage)
     }
   }
 
