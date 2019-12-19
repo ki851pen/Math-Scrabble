@@ -2,6 +2,7 @@ package de.htwg.se.scrabble.aview.gui
 
 import de.htwg.se.scrabble.controller.GameStatus.{FirstCard, Init, P}
 import de.htwg.se.scrabble.controller._
+import de.htwg.se.scrabble.controller.controllerComponent.Controller
 import de.htwg.se.scrabble.util.CustomColors
 
 import scala.swing._

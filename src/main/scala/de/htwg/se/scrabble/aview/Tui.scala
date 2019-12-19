@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble.aview
 
 import de.htwg.se.scrabble.controller._
+import de.htwg.se.scrabble.controller.controllerComponent.Controller
 import de.htwg.se.scrabble.model.Card
 import de.htwg.se.scrabble.util.Observer
 

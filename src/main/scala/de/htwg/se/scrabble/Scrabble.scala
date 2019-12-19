@@ -3,6 +3,7 @@ package de.htwg.se.scrabble
 import de.htwg.se.scrabble.aview.Tui
 import de.htwg.se.scrabble.aview.gui.SwingGui
 import de.htwg.se.scrabble.controller._
+import de.htwg.se.scrabble.controller.controllerComponent.Controller
 import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
 
 import scala.io.StdIn.readLine

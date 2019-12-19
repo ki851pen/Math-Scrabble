@@ -1,8 +1,9 @@
-package de.htwg.se.scrabble.controller
+package de.htwg.se.scrabble.controller.controllerComponent
 
 import de.htwg.se.scrabble.controller.GameStatus._
+import de.htwg.se.scrabble.controller._
 import de.htwg.se.scrabble.model.Pile
-import de.htwg.se.scrabble.model.cell.Cell
+import de.htwg.se.scrabble.model.cellComponent.Cell
 import de.htwg.se.scrabble.model.gameField._
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
 

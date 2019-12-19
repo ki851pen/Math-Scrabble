@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble.aview.gui
 
-import de.htwg.se.scrabble.controller.Controller
 import de.htwg.se.scrabble.controller.GameStatus.{FirstCard, P}
+import de.htwg.se.scrabble.controller.controllerComponent.Controller
 
 import scala.swing.{Button, Dimension, FlowPanel, Label, Panel}
 import scala.swing.event.ButtonClicked

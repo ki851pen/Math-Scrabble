@@ -1,7 +1,8 @@
 package de.htwg.se.scrabble.aview.gui
 
-import de.htwg.se.scrabble.controller.{ButtonSet, Controller}
-import de.htwg.se.scrabble.model.cell.Cell
+import de.htwg.se.scrabble.controller.ButtonSet
+import de.htwg.se.scrabble.controller.controllerComponent.Controller
+import de.htwg.se.scrabble.model.cellComponent.Cell
 import de.htwg.se.scrabble.util.CustomColors
 
 import scala.swing.event._

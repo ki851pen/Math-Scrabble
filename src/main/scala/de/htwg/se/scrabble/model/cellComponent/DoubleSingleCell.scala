@@ -1,7 +1,7 @@
-package de.htwg.se.scrabble.model.cell
+package de.htwg.se.scrabble.model.cellComponent
 
 import de.htwg.se.scrabble.model.Card
-import de.htwg.se.scrabble.model.cell.Cell
+import de.htwg.se.scrabble.model.cellComponent.Cell
 
 private class DoubleSingleCell(value: String) extends Cell{
   val cellType: String = "d"

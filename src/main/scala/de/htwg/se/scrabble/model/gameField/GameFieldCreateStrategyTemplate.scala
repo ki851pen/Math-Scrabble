@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model.gameField
 
-import de.htwg.se.scrabble.model.cell.Cell
+import de.htwg.se.scrabble.model.cellComponent.Cell
 import de.htwg.se.scrabble.model.{Grid, Pile}
 
 trait GameFieldCreateStrategyTemplate {

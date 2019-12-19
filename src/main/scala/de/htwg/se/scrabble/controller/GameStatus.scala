@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.controller
 
+import de.htwg.se.scrabble.controller.controllerComponent.Controller
 import de.htwg.se.scrabble.model.Card
 import de.htwg.se.scrabble.model.gameField.GameField
 

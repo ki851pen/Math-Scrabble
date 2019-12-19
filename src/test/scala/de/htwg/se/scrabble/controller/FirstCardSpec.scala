@@ -1,6 +1,7 @@
 package de.htwg.se.scrabble.controller
 
 import de.htwg.se.scrabble.controller.GameStatus.{FirstCard, Init}
+import de.htwg.se.scrabble.controller.controllerComponent.Controller
 import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
 import org.scalatest.{Matchers, WordSpec}
 
