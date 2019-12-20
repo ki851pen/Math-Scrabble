@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl
+package de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl
 
 
 private case class NormalCell(value: String) extends Cell(value: String) {

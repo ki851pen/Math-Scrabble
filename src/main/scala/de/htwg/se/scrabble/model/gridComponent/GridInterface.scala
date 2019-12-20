@@ -1,6 +1,6 @@
-package de.htwg.se.scrabble.model.gameFieldComponent.gridComponent
+package de.htwg.se.scrabble.model.gridComponent
 
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.CellInterface
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.CellInterface
 
 trait GridInterface {
   def cell(row: Int, col: Int): CellInterface

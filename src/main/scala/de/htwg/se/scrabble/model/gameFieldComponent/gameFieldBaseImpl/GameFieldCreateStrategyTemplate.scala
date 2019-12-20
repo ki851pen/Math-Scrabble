@@ -1,7 +1,7 @@
 package de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl
 
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.gridBaseImpl.Grid
-import de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileBaseImpl.Pile
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Grid
+import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 
 trait GameFieldCreateStrategyTemplate {
   def sizeGrid: Int

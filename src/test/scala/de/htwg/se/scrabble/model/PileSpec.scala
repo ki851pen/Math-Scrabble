@@ -1,5 +1,5 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileBaseImpl.Pile
+import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 import org.scalatest.{Matchers, WordSpec}
 
 class PileSpec extends WordSpec with Matchers {

@@ -1,6 +1,6 @@
-package de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl
+package de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl
 
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.CardInterface
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.CardInterface
 
 case class Card(value: String) extends CardInterface {
   private val point: Map[String, Int] = Map("=" -> 1, "+" -> 1, "-" -> 1, "*" -> 2, "/" -> 3, "?" -> 0

@@ -1,6 +1,6 @@
-package de.htwg.se.scrabble.model.gameFieldComponent.pileComponent
+package de.htwg.se.scrabble.model.pileComponent
 
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.CardInterface
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.CardInterface
 
 trait PileInterface {
   def size: Int

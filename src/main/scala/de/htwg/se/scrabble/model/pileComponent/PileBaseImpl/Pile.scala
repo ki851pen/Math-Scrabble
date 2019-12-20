@@ -1,7 +1,7 @@
-package de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileBaseImpl
+package de.htwg.se.scrabble.model.pileComponent.PileBaseImpl
 
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Card
-import de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileInterface
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.Card
+import de.htwg.se.scrabble.model.pileComponent.PileInterface
 
 import scala.util.Random
 

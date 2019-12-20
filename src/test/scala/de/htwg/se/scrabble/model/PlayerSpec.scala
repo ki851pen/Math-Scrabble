@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Card
-import de.htwg.se.scrabble.model.gameFieldComponent.playerComponent.playerBaseImpl.Player
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.Card
+import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 import org.scalatest.{Matchers, WordSpec}
 
 class PlayerSpec extends WordSpec with Matchers {

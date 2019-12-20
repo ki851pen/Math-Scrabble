@@ -3,9 +3,9 @@ package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 import de.htwg.se.scrabble.controller.GameStatus._
 import de.htwg.se.scrabble.controller._
 import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
-import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameField, GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy}
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Cell
-import de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileBaseImpl.Pile
+import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.CellInterface
+import de.htwg.se.scrabble.model.pileComponent.PileInterface
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
 
 import scala.util.control.Breaks._

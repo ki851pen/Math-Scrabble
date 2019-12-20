@@ -1,8 +1,8 @@
 package de.htwg.se.scrabble.aview
 import de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFixedSizeCreateStrategy
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Cell
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.gridBaseImpl.Grid
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.Cell
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Grid
 import org.scalatest.{Matchers, WordSpec}
 
 class TuiSpec extends WordSpec with Matchers{
@@ -34,7 +34,7 @@ class TuiSpec extends WordSpec with Matchers{
       controller.getGameField.pile.size should be(100)
       controller.getGameField.pile.tilepile should not equal oldpile
     }
-    "set a cell on input 'set 8 8 3'" in {
+    "set a cell on input 'set 8 8 =" in {
       tui.processInputLine("gf 15")
       tui.processInputLine("p 1 0 0 0 0")
       tui.processInputLine("fh")

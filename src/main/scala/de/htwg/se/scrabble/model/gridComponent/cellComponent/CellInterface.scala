@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent
+package de.htwg.se.scrabble.model.gridComponent.cellComponent
 
 trait CellInterface {
   def card: CardInterface

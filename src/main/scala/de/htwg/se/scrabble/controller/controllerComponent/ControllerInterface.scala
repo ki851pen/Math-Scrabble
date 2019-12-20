@@ -2,7 +2,7 @@ package de.htwg.se.scrabble.controller.controllerComponent
 
 import de.htwg.se.scrabble.controller.GameStatus.State
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.CellInterface
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.CellInterface
 
 import scala.swing.Publisher
 
