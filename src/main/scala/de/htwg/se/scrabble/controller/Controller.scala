@@ -72,16 +72,69 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def checkEquation(): Boolean = {
     //funktioniert noch nicht
+    /*val CellsHorizontalLeft: List[Int] = Nil
+    val CellsHorizontalRight: List[Int] = Nil
     val newCells = gameStatus.asInstanceOf[P].getNewCells
     for (cell <- newCells) {
       breakable {
         if (this.cell(cell._1, cell._2).card.isQuestionMark) break
+        var origin_col_left = cell._2 - 1
+        var origin_col_right = cell._2 + 1
+        val origin_cell = this.cell(cell._1, cell._2)
         val neighbors = gameField.grid.getNeighborsOf(cell._1, cell._2)
         for (neighbor <- neighbors) {
           if (this.cell(cell._1, cell._2).card.isOperator && neighbor._2.card.isOperator) return false
         }
-      }
-    }
+
+        // Problem mit toString.toInt wenn nicht Zahl sondern Operator
+        while(this.cell(cell._1, origin_col_left).isSet) {
+          val value_l = this.cell(cell._1, origin_col_left).card.toString.toInt
+          val cellsHorizontalLeft = CellsHorizontalLeft:+value_l
+          origin_col_left -= 1
+
+        }
+        val reverse_h_left = CellsHorizontalLeft.reverse // alle Zellen links von origin_cell
+        CellsHorizontalRight:+origin_cell.card.toString // original Zelle hinzufügen
+
+        while(this.cell(cell._1, origin_col_right).isSet) {
+          val value_r = this.cell(cell._1, origin_col_right).card.toString.toInt
+          val cellsHorizontalRight = CellsHorizontalRight:+value_r
+          origin_col_right += 1
+        }
+
+        // prüfen, ob = in Liste vorhanden, wenn nein, dann prüfen, ob zahl operator zahl  ist und wenn nein, dann falsch
+        // wenn = in Liste vorhanden, dann prüfen, ob linker Teil gleich ist wie rechter Teil
+        val CellsHorizontal = CellsHorizontalLeft ::: CellsHorizontalRight
+        val head = CellsHorizontal.head
+        if (!CellsHorizontal.contains('=')) {
+          if (!head.isValidInt && !(CellsHorizontal.contains('+') || CellsHorizontal.contains('-') || CellsHorizontal.contains('*') || CellsHorizontal.contains('/')) && !CellsHorizontal.last.isValidInt) {
+            return false
+          }
+        }
+        else {
+          if (head.isValidInt) {
+            var equation_left = head
+            var index = 0
+            for (c <- CellsHorizontal.tail) {
+              while (!c.equals('=')) {
+                equation_left += c
+                index += 1
+              }
+            }
+            var equation_right = 0
+            if (CellsHorizontal(index +2).isValidInt) {
+             for (i <- CellsHorizontal.slice(index+2, CellsHorizontal.size-1)) {
+               equation_right += i
+             }
+            }
+            if (!equation_left.equals(equation_right)) {
+              return false
+            }
+          }
+        }
+        }
+
+      }*/
     true
   }
 
