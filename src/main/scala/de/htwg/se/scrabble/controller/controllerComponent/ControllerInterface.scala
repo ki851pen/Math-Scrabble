@@ -25,6 +25,7 @@ trait ControllerInterface extends Publisher {
   def fillAllHand: Unit
   def clearHand(name: String): Unit
   def gameStatus: State
+  def changeGamestatus(newState: State): Unit
   def currentSelectedRow: Int
   def currentSelectedCol: Int
   def selectedCellChanged(row: Int, col: Int)

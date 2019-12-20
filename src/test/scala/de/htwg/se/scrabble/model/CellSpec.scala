@@ -50,8 +50,9 @@ class CellSpec extends WordSpec with Matchers {
       }
       "have a String representation" in {
         changedCell.toString shouldBe "1"
-        changedDoubleCell.toString shouldBe "7x2"
-        changedTripleCell.toString shouldBe "?x3"
+        val tmp = changedDoubleCell.toString
+        changedDoubleCell.toString shouldBe "7"
+        changedTripleCell.toString shouldBe "?"
       }
     }
     "set incorrectly" should {

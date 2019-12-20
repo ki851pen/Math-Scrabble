@@ -3,45 +3,46 @@ package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 import de.htwg.se.scrabble.controller.GameStatus._
 import de.htwg.se.scrabble.controller._
 import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
-import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameField, GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy}
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Cell
-import de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileBaseImpl.Pile
+import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy}
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
 
 import scala.util.control.Breaks._
 
 class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends ControllerInterface {
-  private var gameField: GameField = gameFieldCreateStrategy.createNewGameField
-  var gameStatus: State = Init()
+  private var gameField: GameFieldInterface = gameFieldCreateStrategy.createNewGameField
+  private var gameState: State = Init()
   private val undoManager = new UndoManager
   private var currentSum: Int = 0
 
+  def gameStatus = gameState
+  def changeGamestatus(newState: State) = gameState = newState
   def gridSize: Int = gameField.grid.size
 
-  def cell(row: Int, col: Int): Cell = gameField.grid.cell(row, col)
+  def cell(row: Int, col: Int) = gameField.grid.cell(row, col)
 
   def isSet(row: Int, col: Int): Boolean = gameField.grid.cell(row, col).isSet
 
   def addToSum(point: Int): Unit = currentSum += point
 
-  def getGameField: GameField = gameField
+  def getGameField: GameFieldInterface = gameField
 
-  def setGameField(gameField: GameField): Unit = {
+  def setGameField(gameField: GameFieldInterface): Unit = {
     this.gameField = gameField
     publish(new GameFieldChanged)
   }
 
-  def setstate(gameField: GameField, gameStatus: State, currentSum: Int): Unit = {
+  def setstate(gameField: GameFieldInterface, gameStatus: State, currentSum: Int): Unit = {
     this.gameField = gameField
-    this.gameStatus = gameStatus
+    this.gameState = gameStatus
     this.currentSum = currentSum
   }
 
-  def createMemento(): Memento = Memento(gameField, gameStatus, currentSum)
+  def createMemento(): Memento = Memento(gameField, gameState, currentSum)
 
   def restoreFromMemento(restore: Memento): Unit = {
     this.gameField = restore.gameField
-    this.gameStatus = restore.gameStatus
+    this.gameState = restore.gameStatus
     this.currentSum = restore.currentSum
   }
 
@@ -61,7 +62,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     publish(new GameFieldChanged)
   }
 
-  def gameToString: String = gameStatus.gameToString(this)
+  def gameToString: String = gameState.gameToString(this)
 
   def init(): Unit = {
     println("------ Start of Initialisation ------")
@@ -71,7 +72,7 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def checkEquation(): Boolean = {
     //funktioniert noch nicht
-    val newCells = gameStatus.asInstanceOf[P].getNewCells
+    val newCells = gameState.asInstanceOf[P].getNewCells
     for (cell <- newCells) {
       breakable {
         if (this.cell(cell._1, cell._2).card.isQuestionMark) break
@@ -85,17 +86,17 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   }
 
   private def takeCardsBack(): Unit = {
-    val cardsToTakeBack = gameStatus.asInstanceOf[P].getNewCells
+    val cardsToTakeBack = gameState.asInstanceOf[P].getNewCells
     val currentPlayer = "A"
-    gameField = gameField.copy(grid = gameField.grid.clearCells(cardsToTakeBack),
-      playerList = gameField.changePlayerAttr(currentPlayer, gameField.playerList(currentPlayer).addToHand(cardsToTakeBack.map(pos => cell(pos._1, pos._2).card))))
+    //gameField = gameField.copy(grid = gameField.grid.clearCells(cardsToTakeBack),
+      //playerList = gameField.changePlayerAttr(currentPlayer, gameField.playerList(currentPlayer).addToHand(cardsToTakeBack.map(pos => cell(pos._1, pos._2).card))))
   //not done
   }
 
   def endTurn(): Unit = {
     //ProcessEquation(this)
     //if (!checkEquation()) takeCardsBack()
-    gameField = gameStatus.calPoint(this, currentSum).getOrElse(gameField)
+    gameField = gameState.calPoint(this, currentSum).getOrElse(gameField)
     currentSum = 0
     fillAllHand()
     undoManager.resetStack()
@@ -106,32 +107,32 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     val oldsize = gameField.grid.size
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField
-    gameStatus = FirstCard()
+    gameState = FirstCard()
     if (gameField.grid.size == oldsize) publish(new GameFieldChanged) else publish(new GridSizeChanged)
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
     gameField = gameFieldCreateStrategy.createNewGameField
-    gameStatus = FirstCard()
+    gameState = FirstCard()
     publish(new GridSizeChanged)
   }
 
   def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
-    gameField = gameField.copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
+    gameField = gameField.createNewPile(equal, plusminus, muldiv, blank, digit)
     publish(new CardsChanged)
   }
 
   def shufflePile(): Unit = {
-    gameField = gameField.copy(pile = gameField.pile.shuffle)
+    gameField = gameField.shufflePile
   }
 
   def fillHand(name: String): Unit = {
     if (gameField.playerList.contains(name)) {
       val player = gameField.playerList(name)
       val nrLeftToFill = player.maxHandSize - player.getNrCardsInHand
-      shufflePile()
-      gameField = GameField(gameField.grid, gameField.pile.drop(nrLeftToFill), gameField.changePlayerAttr(name, gameField.playerList(name).addToHand(gameField.pile.take(nrLeftToFill))))
+      shufflePile
+      gameField = gameField.fillHand(name, nrLeftToFill)
       publish(new CardsChanged)
     } else {
       println("Player " + name + " doesn't exist")
@@ -145,9 +146,8 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
 
   def clearHand(name: String): Unit = {
     if (gameField.playerList.contains(name)) {
-      val player = gameField.playerList(name)
-      gameField = gameField.copy(pile = Pile(gameField.pile.tilepile ::: player.hand), playerList = gameField.changePlayerAttr(player.name, gameField.playerList(player.name).copy(hand = Nil)))
-      shufflePile()
+      gameField = gameField.clearHand(name)
+      shufflePile
       publish(new CardsChanged)
     } else {
       println("Player " + name + " doesn't exist")

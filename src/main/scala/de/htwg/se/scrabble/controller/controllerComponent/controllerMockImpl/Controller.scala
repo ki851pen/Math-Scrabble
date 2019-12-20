@@ -57,4 +57,6 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
   override def putCardInCell: Unit = {}
 
   override def gameToString: String = ""
+
+  override def changeGamestatus(newState: GameStatus.State): Unit = ???
 }

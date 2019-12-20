@@ -30,9 +30,9 @@ case class Grid(cells: Vector[Vector[Cell]]) extends GridInterface {
 
   def clearCell(row: Int, col: Int): Grid = copy(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(""))))
 
-  def clearCells(posList: List[(Int, Int)]): Grid = {
+  def clearCells(positionList: List[(Int, Int)]): Grid = {
     var grid = this
-    posList.foreach(x => grid = grid.clearCell(x._1, x._2))
+    positionList.foreach(x => grid = grid.clearCell(x._1, x._2))
     grid
   }
 

@@ -29,16 +29,16 @@ class TuiSpec extends WordSpec with Matchers{
       controller.getGameField.pile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("?") and include("5"))
     }
     "shuffle a pile on input 's'" in {
-      val oldpile = controller.getGameField.pile.tilepile
+      val oldPile = controller.getGameField.pile.tilepile
       tui.processInputLine("s")
       controller.getGameField.pile.size should be(100)
-      controller.getGameField.pile.tilepile should not equal oldpile
+      controller.getGameField.pile.tilepile should not equal oldPile
     }
-    "set a cell on input 'set 8 8 3'" in {
+    "set a cell on input 'set 8 8 ='" in {
       tui.processInputLine("gf 15")
       tui.processInputLine("p 1 0 0 0 0")
       tui.processInputLine("fh")
-      tui.processInputLine("set 8 8 =")
+      tui.processInputLine("set 8 8 0")
       controller.getGameField.grid.cell(7,7) shouldEqual Cell("t","=")
     }
     "set a pile and its size on input 'p 1 1 1 1 1'" in {
