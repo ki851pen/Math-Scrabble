@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble.model
 
-import de.htwg.se.scrabble.model.cellComponent.Cell
-import de.htwg.se.scrabble.model.gameField.{GameField, GameFieldFixedSizeCreateStrategy}
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFixedSizeCreateStrategy
 import org.scalatest.{Matchers, WordSpec}
 
 class GameFieldStrategySpec extends WordSpec with Matchers{

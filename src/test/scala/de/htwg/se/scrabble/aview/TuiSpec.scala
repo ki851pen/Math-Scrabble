@@ -1,8 +1,8 @@
 package de.htwg.se.scrabble.aview
-import de.htwg.se.scrabble.controller.controllerComponent.Controller
-import de.htwg.se.scrabble.model.{Grid, Pile}
-import de.htwg.se.scrabble.model.cellComponent.Cell
-import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
+import de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFixedSizeCreateStrategy
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Cell
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.gridBaseImpl.Grid
 import org.scalatest.{Matchers, WordSpec}
 
 class TuiSpec extends WordSpec with Matchers{

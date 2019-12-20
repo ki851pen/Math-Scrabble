@@ -1,23 +1,20 @@
-package de.htwg.se.scrabble.controller.controllerComponent
+package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.scrabble.controller.GameStatus._
 import de.htwg.se.scrabble.controller._
-import de.htwg.se.scrabble.model.Pile
-import de.htwg.se.scrabble.model.cellComponent.Cell
-import de.htwg.se.scrabble.model.gameField._
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameField, GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy}
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Cell
+import de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileBaseImpl.Pile
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
 
-import scala.swing.Publisher
 import scala.util.control.Breaks._
 
-class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends Publisher {
+class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends ControllerInterface {
   private var gameField: GameField = gameFieldCreateStrategy.createNewGameField
   var gameStatus: State = Init()
   private val undoManager = new UndoManager
   private var currentSum: Int = 0
-  var guival = ""
-  var guirow = 0
-  var guicol = 0
 
   def gridSize: Int = gameField.grid.size
 
@@ -48,10 +45,10 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
     this.currentSum = restore.currentSum
   }
 
-  def setGrid(row: Int, col: Int, value: String): Unit = {
-    undoManager.doStep(new SetCommand(row, col, value: String, this))
+  def setGrid(row: Int, col: Int, index: Int): Unit = {
+    undoManager.doStep(new SetCommand(row, col, index, this))
     publish(ButtonSet(row, col))
-    publish(new GameFieldChanged)
+    //publish(new GameFieldChanged)
   }
 
   def undo(): Unit = {
@@ -156,15 +153,28 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
       println("Player " + name + " doesn't exist")
     }
   }
+  private var currentChosenCardIndex = -1;
+  def chooseCardInHand(indexOfCard: Int): Unit = {
+    currentChosenCardIndex = indexOfCard
+  }
+  def currentSelectedRow = currentRowOfSelectedCell
+  def currentSelectedCol = currentColOfSelectedCell
+  private var currentRowOfSelectedCell = -1
+  private var currentColOfSelectedCell = -1
 
-  def changeClick(row: Int, col: Int): Unit = {
-    guirow = row - 1
-    guicol = col - 1
+  def selectedCellChanged(row: Int, col: Int): Unit = {
+    currentRowOfSelectedCell = row - 1
+    currentColOfSelectedCell = col - 1
     publish(new ClickChanged)
   }
-  def changeHand(player: String): Unit = {
-    clearHand(player)
-    fillHand(player)
+
+  def putCardInCell = {
+    setGrid(currentRowOfSelectedCell, currentColOfSelectedCell, currentChosenCardIndex)
+  }
+
+  def changeHand(playerName: String): Unit = {
+    clearHand(playerName)
+    fillHand(playerName)
     publish(new CardsChanged)
   }
 }

@@ -1,18 +1,20 @@
-package de.htwg.se.scrabble.model
+package de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.gridBaseImpl
 
-import de.htwg.se.scrabble.model.cellComponent.Cell
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.GridInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Cell
 
 import scala.collection.mutable
 
-
-case class Grid(private val cells: Vector[Vector[Cell]]) {
+case class Grid(cells: Vector[Vector[Cell]]) extends GridInterface {
   def this(size: Int) = this(Vector.tabulate(size, size) { (row, col) => Cell("") })
-
-  val size: Int = cells.size
 
   def cell(row: Int, col: Int): Cell = cells(row)(col)
 
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
+
+  def set(row: Int, col: Int, value: String): Grid = Grid(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(value))))
+
+  val size: Int = cells.size
 
   def initSpecialCell: Grid = {
     val max: Int = size - 1
@@ -55,8 +57,6 @@ case class Grid(private val cells: Vector[Vector[Cell]]) {
 
   private def isExtremeRight(col: Int) = col == size - 1
 
-  def set(row: Int, col: Int, value: String): Grid = Grid(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(value))))
-
   override def toString: String = {
     val numCol = "      " + List.range(1, size + 1).filter(_ < 10).mkString("     ") + "    " + List.range(1, size + 1).filter(_ > 9).mkString("    ") + "  \n"
     val lineSeparator = "   +" + "-----+" * size + "\n"
@@ -77,4 +77,5 @@ case class Grid(private val cells: Vector[Vector[Cell]]) {
     } box = box.replaceFirst("_", cell(row, col).toString)
     box
   }
+
 }

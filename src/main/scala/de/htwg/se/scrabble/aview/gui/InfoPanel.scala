@@ -1,12 +1,12 @@
 package de.htwg.se.scrabble.aview.gui
 
 import de.htwg.se.scrabble.controller.GameStatus.{FirstCard, P}
-import de.htwg.se.scrabble.controller.controllerComponent.Controller
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 
 import scala.swing.{Button, Dimension, FlowPanel, Label, Panel}
 import scala.swing.event.ButtonClicked
 
-class InfoPanel(controller: Controller) extends FlowPanel {
+class InfoPanel(controller: ControllerInterface) extends FlowPanel {
   preferredSize = new Dimension(200, 500)
   val full = new Dimension(150, 40)
   val half = new Dimension(74, 40)
@@ -22,15 +22,15 @@ class InfoPanel(controller: Controller) extends FlowPanel {
   }
 
   val PointA = new Label {
-    text = "Player A: " + controller.getGameField.playerList("A").point.toString
+    text = "Player A: " + controller.getGameField.playerList("A").point
   }
   contents += PointA
   val PointB = new Label {
-    text = "Player B: " + controller.getGameField.playerList("B").point.toString
+    text = "Player B: " + controller.getGameField.playerList("B").point
   }
   contents += PointB
   val stackL = new Label {
-    text = "cards in stack: " + controller.getGameField.pile.size.toString
+    text = "cards in stack: " + controller.getGameField.pile.size
   }
   contents += stackL
   contents += new FreeSpace
@@ -56,12 +56,15 @@ class InfoPanel(controller: Controller) extends FlowPanel {
   contents += new Button() {
     text = "set"
     preferredSize = full
-    reactions += { case _: ButtonClicked => controller.setGrid(controller.guirow, controller.guicol, controller.guival) }
+    reactions += { case _:
+      ButtonClicked =>
+      controller.putCardInCell
+    }
   }
   contents += new Button() {
     text = "submit"
     preferredSize = full
-    reactions += { case _: ButtonClicked => controller.endTurn() }
+    reactions += { case _: ButtonClicked => controller.endTurn }
   }
   visible = true
 
@@ -69,8 +72,8 @@ class InfoPanel(controller: Controller) extends FlowPanel {
     stackL.text = "cards in stack: " + controller.getGameField.pile.size.toString
     PointA.text = "Player A: " + controller.getGameField.playerList("A").point.toString
     PointB.text = "Player B: " + controller.getGameField.playerList("B").point.toString
-    rowClicked.text = "clicked row: " + (controller.guirow + 1)
-    colClicked.text = "clicked col: " + (controller.guicol + 1)
+    rowClicked.text = "clicked row: " + (controller.currentSelectedRow + 1)
+    colClicked.text = "clicked col: " + (controller.currentSelectedCol + 1)
     repaint
   }
 }

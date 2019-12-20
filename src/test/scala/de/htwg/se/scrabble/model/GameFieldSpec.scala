@@ -1,6 +1,10 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.cellComponent.Cell
-import de.htwg.se.scrabble.model.gameField.GameField
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameField
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.cellBaseImpl.Cell
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.gridBaseImpl.Grid
+import de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileBaseImpl.Pile
+import de.htwg.se.scrabble.model.gameFieldComponent.playerComponent.playerBaseImpl.Player
 import org.scalatest.{Matchers, WordSpec}
 
 class GameFieldSpec extends WordSpec with Matchers{
@@ -31,7 +35,7 @@ class GameFieldSpec extends WordSpec with Matchers{
       }
     }
     "create with player" should {
-      val playerGamefield = gameField.GameField(new Grid(5), new Pile(),Map("Poom"-> new Player("Poom"), "B"->new Player("B")))
+      val playerGamefield = gameFieldBaseImpl.GameField(new Grid(5), new Pile(),Map("Poom"-> new Player("Poom"), "B"->new Player("B")))
       "have that player in playerlist(map)" in {
         playerGamefield.playerList.values should contain(Player("Poom",Nil,0))
         playerGamefield.playerList.values should contain(Player("B",Nil,0))

@@ -1,17 +1,15 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.controller.GameStatus.{FirstCard, Init}
-import de.htwg.se.scrabble.controller.controllerComponent.Controller
-import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
+import de.htwg.se.scrabble.controller.GameStatus.FirstCard
+import de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFixedSizeCreateStrategy
 import org.scalatest.{Matchers, WordSpec}
-
-import scala.util.Failure
 class FirstCardSpec extends WordSpec with Matchers{
   "FirstCard status" when {
     val firstCard = FirstCard()
     val controller = new Controller(new GameFieldFixedSizeCreateStrategy(5))
     "set grid" should {
-      val res = firstCard.setGrid(controller, 2, 2, "")
+      val res = firstCard.setGrid(controller, 2, 2, 0)
     }
     "calculate point" should{
       val res = firstCard.calPoint(controller, 0)

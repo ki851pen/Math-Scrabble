@@ -1,14 +1,11 @@
 package de.htwg.se.scrabble.aview
 
-import de.htwg.se.scrabble.controller._
-import de.htwg.se.scrabble.controller.controllerComponent.Controller
-import de.htwg.se.scrabble.model.Card
-import de.htwg.se.scrabble.util.Observer
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 
 import scala.swing.Reactor
 import scala.swing.event.Event
 
-class Tui(controller: Controller) extends Reactor {
+class Tui(controller: ControllerInterface) extends Reactor {
   listenTo(controller)
 
   def processInputLine(input: String): Unit = {
@@ -16,14 +13,14 @@ class Tui(controller: Controller) extends Reactor {
     val fixedSizes = List("3", "5", "9", "15")
     input match {
       case "q" =>
-      case "init" => controller.init()
+      case "init" => controller.init
       case "p" => controller.createPile(20, 7, 5, 6, 5)
-      case "s" => controller.shufflePile()
+      case "s" => controller.shufflePile
       case "h" => println(help)
-      case "submit" => controller.endTurn()
+      case "submit" => controller.endTurn
       case "fh" => controller.fillAllHand
-      case "z" => controller.undo()
-      case "y" => controller.redo()
+      case "z" => controller.undo
+      case "y" => controller.redo
       case _ => input.split(" ").toList match {
         case command :: player :: Nil if command == "clr" => controller.clearHand(player)
         case command :: player :: Nil if command == "fh" => controller.fillHand(player)
@@ -37,9 +34,10 @@ class Tui(controller: Controller) extends Reactor {
           if (List(equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
             controller.createPile(equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
           else println("all characters after p have to be integer")
-        case command :: row :: col :: value :: Nil if command == "set" && row.matches(IntRegEx) && col.matches(IntRegEx) =>
-          if (Card(value).isValid) controller.setGrid(row.toInt - 1, col.toInt - 1, value)
-          else println("value not valid")
+        case command :: row :: col :: index :: Nil if command == "set" && row.matches(IntRegEx) && col.matches(IntRegEx) && index.matches(IntRegEx) =>
+          controller.setGrid(row.toInt - 1, col.toInt - 1, index.toInt)
+          //if (Card(value).isValid) controller.setGrid(row.toInt - 1, col.toInt - 1, value)
+          //else println("value not valid")
         case _ => println("Invalid input. Type h to get some helps.")
       }
     }
