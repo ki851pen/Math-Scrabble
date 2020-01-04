@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model.pileComponent
 
-import de.htwg.se.scrabble.model.gridComponent.cellComponent.CardInterface
+import de.htwg.se.scrabble.model.gridComponent.CardInterface
 
 trait PileInterface {
 

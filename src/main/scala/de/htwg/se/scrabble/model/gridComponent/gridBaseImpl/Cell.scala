@@ -1,12 +1,12 @@
 package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
-import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.{DoubleSingleCell, NormalCell, TripleSingleCell}
+import de.htwg.se.scrabble.model.gridComponent.CellInterface
 
 abstract class Cell(value: String) extends CellInterface{
 
   val cellType: String
 
-  def card: Card = Card(value)
+  def card = Card(value)
 
   def isSet: Boolean = card.isValid
 

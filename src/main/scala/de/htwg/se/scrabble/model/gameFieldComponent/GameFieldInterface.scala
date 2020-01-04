@@ -1,11 +1,8 @@
 package de.htwg.se.scrabble.model.gameFieldComponent
 
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.GridInterface
-import de.htwg.se.scrabble.model.gameFieldComponent.pileComponent.PileInterface
-import de.htwg.se.scrabble.model.gameFieldComponent.playerComponent.PlayerInterface
-import de.htwg.se.scrabble.model.pileComponent.PileInterface
+import de.htwg.se.scrabble.model.gridComponent.GridInterface
 import de.htwg.se.scrabble.model.playerComponent.PlayerInterface
-import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
+import de.htwg.se.scrabble.model.pileComponent.PileInterface
 
 trait GameFieldInterface {
   def pile: PileInterface
