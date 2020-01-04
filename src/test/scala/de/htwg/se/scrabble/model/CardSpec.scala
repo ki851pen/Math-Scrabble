@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model
 
-import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.Card
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Card
 import org.scalatest.{Matchers, WordSpec}
 class CardSpec extends WordSpec with Matchers {
   "A Card" should {

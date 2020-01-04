@@ -1,7 +1,6 @@
 package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
 import de.htwg.se.scrabble.model.gridComponent.GridInterface
-import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.Cell
 
 import scala.collection.mutable
 

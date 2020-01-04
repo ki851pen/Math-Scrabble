@@ -1,6 +1,6 @@
-package de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl
+package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
-import de.htwg.se.scrabble.model.gridComponent.cellComponent.CellInterface
+import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.{DoubleSingleCell, NormalCell, TripleSingleCell}
 
 abstract class Cell(value: String) extends CellInterface{
 

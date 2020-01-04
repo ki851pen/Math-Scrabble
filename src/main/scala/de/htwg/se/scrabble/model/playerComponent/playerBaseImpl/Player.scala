@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model.playerComponent.playerBaseImpl
 
-import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.Card
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Card
 import de.htwg.se.scrabble.model.playerComponent.PlayerInterface
 
 case class Player(name: String, hand: List[Card], point: Int) extends PlayerInterface {

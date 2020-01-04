@@ -1,5 +1,5 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.Card
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Card
 import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 import org.scalatest.{Matchers, WordSpec}
 

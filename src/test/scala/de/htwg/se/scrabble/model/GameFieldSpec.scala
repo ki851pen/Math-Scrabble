@@ -1,8 +1,7 @@
 package de.htwg.se.scrabble.model
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameField
-import de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl.Cell
-import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Grid
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.{Cell, Grid}
 import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 import org.scalatest.{Matchers, WordSpec}

@@ -1,5 +1,4 @@
-package de.htwg.se.scrabble.model.gridComponent.cellComponent.cellBaseImpl
-
+package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
 private case class DoubleSingleCell(value: String) extends Cell(value: String) {
   val cellType: String = "d"
