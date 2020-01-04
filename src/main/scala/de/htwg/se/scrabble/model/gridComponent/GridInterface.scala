@@ -10,4 +10,6 @@ trait GridInterface {
   def set(row: Int, col: Int, value: String): GridInterface
 
   def size: Int
+
+  def getNeighborsOf(row: Int, col: Int): Map[(Int, Int), CellInterface]
 }

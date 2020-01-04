@@ -1,18 +1,18 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl.Controller
-import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameField
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 
 import scala.util.{Failure, Success, Try}
 
 object GameStatus {
 
   trait State {
-    def setGrid(controller: Controller, row: Int, col: Int, index: Int): Try[GameField]
+    def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface]
 
-    def calPoint(controller: Controller, currentSum: Int): Option[GameField]
+    def calPoint(controller: ControllerInterface, currentSum: Int): Option[GameFieldInterface]
 
-    def gameToString(controller: Controller): String
+    def gameToString(controller: ControllerInterface): String
 
   }
 /*
@@ -23,23 +23,23 @@ object GameStatus {
   }*/
 
   case class Init() extends State {
-    override def setGrid(controller: Controller, row: Int, col: Int, index: Int): Try[GameField]
+    override def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface]
     = Failure(new IllegalStateException("can't set grid when in init state"))
 
-    override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = None
+    override def calPoint(controller: ControllerInterface, currentSum: Int): Option[GameFieldInterface] = None
 
-    override def gameToString(controller: Controller): String = "write init or gf [size] to begin"
+    override def gameToString(controller: ControllerInterface): String = "write init or gf [size] to begin"
   }
 
   case class FirstCard() extends State {
-    override def setGrid(controller: Controller, row: Int, col: Int, index: Int): Try[GameField] = {
+    override def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface] = {
       val gameField = controller.getGameField
       val gridMiddle: Int = controller.gridSize / 2
       (row, col) match {
         case (a: Int, b: Int) if a == b && a == gridMiddle =>
           if (index >= 0 && index < gameField.playerList("A").hand.size) {
-            controller.gameStatus = P("A")
-            Success(setGridConcrete("A", controller.getGameField, row, col, index))
+            controller.changeGamestatus(P("A"))
+            Success(setGridConcrete("A", gameField, row, col, index))
           } else {
             Failure(new IllegalArgumentException("Can only set card from hand"))
           }
@@ -47,17 +47,17 @@ object GameStatus {
       }
     }
 
-    override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
+    override def calPoint(controller: ControllerInterface, currentSum: Int): Option[GameFieldInterface] = {
       println("To end turn please set equation first. If you can't do it write clr to clear hand and fh to fill hand and try again")
       None
     }
 
-    override def gameToString(controller: Controller): String = controller.getGameField.gameToString("A")
+    override def gameToString(controller: ControllerInterface): String = controller.getGameField.gameToString("A")
   }
 
   case class P(player: String) extends State {
     private var newCellsOfTurn: List[(Int, Int)] = Nil //fehlt noch cell from firstcard
-    override def setGrid(controller: Controller, row: Int, col: Int, index: Int): Try[GameField] = {
+    override def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface] = {
       if (controller.cell(row, col).isSet) {
         Failure(new Exception("can't set already set cell"))
       } else {
@@ -70,21 +70,21 @@ object GameStatus {
       }
     }
 
-    override def calPoint(controller: Controller, currentSum: Int): Option[GameField] = {
+    override def calPoint(controller: ControllerInterface, currentSum: Int): Option[GameFieldInterface] = {
       val game = controller.getGameField
-      controller.gameStatus = P(changePlayer(player))
-      Some(game.copy(playerList = game.changePlayerAttr(player, game.playerList(player).copy(point = game.playerList(player).point + currentSum))))
+      controller.changeGamestatus(P(changePlayer(player)))
+      Some(game.calPointForPlayer(player, currentSum))
     }
 
-    override def gameToString(controller: Controller): String = controller.getGameField.gameToString(player)
+    override def gameToString(controller: ControllerInterface): String = controller.getGameField.gameToString(player)
 
     def getNewCells: List[(Int, Int)] = newCellsOfTurn
   }
 
   def changePlayer(currentPlayer: String): String = if (currentPlayer == "A") "B" else  "A"
 
-  def setGridConcrete(player: String, gameField: GameField, row: Int, col: Int, index: Int): GameField = {
+  def setGridConcrete(player: String, gameField: GameFieldInterface, row: Int, col: Int, index: Int) = {
     val card = gameField.playerList(player).hand(index)
-    gameField.copy(grid = gameField.grid.set(row, col, card.toString), playerList = gameField.changePlayerAttr(player, gameField.playerList(player).useCard(card)))
+    gameField.playerPlay(player, row, col, index)
   }
 }

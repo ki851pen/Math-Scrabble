@@ -60,7 +60,7 @@ class Tui(controller: ControllerInterface) extends Reactor {
       ||  gf [size]             |   create a grid with fixed size                                   |
       ||  gf [size] [pile]      |   create a grid with free size and pile                           |
       ||                        |                                                                   |
-      ||  p                     |   create a pile of standard size                             |
+      ||  p                     |   create a pile of standard size                                  |
       ||                        |                                                                   |
       ||  h                     |   displays the command list                                       |
       ||                        |                                                                   |
