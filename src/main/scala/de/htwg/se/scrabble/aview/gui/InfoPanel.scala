@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.aview.gui
 
-import de.htwg.se.scrabble.controller.GameStatus.{FirstCard, P}
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.{FirstCard, P}
 import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 
 import scala.swing.{Button, Dimension, FlowPanel, Label, Panel}

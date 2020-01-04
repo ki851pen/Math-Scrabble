@@ -1,6 +1,5 @@
-package de.htwg.se.scrabble.controller
+package de.htwg.se.scrabble.controller.controllerComponent
 
-import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 
 import scala.util.{Failure, Success, Try}
@@ -15,12 +14,6 @@ object GameStatus {
     def gameToString(controller: ControllerInterface): String
 
   }
-/*
-  def apply(player: String) = {
-    if(player == "A" || player == "B")
-      P(player)
-    else println("Please user either P(\"A\") or P(\"B\")" )
-  }*/
 
   case class Init() extends State {
     override def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface]
@@ -83,7 +76,7 @@ object GameStatus {
 
   def changePlayer(currentPlayer: String): String = if (currentPlayer == "A") "B" else  "A"
 
-  def setGridConcrete(player: String, gameField: GameFieldInterface, row: Int, col: Int, index: Int) = {
+  def setGridConcrete(player: String, gameField: GameFieldInterface, row: Int, col: Int, index: Int): GameFieldInterface = {
     val card = gameField.playerList(player).hand(index)
     gameField.playerPlay(player, row, col, index)
   }

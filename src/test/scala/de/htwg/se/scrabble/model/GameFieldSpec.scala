@@ -25,14 +25,14 @@ class GameFieldSpec extends WordSpec with Matchers{
         game.toString should include(game.playerListToString)
       }
     }
-    "rename a Player" should {
+    /*"rename a Player" should {
       val gameWithNewPlayerName = game.renamePlayer("A", "B")
       "have a new Player" in {
         gameWithNewPlayerName.playerList.keys should contain ("B")
         gameWithNewPlayerName.playerList.values should contain (new Player("B"))
         gameWithNewPlayerName.playerList should not be game.playerList
       }
-    }
+    }*/
     "create with player" should {
       val playerGamefield = gameFieldBaseImpl.GameField(new Grid(5), new Pile(),Map("Poom"-> new Player("Poom"), "B"->new Player("B")))
       "have that player in playerlist(map)" in {

@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.controller.controllerComponent
 
-import de.htwg.se.scrabble.controller.GameStatus.State
+import GameStatus.State
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gridComponent.CellInterface
 

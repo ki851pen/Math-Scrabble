@@ -28,7 +28,7 @@ trait GameFieldInterface {
 
   def playerListToString: String
 
-  def renamePlayer(playerName: String, newName: String): GameFieldInterface
+  //def renamePlayer(playerName: String, newName: String): GameFieldInterface
 
   def gameToString(name: String): String
 }

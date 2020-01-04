@@ -13,29 +13,29 @@ case class GameField(grid: Grid, pile: Pile, playerList: Map[String, Player]) ex
   def gameToStringWOPlayer: String = "Grid :" + grid.toString + "\nPile: " + pile.size.toString + "\n" +
     playerList.values.map(p => p.name + "'s points: " + p.point.toString).mkString("    ") + "\n"
 
-  def createNewPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int) = copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
+  def createNewPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): GameField = copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
 
-  def shufflePile = copy(pile = pile.shuffle)
+  def shufflePile: GameField = copy(pile = pile.shuffle)
 
-  def fillHand(playerName: String, howMany: Int) = {
+  def fillHand(playerName: String, howMany: Int): GameField = {
     copy(pile = pile.drop(howMany), playerList = changePlayerAttr(playerName, playerList(playerName).addToHand(pile.take(howMany))))
   }
 
-  def clearHand(playerName: String) = {
+  def clearHand(playerName: String): GameField = {
     copy(pile = Pile(pile.tilepile ::: playerList(playerName).hand), playerList = changePlayerAttr(playerName, playerList(playerName).dropAllCard))
   }
 
-  def playerPlay(player: String, row: Int, col: Int, index: Int) = {
+  def playerPlay(player: String, row: Int, col: Int, index: Int): GameField = {
     val card = playerList(player).hand(index)
     copy(grid = grid.set(row, col, card.toString), playerList = changePlayerAttr(player, playerList(player).useCard(card)))
   }
 
-  def calPointForPlayer(playerName: String, currentSum: Int) =
+  def calPointForPlayer(playerName: String, currentSum: Int): GameField =
     copy(playerList = changePlayerAttr(playerName, playerList(playerName).addPoint(currentSum)))
 
   def playerListToString: String = playerList.values.map(_.toString).mkString("\n")
 
-  def renamePlayer(playerName: String, newName: String) = copy(playerList = changePlayerAttr(playerName, playerList(playerName).rename(newName)))
+  //def renamePlayer(playerName: String, newName: String): GameField = copy(playerList = changePlayerAttr(playerName, playerList(playerName).rename(newName)))
 
   def gameToString(name: String): String = gameToStringWOPlayer + playerList(name).toString
 

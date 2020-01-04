@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.controller.GameStatus.Init
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.Init
 import de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFixedSizeCreateStrategy
 import org.scalatest.{Matchers, WordSpec}
@@ -9,7 +9,7 @@ import scala.util.Failure
 class InitSpec extends WordSpec with Matchers{
   "init status" when {
     val init = Init()
-    val controller = new Controller(new GameFieldFixedSizeCreateStrategy(5))
+    val controller = new Controller()
     "set grid" should {
       val res = init.setGrid(controller, 2, 2, 0)
       "return failure" in {

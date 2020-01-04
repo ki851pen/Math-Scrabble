@@ -1,8 +1,7 @@
 package de.htwg.se.scrabble.controller.controllerComponent.controllerMockImpl
 
-import de.htwg.se.scrabble.controller.GameStatus
-import de.htwg.se.scrabble.controller.GameStatus.Init
-import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.controller.controllerComponent.{ControllerInterface, GameStatus}
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameFieldCreateStrategyTemplate, GameFieldFreeSizeCreateStrategy}
 import de.htwg.se.scrabble.model.gridComponent.CellInterface

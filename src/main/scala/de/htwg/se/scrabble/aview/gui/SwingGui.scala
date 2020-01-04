@@ -1,8 +1,8 @@
 package de.htwg.se.scrabble.aview.gui
 
-import de.htwg.se.scrabble.controller.GameStatus.{FirstCard, Init, P}
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.{FirstCard, Init, P}
 import de.htwg.se.scrabble.controller._
-import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.controller.controllerComponent.{CardsChanged, ClickChanged, ControllerInterface, GameFieldChanged, GridSizeChanged}
 import de.htwg.se.scrabble.util.CustomColors
 
 import scala.swing._
@@ -79,7 +79,7 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
     handPanel.contents.clear()
     handPanel.contents += new Label("Status: " + controller.gameStatus)
     handPanel.contents += new Label(" Your hand: ")
-    val currentHand = controller.getGameField.playerList(p).hand;
+    val currentHand = controller.getGameField.playerList(p).hand
     currentHand.foreach(card => {
       val button = new Button {
         background = CustomColors.Blue

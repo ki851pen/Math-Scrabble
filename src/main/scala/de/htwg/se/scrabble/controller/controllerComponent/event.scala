@@ -1,4 +1,4 @@
-package de.htwg.se.scrabble.controller
+package de.htwg.se.scrabble.controller.controllerComponent
 
 import scala.swing.event.Event
 

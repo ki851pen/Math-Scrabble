@@ -1,14 +1,19 @@
 package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.scrabble.controller.GameStatus._
-import de.htwg.se.scrabble.controller._
-import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import com.google.inject.name.Names
+import com.google.inject.{Guice, Inject}
+import net.codingwell.scalaguice.InjectorExtensions._
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
+import de.htwg.se.scrabble.controller.controllerComponent._
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
-import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy}
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
 import de.htwg.se.scrabble.model.gridComponent.CellInterface
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
 
-class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends ControllerInterface {
+import scala.swing.Publisher
+
+class Controller @Inject() extends ControllerInterface with Publisher{
+  private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate = new GameFieldFixedSizeCreateStrategy()
   private var gameField: GameFieldInterface = gameFieldCreateStrategy.createNewGameField
   private var gameState: State = Init()
   private val undoManager = new UndoManager
@@ -48,7 +53,6 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def setGrid(row: Int, col: Int, index: Int): Unit = {
     undoManager.doStep(new SetCommand(row, col, index, this))
     publish(ButtonSet(row, col))
-    //publish(new GameFieldChanged)
   }
 
   def undo: Unit = {
