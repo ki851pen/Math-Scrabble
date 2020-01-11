@@ -3,6 +3,7 @@ package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 import de.htwg.se.scrabble.controller.GameStatus._
 import de.htwg.se.scrabble.controller._
 import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.CardInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy, GameFieldFreeSizeCreateStrategy}
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
@@ -142,6 +143,11 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def fillAllHand(): Unit = {
     val playerName: Iterable[String] = gameField.playerList.keys
     playerName.foreach(p => fillHand(p))
+  }
+
+  def getCardsInHand(name: String): List[CardInterface] = {
+    val player = gameField.playerList(name)
+    player.hand
   }
 
   def clearHand(name: String): Unit = {
