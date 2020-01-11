@@ -5,7 +5,7 @@ import de.htwg.se.scrabble.controller.GameStatus.Init
 import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameFieldCreateStrategyTemplate, GameFieldFreeSizeCreateStrategy}
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.CellInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.{CardInterface, CellInterface}
 
 case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends ControllerInterface {
   gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(1, 1, 1, 1, 1, 1)
@@ -39,6 +39,8 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
   override def fillHand(name: String): Unit = {}
 
   override def fillAllHand: Unit = {}
+
+  override def getCardsInHand(name: String): List[CardInterface] = ???
 
   override def clearHand(name: String): Unit = {}
 
