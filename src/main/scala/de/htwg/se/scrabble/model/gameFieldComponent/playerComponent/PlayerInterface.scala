@@ -7,6 +7,8 @@ import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.
 trait PlayerInterface {
   def hand: List[CardInterface]
 
+  def name: String
+
   def maxHandSize: Int
 
   def point: Int
