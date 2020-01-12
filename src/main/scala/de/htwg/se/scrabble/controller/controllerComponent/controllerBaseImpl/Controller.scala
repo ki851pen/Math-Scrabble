@@ -20,6 +20,8 @@ class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTem
   def changeGamestatus(newState: State) = gameState = newState
   def gridSize: Int = gameField.grid.size
 
+  def getCurrentSum: Int = currentSum
+
   def cell(row: Int, col: Int) = gameField.grid.cell(row, col)
 
   def isSet(row: Int, col: Int): Boolean = gameField.grid.cell(row, col).isSet

@@ -12,6 +12,8 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
   private var gameField = gameFieldCreateStrategy.createNewGameField
   override def gridSize: Int = 1
 
+  override def getCurrentSum: Int = 0
+
   override def cell(row: Int, col: Int): CellInterface = gameField.grid.cell(row, col)
 
   override def isSet(row: Int, col: Int): Boolean = false

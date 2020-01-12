@@ -8,6 +8,7 @@ import scala.swing.Publisher
 
 trait ControllerInterface extends Publisher {
   def gridSize: Int
+  def getCurrentSum: Int
   def cell(row: Int, col: Int): CellInterface
   def isSet(row: Int, col: Int): Boolean
   def init: Unit
