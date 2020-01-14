@@ -2,12 +2,13 @@ package de.htwg.se.scrabble.controller.controllerComponent
 
 import GameStatus.State
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
-import de.htwg.se.scrabble.model.gridComponent.CellInterface
+import de.htwg.se.scrabble.model.gridComponent.{CellInterface, CardInterface}
 
 import scala.swing.Publisher
 
 trait ControllerInterface extends Publisher {
   def gridSize: Int
+  def getCurrentSum: Int
   def cell(row: Int, col: Int): CellInterface
   def isSet(row: Int, col: Int): Boolean
   def init: Unit
@@ -23,6 +24,7 @@ trait ControllerInterface extends Publisher {
   def redo: Unit
   def fillHand(name: String): Unit
   def fillAllHand: Unit
+  def getCardsInHand(name:String): List[CardInterface]
   def clearHand(name: String): Unit
   def gameStatus: State
   def changeGamestatus(newState: State): Unit

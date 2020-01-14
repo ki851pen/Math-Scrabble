@@ -1,5 +1,9 @@
 package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 
+import de.htwg.se.scrabble.controller.GameStatus._
+import de.htwg.se.scrabble.controller._
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.CardInterface
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
 import net.codingwell.scalaguice.InjectorExtensions._
@@ -24,6 +28,9 @@ class Controller @Inject() extends ControllerInterface with Publisher{
   def gridSize: Int = gameField.grid.size
 
   def cell(row: Int, col: Int): CellInterface = gameField.grid.cell(row, col)
+  def getCurrentSum: Int = currentSum
+
+  def cell(row: Int, col: Int) = gameField.grid.cell(row, col)
 
   def isSet(row: Int, col: Int): Boolean = gameField.grid.cell(row, col).isSet
 
@@ -53,6 +60,7 @@ class Controller @Inject() extends ControllerInterface with Publisher{
   def setGrid(row: Int, col: Int, index: Int): Unit = {
     undoManager.doStep(new SetCommand(row, col, index, this))
     publish(ButtonSet(row, col))
+    //publish(new GameFieldChanged)
   }
 
   def undo: Unit = {
@@ -196,6 +204,11 @@ class Controller @Inject() extends ControllerInterface with Publisher{
   def fillAllHand: Unit = {
     val playerName: Iterable[String] = gameField.playerList.keys
     playerName.foreach(p => fillHand(p))
+  }
+
+  def getCardsInHand(name: String): List[CardInterface] = {
+    val player = gameField.playerList(name)
+    player.hand
   }
 
   def clearHand(name: String): Unit = {

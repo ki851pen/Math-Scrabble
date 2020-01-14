@@ -6,6 +6,8 @@ import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Card
 trait PlayerInterface {
   def hand: List[CardInterface]
 
+  def name: String
+
   def maxHandSize: Int
 
   def point: Int
