@@ -49,7 +49,7 @@ object GameStatus {
   }
 
   case class P(player: String) extends State {
-    private var newCellsOfTurn: List[(Int, Int)] = Nil //fehlt noch cell from firstcard
+    private var newCellsOfTurn: List[(Int, Int)] = Nil //!IMPORTANT fehlt noch cell from firstcard
     override def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface] = {
       if (controller.cell(row, col).isSet) {
         Failure(new Exception("can't set already set cell"))

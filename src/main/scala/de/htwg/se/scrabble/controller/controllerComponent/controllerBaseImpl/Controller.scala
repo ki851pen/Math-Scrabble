@@ -3,7 +3,6 @@ package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject}
 import de.htwg.se.scrabble.ScrabbleModule
-import de.htwg.se.scrabble.controller.ProcessEquation
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
 import de.htwg.se.scrabble.controller.controllerComponent.{ControllerInterface, _}
 import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
@@ -12,6 +11,7 @@ import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
 import net.codingwell.scalaguice.InjectorExtensions._
+
 import scala.swing.Publisher
 
 class Controller @Inject() extends ControllerInterface with Publisher{
@@ -39,12 +39,6 @@ class Controller @Inject() extends ControllerInterface with Publisher{
   def setGameField(gameField: GameFieldInterface): Unit = {
     this.gameField = gameField
     publish(new GameFieldChanged)
-  }
-
-  def setstate(gameField: GameFieldInterface, gameStatus: State, currentSum: Int): Unit = {
-    this.gameField = gameField
-    this.gameState = gameStatus
-    this.currentSum = currentSum
   }
 
   def createMemento(): Memento = Memento(gameField, gameState, currentSum)

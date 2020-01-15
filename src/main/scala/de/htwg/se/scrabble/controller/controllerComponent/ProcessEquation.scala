@@ -1,11 +1,18 @@
-package de.htwg.se.scrabble.controller
+package de.htwg.se.scrabble.controller.controllerComponent
 
-
-import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.P
 import de.htwg.se.scrabble.model.gridComponent.CellInterface
 
 //import scala.tools.reflect.ToolBox
+//TODO: check if equation is valid then calculate the point
+// idea have a getrow and getcol in grid
+// when set save the position in collection
+// when submit check every row and col of set position
+// look for not set cell  for seperation between equation
+// only if in row all col have min 3 Card contiguous then is equation
+// parse card to arithmetic
+// check if eqution is valid
+// calculate point
 
 case class ProcessEquation(controller: ControllerInterface){
   var newcell: List[(Int, Int)] = Nil
@@ -16,8 +23,8 @@ case class ProcessEquation(controller: ControllerInterface){
   val rows: List[Seq[CellInterface]] = newcell.map(c => c._1).map(controller.getGameField.grid.getRow(_)).distinct
   val cols: List[Seq[CellInterface]] = newcell.map(c => c._2).map(controller.getGameField.grid.getCol(_)).distinct
 
-  val test = rows.map(x => findEquation(List(x)))
-  val test2 = cols.map(x => findEquation(List(x)))
+  val test: List[List[Seq[CellInterface]]] = rows.map(x => findEquation(List(x)))
+  val test2: List[List[Seq[CellInterface]]] = cols.map(x => findEquation(List(x)))
   test.foreach(println(_))
   test2.foreach(println(_))
 
@@ -60,15 +67,4 @@ case class ProcessEquation(controller: ControllerInterface){
 
 //  val toolbox = currentMirror.mkToolBox()
 //  val calc = toolbox.eval(toolbox.parse(expr))
-
-
-//TODO: check if equation is valid then calculate the point
-  // idea have a getrow and getcol in grid
-  // when set save the position in collection
-  // when submit check every row and col of set position
-  // look for not set cell  for seperation between equation
-  // only if in row all col have min 3 Card contiguous then is equation
-  // parse card to arithmetic
-  // check if eqution is valid
-  // calculate point
 }
