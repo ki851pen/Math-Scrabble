@@ -1,22 +1,27 @@
 package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 
-import com.google.inject.Inject
+import com.google.inject.name.Names
+import com.google.inject.{Guice, Inject}
+import de.htwg.se.scrabble.ScrabbleModule
 import de.htwg.se.scrabble.controller.ProcessEquation
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
 import de.htwg.se.scrabble.controller.controllerComponent.{ControllerInterface, _}
+import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
-
+import net.codingwell.scalaguice.InjectorExtensions._
 import scala.swing.Publisher
 
 class Controller @Inject() extends ControllerInterface with Publisher{
-  private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate = new GameFieldFixedSizeCreateStrategy()
+  val injector = Guice.createInjector(new ScrabbleModule)
+  private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate = injector.instance[GameFieldCreateStrategyTemplate](Names.named("DefaultStrategy"))
   private var gameField: GameFieldInterface = gameFieldCreateStrategy.createNewGameField
   private var gameState: State = Init()
   private val undoManager = new UndoManager
   private var currentSum: Int = 0
+  val fileIo = injector.instance[FileIOInterface]
 
   def gameStatus: State = gameState
   def changeGamestatus(newState: State): Unit = gameState = newState
