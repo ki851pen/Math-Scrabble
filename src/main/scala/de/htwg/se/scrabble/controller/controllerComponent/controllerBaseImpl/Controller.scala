@@ -1,17 +1,12 @@
 package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.scrabble.controller.GameStatus._
-import de.htwg.se.scrabble.controller._
-import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
-import de.htwg.se.scrabble.model.gameFieldComponent.gridComponent.cellComponent.CardInterface
-import com.google.inject.name.Names
-import com.google.inject.{Guice, Inject}
-import net.codingwell.scalaguice.InjectorExtensions._
+import com.google.inject.Inject
+import de.htwg.se.scrabble.controller.ProcessEquation
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
-import de.htwg.se.scrabble.controller.controllerComponent._
+import de.htwg.se.scrabble.controller.controllerComponent.{ControllerInterface, _}
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
-import de.htwg.se.scrabble.model.gridComponent.CellInterface
+import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
 
 import scala.swing.Publisher
@@ -29,8 +24,6 @@ class Controller @Inject() extends ControllerInterface with Publisher{
 
   def cell(row: Int, col: Int): CellInterface = gameField.grid.cell(row, col)
   def getCurrentSum: Int = currentSum
-
-  def cell(row: Int, col: Int) = gameField.grid.cell(row, col)
 
   def isSet(row: Int, col: Int): Boolean = gameField.grid.cell(row, col).isSet
 
@@ -60,7 +53,6 @@ class Controller @Inject() extends ControllerInterface with Publisher{
   def setGrid(row: Int, col: Int, index: Int): Unit = {
     undoManager.doStep(new SetCommand(row, col, index, this))
     publish(ButtonSet(row, col))
-    //publish(new GameFieldChanged)
   }
 
   def undo: Unit = {
@@ -156,7 +148,7 @@ class Controller @Inject() extends ControllerInterface with Publisher{
   }
 
   def endTurn: Unit = {
-    //ProcessEquation(this)
+    ProcessEquation(this)
     //if (!checkEquation()) takeCardsBack()
     gameField = gameState.calPoint(this, currentSum).getOrElse(gameField)
     currentSum = 0

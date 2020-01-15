@@ -1,6 +1,6 @@
-val a = List(List("","","","3","=","3","","2"))
+val a = List(List("2","=","2","","3","=","3","","2","=","1","0"))
 
-def doit(lol: List[List[String]]): List[List[String]] = {
+def findEquation(lol: List[List[String]]): List[List[String]] = {
   val r  = lol.reverse
   val l  = r.head
   val wolast = r.tail.reverse
@@ -11,7 +11,25 @@ def doit(lol: List[List[String]]): List[List[String]] = {
   val a = wolast ::: list.filter(_.length >= 3)
   if (a.forall(!_.contains(""))) {
     a
-  } else doit(a)
+  } else findEquation(a)
 }
 
-val b = doit(a)
+val b = findEquation(a)
+
+val test = List("2","=","2")
+
+val head: String => (String, Char) = s => (s.tail, s.head)
+val toInt: String => (String, Int) = s => ("", s.toInt)
+val product: String => (String, Int) = s => {
+  val (state, ch) = head(s)
+  val (state2, i) = toInt(state)
+  (state2, ch * i)
+}
+
+val initialState = "23"
+product(initialState)
+
+/*def eval(ex: List[String]): Boolean = {
+  ex.head.toIntOption.getOrElse(return false)
+  ex
+}*/

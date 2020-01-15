@@ -1,21 +1,41 @@
 package de.htwg.se.scrabble.controller
-/*
-import de.htwg.se.scrabble.controller.GameStatus.P
-import de.htwg.se.scrabble.model.cell.Cell
+
+
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.P
+import de.htwg.se.scrabble.model.gridComponent.CellInterface
+
 //import scala.tools.reflect.ToolBox
 
-case class ProcessEquation(controller: Controller){
+case class ProcessEquation(controller: ControllerInterface){
   var newcell: List[(Int, Int)] = Nil
   controller.gameStatus match {
     case p: P => newcell = p.getNewCells
     case _ => "cant process equation"
   }
-  val rows: List[Vector[Cell]] = newcell.map(c => c._1).map(controller.getGameField.grid.getRow(_))
-  val cols: List[Vector[Cell]] = newcell.map(c => c._2).map(controller.getGameField.grid.getCol(_))
-  println(rows)
-  println(cols)
+  val rows: List[Seq[CellInterface]] = newcell.map(c => c._1).map(controller.getGameField.grid.getRow(_)).distinct
+  val cols: List[Seq[CellInterface]] = newcell.map(c => c._2).map(controller.getGameField.grid.getCol(_)).distinct
 
-  def doit(a:List[Vector[Cell]]) = {
+  val test = rows.map(x => findEquation(List(x)))
+  val test2 = cols.map(x => findEquation(List(x)))
+  test.foreach(println(_))
+  test2.foreach(println(_))
+
+  def findEquation(lol: List[Seq[CellInterface]]): List[Seq[CellInterface]] = {
+    val rv = lol.reverse
+    val last = rv.head
+    val wolast = rv.tail.reverse
+    val x = last.map(_.isSet).indexOf(false)
+
+    val c = if (x==0) last.splitAt(1) else last.splitAt(x)
+    val list: List[Seq[CellInterface]] = c._1::c._2::Nil
+    val newlol = wolast ::: list.filter(_.length >= 3)
+    if (newlol.forall(_.forall(_.isSet))) {newlol} else findEquation(newlol) //.forall(!_.contains(""))
+  }
+
+
+
+  /*def doit(a:List[Vector[CellInterface]]) = {
     a.map(_.mkString("").trim().replaceAll(" +", " ").replaceAll("x2|x3", ""))
       .map(_.split(" ").filter(_.length >= 3).toList).distinct.flatten
   }
@@ -23,9 +43,9 @@ case class ProcessEquation(controller: Controller){
   val c = doit(cols)
   val equationList: List[String] = r ::: c
 
-  equationList.foreach(println(_))
+  equationList.foreach(println(_))*/
 
-
+  /*
   val expression = "5 - 3 + 2"
 
   def evaluate(expression: List[String]): Int = expression match {
@@ -36,7 +56,7 @@ case class ProcessEquation(controller: Controller){
 
 
 
-  val expr = "2*(2+3)"
+  val expr = "2*(2+3)"*/
 
 //  val toolbox = currentMirror.mkToolBox()
 //  val calc = toolbox.eval(toolbox.parse(expr))
@@ -51,4 +71,4 @@ case class ProcessEquation(controller: Controller){
   // parse card to arithmetic
   // check if eqution is valid
   // calculate point
-}*/
+}
