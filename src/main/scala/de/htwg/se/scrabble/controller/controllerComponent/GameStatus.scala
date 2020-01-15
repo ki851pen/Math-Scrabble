@@ -22,6 +22,8 @@ object GameStatus {
     override def calPoint(controller: ControllerInterface, currentSum: Int): Option[GameFieldInterface] = None
 
     override def gameToString(controller: ControllerInterface): String = "write init or gf [size] to begin"
+
+    override def toString: String = "init"
   }
 
   case class FirstCard() extends State {
@@ -46,6 +48,8 @@ object GameStatus {
     }
 
     override def gameToString(controller: ControllerInterface): String = controller.getGameField.gameToString("A")
+
+    override def toString: String = "fc"
   }
 
   case class P(player: String) extends State {
@@ -72,6 +76,8 @@ object GameStatus {
     override def gameToString(controller: ControllerInterface): String = controller.getGameField.gameToString(player)
 
     def getNewCells: List[(Int, Int)] = newCellsOfTurn
+
+    override def toString: String = "p"+player
   }
 
   def changePlayer(currentPlayer: String): String = if (currentPlayer == "A") "B" else  "A"

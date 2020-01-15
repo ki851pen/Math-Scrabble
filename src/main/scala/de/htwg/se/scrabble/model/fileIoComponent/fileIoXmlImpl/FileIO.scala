@@ -1,22 +1,40 @@
 package de.htwg.se.scrabble.model.fileIoComponent.fileIoXmlImpl
 
-import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import com.google.inject.Guice
+import de.htwg.se.scrabble.ScrabbleModule
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
 import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameField
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Card
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, GridInterface}
+import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 import de.htwg.se.scrabble.model.playerComponent.PlayerInterface
 import de.htwg.se.scrabble.util.Memento
 
 import scala.xml.PrettyPrinter
 
 class FileIO extends FileIOInterface{
-  // use set state(gamefield, sum, state) when finished load in controller
   override def load: Memento = {
-    var gamefield: GameFieldInterface = null
     val file = scala.xml.XML.loadFile("gameField.xml")
-    val sizeAttr = file \\ "grid" \"@size"
-    val size = sizeAttr.text.toInt
 
+    val statusAttr = file \\ "gamefield" \\ "@status"
+    val sumAttr = file \\ "gamefield" \\ "@currentsum"
+    val pilecard = file \\ "pile" \\ "card"
+    //val injector  = Guice.createInjector(new ScrabbleModule)
+    //val card: CardInterface = injector.getInstance(classOf[CardInterface])
+    val tilepile = pilecard.map(x => Card(x.text)).toList
+    val pile = Pile(tilepile)
+    val grid = ???
+    val playerlist = ???
+    var gamefield= GameField(grid,pile,playerlist)
+    val status = statusAttr.text match {
+      case "init"=> Init()
+      case "fc"=> FirstCard()
+      case "pA"=> P("A")
+      case "pB"=> P("B")
+    }
+    Memento(gamefield, status, sumAttr.text.toInt)
   }
 
   override def save(mem: Memento): Unit = saveString(mem)
@@ -32,7 +50,7 @@ class FileIO extends FileIOInterface{
 
   def gameFieldToXml(mem: Memento) = {
     val gameField = mem.gameField
-    <gamefield status={mem.gameStatus} currentsum = {mem.currentSum}>
+    <gamefield status={mem.gameStatus} currentsum={mem.currentSum}>
       <grid>
         <grid size={ gameField.grid.size.toString }>
           {
