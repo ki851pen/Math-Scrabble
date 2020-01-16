@@ -1,7 +1,5 @@
 package de.htwg.se.scrabble.model.fileIoComponent.fileIoXmlImpl
 
-import com.google.inject.Guice
-import de.htwg.se.scrabble.ScrabbleModule
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
 import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
@@ -12,7 +10,7 @@ import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 import de.htwg.se.scrabble.model.playerComponent.PlayerInterface
 import de.htwg.se.scrabble.util.Memento
 
-import scala.xml.PrettyPrinter
+import scala.xml.{NodeSeq,PrettyPrinter}
 
 class FileIO extends FileIOInterface{
   override def load: Memento = {
@@ -50,27 +48,27 @@ class FileIO extends FileIOInterface{
 
   def gameFieldToXml(mem: Memento) = {
     val gameField = mem.gameField
-    <gamefield status={mem.gameStatus} currentsum={mem.currentSum}>
-      <grid>
-        <grid size={ gameField.grid.size.toString }>
-          {
-          for {
-            row <- 0 until gameField.grid.size
-            col <- 0 until gameField.grid.size
-          } yield cellToXml(gameField.grid, row, col)
-          }
-        </grid>
-      </grid>
+    <gamefield status={mem.gameStatus.toString} currentsum={mem.currentSum.toString}>
+      <grid size={ gameField.grid.size.toString }>
+      {
+        for {
+          row <- 0 until gameField.grid.size
+          col <- 0 until gameField.grid.size
+        } yield cellToXml(gameField.grid, row, col)
+      }
+    </grid>
       <pile>
-        {gameField.pile.tilepile.foreach(cardToXml)}
+        {gameField.pile.tilepile.map(cardToXml)}
       </pile>
       <playerlist>
-        {gameField.playerList.foreach(playerToXml)}
+        {gameField.playerList.map(playerToXml)}
       </playerlist>
     </gamefield>
   }
 
+
   def cardToXml(card: CardInterface) = {
+    println(card)
     <card>{card.toString}</card>
   }
 
@@ -79,8 +77,8 @@ class FileIO extends FileIOInterface{
   }
 
   def playerToXml(player: (String,PlayerInterface)) ={
-    <player name={player._1} point={player._2.point}>
-      <hand>{player._2.hand.foreach(cardToXml)}</hand>
+    <player name={player._1} point={player._2.point.toString}>
+      <hand>{player._2.hand.map(cardToXml)}</hand>
     </player>
   }
 }

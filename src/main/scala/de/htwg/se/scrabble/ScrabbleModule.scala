@@ -11,7 +11,7 @@ class ScrabbleModule extends AbstractModule with ScalaModule {
   override def configure()= {
     bind[GameFieldCreateStrategyTemplate].annotatedWithName("DefaultStrategy").toInstance(new GameFieldFixedSizeCreateStrategy())
     bind[ControllerInterface].to[controllerBaseImpl.Controller]
-    bind[CardInterface].to[gridBaseImpl.Card]
+    //bind[CardInterface].to[gridBaseImpl.Card]
 
     bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
   }

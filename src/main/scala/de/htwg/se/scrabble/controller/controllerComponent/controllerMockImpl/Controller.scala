@@ -62,4 +62,8 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
   override def gameToString: String = ""
 
   override def changeGamestatus(newState: GameStatus.State): Unit = ???
+
+  override def save: Unit = ???
+
+  override def load: Unit = ???
 }
