@@ -54,6 +54,16 @@ class Controller @Inject() extends ControllerInterface with Publisher{
     publish(ButtonSet(row, col))
   }
 
+  def save: Unit = {
+    fileIo.save(createMemento())
+    publish(new GameFieldChanged)
+  }
+
+  def load: Unit = {
+    restoreFromMemento(fileIo.load)
+    publish(new GameFieldChanged)
+  }
+
   def undo: Unit = {
     undoManager.undoStep
     publish(new GameFieldChanged)

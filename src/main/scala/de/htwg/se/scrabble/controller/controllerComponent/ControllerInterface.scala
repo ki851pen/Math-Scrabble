@@ -22,6 +22,8 @@ trait ControllerInterface extends Publisher {
 
   def undo: Unit
   def redo: Unit
+  def save: Unit
+  def load: Unit
   def fillHand(name: String): Unit
   def fillAllHand: Unit
   def getCardsInHand(name:String): List[CardInterface]
