@@ -14,6 +14,8 @@ trait GridInterface {
   def getRow(row: Int): Vector[CellInterface]
 
   def getCol(col: Int): Vector[CellInterface]
+
+  def initSpecialCell: GridInterface
 }
 
 trait CellInterface {

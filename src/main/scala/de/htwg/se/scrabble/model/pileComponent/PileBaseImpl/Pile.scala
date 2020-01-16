@@ -1,11 +1,12 @@
 package de.htwg.se.scrabble.model.pileComponent.PileBaseImpl
 
+import de.htwg.se.scrabble.model.gridComponent.CardInterface
 import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Card
 import de.htwg.se.scrabble.model.pileComponent.PileInterface
 
 import scala.util.Random
 
-case class Pile(tilepile: List[Card]) extends PileInterface {
+case class Pile(tilepile: List[CardInterface]) extends PileInterface {
   def this() = this(List.fill(20)(Card("=")) ::: List.fill(7)(Card("+")) ::: List.fill(7)(Card("-")) ::: List.fill(5)(Card("*"))
     ::: List.fill(5)(Card("/")) ::: List.fill(6)(Card("?")) ::: List.fill(5)((0 to 9).toList).flatten.map(x => Card(x.toString)))
 
@@ -19,7 +20,7 @@ case class Pile(tilepile: List[Card]) extends PileInterface {
 
   def drop(value: Int): Pile = copy(tilepile.drop(value))
 
-  def take(value: Int): List[Card] = tilepile.take(value)
+  def take(value: Int): List[CardInterface] = tilepile.take(value)
 
   def add(value: String, nr: Int): Pile = if (Card(value).isValid) Pile(tilepile ::: List.fill(nr)(Card(value))) else this
 

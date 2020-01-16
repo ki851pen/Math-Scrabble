@@ -1,8 +1,9 @@
 package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gridComponent.CellInterface
 
-abstract class Cell(value: String) extends CellInterface{
+abstract class Cell (value: String) extends CellInterface{
 
   val cellType: String
 

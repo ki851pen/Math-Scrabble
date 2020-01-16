@@ -9,9 +9,9 @@ class GameFieldStrategySpec extends WordSpec with Matchers{
     val gameField = gameFieldStrat.createNewGameField
     "modified with specialcell" in {
       val grid = gameField.grid
-      grid.cell(0,0).cellType shouldBe "t"
-      grid.cell(1,1).cellType shouldBe "d"
-      grid.cell(gameFieldStrat.sizeGrid-1, gameFieldStrat.sizeGrid-1).cellType shouldBe "t"
+      grid.cell(0,0).isTriple shouldBe true
+      grid.cell(1,1).isDouble shouldBe true
+      grid.cell(gameFieldStrat.sizeGrid-1, gameFieldStrat.sizeGrid-1).isTriple shouldBe true
     }
   }
 }

@@ -1,13 +1,14 @@
 package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
-import de.htwg.se.scrabble.model.gridComponent.GridInterface
+import com.google.inject.Inject
+import de.htwg.se.scrabble.model.gridComponent.{CellInterface, GridInterface}
 
 import scala.collection.mutable
 
-case class Grid(cells: Vector[Vector[Cell]]) extends GridInterface {
+case class Grid @Inject() (cells: Vector[Vector[CellInterface]]) extends GridInterface {
   def this(size: Int) = this(Vector.tabulate(size, size) { (row, col) => Cell("") })
 
-  def cell(row: Int, col: Int): Cell = cells(row)(col)
+  def cell(row: Int, col: Int): CellInterface = cells(row)(col)
 
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
 
@@ -15,7 +16,7 @@ case class Grid(cells: Vector[Vector[Cell]]) extends GridInterface {
 
   val size: Int = cells.size
 
-  def initSpecialCell: Grid = {
+  def initSpecialCell: GridInterface = {
     val max: Int = size - 1
     val half: Int = max / 2
     Grid(Vector.tabulate(size, size) { (row, col) =>
@@ -35,12 +36,12 @@ case class Grid(cells: Vector[Vector[Cell]]) extends GridInterface {
     grid
   }
 
-  def getRow(row: Int): Vector[Cell] = cells(row)
+  def getRow(row: Int): Vector[CellInterface] = cells(row)
 
-  def getCol(col: Int): Vector[Cell] = cells.map(x => x(col))
+  def getCol(col: Int): Vector[CellInterface] = cells.map(x => x(col))
 
-  def getNeighborsOf(row: Int, col: Int): Map[(Int, Int), Cell] = {
-    val neighbors = new mutable.TreeMap[(Int, Int), Cell]()
+  def getNeighborsOf(row: Int, col: Int): Map[(Int, Int), CellInterface] = {
+    val neighbors = new mutable.TreeMap[(Int, Int), CellInterface]()
     if (!isOnTop(row) && cell(row - 1, col).isSet) neighbors.put((row - 1, col), cell(row - 1, col))
     if (!isExtremeLeft(col) && cell(row, col - 1).isSet) neighbors.put((row, col - 1), cell(row, col - 1))
     if (!isAtBottom(row) && cell(row + 1, col).isSet) neighbors.put((row + 1, col), cell(row + 1, col))

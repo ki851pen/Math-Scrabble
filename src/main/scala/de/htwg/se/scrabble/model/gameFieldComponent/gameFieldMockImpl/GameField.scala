@@ -3,12 +3,10 @@ package de.htwg.se.scrabble.model.gameFieldComponent.gameFieldMockImpl
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Grid
 import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
-import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
+import de.htwg.se.scrabble.model.playerComponent.PlayerInterface
 
-case class GameField(grid: Grid, pile: Pile, playerList: Map[String, Player]) extends GameFieldInterface {
-  //def changePlayerAttr(name: String, changedPlayer: Player): Map[String, PlayerInterface] = ???
-
-  def gameToStringWOPlayer: String = ""
+case class GameField (grid: Grid, pile: Pile, playerList: Map[String, PlayerInterface]) extends GameFieldInterface {
+ def gameToStringWOPlayer: String = ""
 
   def playerListToString: String = ""
 
