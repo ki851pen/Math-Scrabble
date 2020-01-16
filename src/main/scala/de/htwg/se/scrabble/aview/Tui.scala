@@ -21,6 +21,8 @@ class Tui(controller: ControllerInterface) extends Reactor {
       case "fh" => controller.fillAllHand
       case "z" => controller.undo
       case "y" => controller.redo
+      case "save" => controller.save
+      case "load" => controller.load
       case _ => input.split(" ").toList match {
         case command :: player :: Nil if command == "clr" => controller.clearHand(player)
         case command :: player :: Nil if command == "fh" => controller.fillHand(player)

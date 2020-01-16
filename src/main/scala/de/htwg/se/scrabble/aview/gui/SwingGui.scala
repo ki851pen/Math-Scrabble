@@ -30,6 +30,12 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
       contents += new MenuItem(Action("New Game") {
         controller.init
       })
+      contents += new MenuItem(Action("Save") {
+        controller.save
+      })
+      contents += new MenuItem(Action("Load") {
+        controller.load
+      })
       contents += new MenuItem(Action("Quit") {
         System.exit(0)
       })
