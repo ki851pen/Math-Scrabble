@@ -57,11 +57,13 @@ class Controller @Inject() extends ControllerInterface with Publisher{
   def save: Unit = {
     fileIo.save(createMemento())
     publish(new GameFieldChanged)
+    println("saved")
   }
 
   def load: Unit = {
     restoreFromMemento(fileIo.load)
     publish(new GameFieldChanged)
+    println("loaded")
   }
 
   def undo: Unit = {

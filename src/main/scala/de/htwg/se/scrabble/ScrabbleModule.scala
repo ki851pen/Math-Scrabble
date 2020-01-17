@@ -16,6 +16,7 @@ class ScrabbleModule extends AbstractModule with ScalaModule {
     //bind[GridInterface].to[gridBaseImpl.Grid] WHY ERROR???
     bind[CardInterface].to[gridBaseImpl.Card]
     bind[PileInterface].to[PileBaseImpl.Pile]
-    bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
+    //bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
+    bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
   }
 }
