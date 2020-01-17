@@ -1,14 +1,15 @@
 package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
 import com.google.inject.Inject
-import de.htwg.se.scrabble.model.gridComponent.{CellInterface, GridInterface}
+import de.htwg.se.scrabble.model.gridComponent.GridInterface
+import play.api.libs.json.Json
 
 import scala.collection.mutable
 
-case class Grid @Inject() (cells: Vector[Vector[CellInterface]]) extends GridInterface {
+case class Grid @Inject() (cells: Vector[Vector[Cell]]) extends GridInterface {
   def this(size: Int) = this(Vector.tabulate(size, size) { (row, col) => Cell("") })
 
-  def cell(row: Int, col: Int): CellInterface = cells(row)(col)
+  def cell(row: Int, col: Int): Cell = cells(row)(col)
 
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
 
@@ -16,7 +17,7 @@ case class Grid @Inject() (cells: Vector[Vector[CellInterface]]) extends GridInt
 
   val size: Int = cells.size
 
-  def initSpecialCell: GridInterface = {
+  def initSpecialCell: Grid = {
     val max: Int = size - 1
     val half: Int = max / 2
     Grid(Vector.tabulate(size, size) { (row, col) =>
@@ -36,12 +37,12 @@ case class Grid @Inject() (cells: Vector[Vector[CellInterface]]) extends GridInt
     grid
   }
 
-  def getRow(row: Int): Vector[CellInterface] = cells(row)
+  def getRow(row: Int): Vector[Cell] = cells(row)
 
-  def getCol(col: Int): Vector[CellInterface] = cells.map(x => x(col))
+  def getCol(col: Int): Vector[Cell] = cells.map(x => x(col))
 
-  def getNeighborsOf(row: Int, col: Int): Map[(Int, Int), CellInterface] = {
-    val neighbors = new mutable.TreeMap[(Int, Int), CellInterface]()
+  def getNeighborsOf(row: Int, col: Int): Map[(Int, Int), Cell] = {
+    val neighbors = new mutable.TreeMap[(Int, Int), Cell]()
     if (!isOnTop(row) && cell(row - 1, col).isSet) neighbors.put((row - 1, col), cell(row - 1, col))
     if (!isExtremeLeft(col) && cell(row, col - 1).isSet) neighbors.put((row, col - 1), cell(row, col - 1))
     if (!isAtBottom(row) && cell(row + 1, col).isSet) neighbors.put((row + 1, col), cell(row + 1, col))
@@ -78,4 +79,9 @@ case class Grid @Inject() (cells: Vector[Vector[CellInterface]]) extends GridInt
     box
   }
 
+}
+
+object Grid {
+  def apply(cells: Vector[Vector[Cell]]) = new Grid(cells)
+  implicit var gridFormat = Json.format[Grid]
 }

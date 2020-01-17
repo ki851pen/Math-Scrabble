@@ -3,11 +3,9 @@ package de.htwg.se.scrabble
 import com.google.inject.AbstractModule
 import de.htwg.se.scrabble.controller.controllerComponent._
 import de.htwg.se.scrabble.model.fileIoComponent._
-import de.htwg.se.scrabble.model.gameFieldComponent._
-import de.htwg.se.scrabble.model.pileComponent._
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameFieldCreateStrategyTemplate, GameFieldFixedSizeCreateStrategy}
 import de.htwg.se.scrabble.model.gridComponent._
-import de.htwg.se.scrabble.model.pileComponent.PileInterface
+import de.htwg.se.scrabble.model.pileComponent.{PileInterface, _}
 import net.codingwell.scalaguice.ScalaModule
 
 class ScrabbleModule extends AbstractModule with ScalaModule {
@@ -18,6 +16,6 @@ class ScrabbleModule extends AbstractModule with ScalaModule {
     //bind[GridInterface].to[gridBaseImpl.Grid] WHY ERROR???
     bind[CardInterface].to[gridBaseImpl.Card]
     bind[PileInterface].to[PileBaseImpl.Pile]
-    bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
+    bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
   }
 }

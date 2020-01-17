@@ -1,9 +1,9 @@
 package de.htwg.se.scrabble.model.playerComponent
 
-import de.htwg.se.scrabble.model.gridComponent.CardInterface
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Card
 
 trait PlayerInterface {
-  def hand: List[CardInterface]
+  def hand: List[Card]
 
   def name: String
 
@@ -13,11 +13,11 @@ trait PlayerInterface {
 
   def getNrCardsInHand: Int
 
-  def addToHand(cards: List[CardInterface]): PlayerInterface
+  def addToHand(cards: List[Card]): PlayerInterface
 
   def dropAllCard: PlayerInterface
 
-  def useCard(card: CardInterface): PlayerInterface
+  def useCard(card: Card): PlayerInterface
 
   def addPoint(pointToAdd: Int): PlayerInterface
 

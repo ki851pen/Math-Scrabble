@@ -4,15 +4,13 @@ import com.google.inject.Guice
 import de.htwg.se.scrabble.ScrabbleModule
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
 import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
-import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameField
-import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.{Card, Cell, Grid}
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.{Card, Grid}
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, GridInterface}
 import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 import de.htwg.se.scrabble.model.playerComponent.PlayerInterface
 import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 import de.htwg.se.scrabble.util.Memento
-import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.xml.PrettyPrinter
 
@@ -33,7 +31,7 @@ class FileIO extends FileIOInterface{
 
     var playerList: Map[String, Player] = Map[String, Player]()
     (playerNameAttr, pointAttr, hands).zipped.foreach((x1,x2,x3) =>{
-      var hand: List[CardInterface] = Nil
+      var hand: List[Card] = Nil
       val cards = x3 \\ "card"
       cards.foreach(x => hand = Card(x.text) :: hand)
       val player = Player(x1.text, hand, x2.text.toInt)
@@ -44,7 +42,7 @@ class FileIO extends FileIOInterface{
     val tilepile = pilecard.map(x => Card(x.text)).toList
     val pile = Pile(tilepile)
     println(pile)
-    var grid: GridInterface = new Grid(sizeAttr.text.toInt).initSpecialCell
+    var grid = new Grid(sizeAttr.text.toInt).initSpecialCell
     val cellNodes = file \\ "cell"
     for (cell <- cellNodes) {
       val row: Int = (cell \ "@row").text.toInt

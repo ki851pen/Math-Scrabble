@@ -2,6 +2,7 @@ package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
 import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gridComponent.CardInterface
+import play.api.libs.json.Json
 
 case class Card @Inject() (value: String) extends CardInterface {
   private val point: Map[String, Int] = Map("=" -> 1, "+" -> 1, "-" -> 1, "*" -> 2, "/" -> 3, "?" -> 0
@@ -35,4 +36,9 @@ case class Card @Inject() (value: String) extends CardInterface {
     case c: Card => c.parseValue == parseValue
     case _ => false
   }
+}
+
+object Card {
+  def apply(value: String) = new Card(value)
+  implicit var cardFormat = Json.format[Card]
 }

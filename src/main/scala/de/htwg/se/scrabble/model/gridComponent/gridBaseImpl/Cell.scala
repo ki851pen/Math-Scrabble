@@ -1,12 +1,13 @@
 package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
-import com.google.inject.Inject
 import de.htwg.se.scrabble.model.gridComponent.CellInterface
+import play.api.libs.json.Json
 
 abstract class Cell (value: String) extends CellInterface{
 
   val cellType: String
 
+  val v = value
   def card = Card(value)
 
   def isSet: Boolean = card.isValid
@@ -33,4 +34,9 @@ object Cell {
   }
 
   def apply(value: String): Cell = NormalCell(value)
+
+  def unapply(cell: Cell): Option[(String, String)] = Some((cell.cellType, cell.v))
+
+
+  implicit val format = Json.format[Cell]
 }
