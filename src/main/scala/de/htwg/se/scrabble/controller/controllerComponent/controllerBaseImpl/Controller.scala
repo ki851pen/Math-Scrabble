@@ -14,14 +14,13 @@ import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
 
-class Controller @Inject() extends ControllerInterface with Publisher{
+class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate, fileIO: FileIOInterface) extends ControllerInterface with Publisher{
   val injector = Guice.createInjector(new ScrabbleModule)
-  private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate = injector.instance[GameFieldCreateStrategyTemplate](Names.named("DefaultStrategy"))
+  //private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate = injector.instance[GameFieldCreateStrategyTemplate](Names.named("DefaultStrategy"))
   private var gameField: GameFieldInterface = gameFieldCreateStrategy.createNewGameField
   private var gameState: State = Init()
   private val undoManager = new UndoManager
   private var currentSum: Int = 0
-  val fileIo = injector.instance[FileIOInterface]
 
   def gameStatus: State = gameState
   def changeGamestatus(newState: State): Unit = gameState = newState
@@ -55,13 +54,13 @@ class Controller @Inject() extends ControllerInterface with Publisher{
   }
 
   def save: Unit = {
-    fileIo.save(createMemento())
+    fileIO.save(createMemento())
     publish(new GameFieldChanged)
     println("saved")
   }
 
   def load: Unit = {
-    restoreFromMemento(fileIo.load)
+    restoreFromMemento(fileIO.load)
     publish(new GameFieldChanged)
     println("loaded")
   }
@@ -145,7 +144,6 @@ class Controller @Inject() extends ControllerInterface with Publisher{
           }
         }
         }
-
       }*/
     true
   }

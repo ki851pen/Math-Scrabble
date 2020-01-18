@@ -3,13 +3,14 @@ package de.htwg.se.scrabble.model.gameFieldComponent
 import de.htwg.se.scrabble.model.gridComponent.GridInterface
 import de.htwg.se.scrabble.model.pileComponent.PileInterface
 import de.htwg.se.scrabble.model.playerComponent.PlayerInterface
+import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 
 trait GameFieldInterface {
   def pile: PileInterface
 
   def grid: GridInterface
 
-  def playerList: Map[String, PlayerInterface]
+  def playerList: Map[String, Player]
 
   def createNewPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): GameFieldInterface
 

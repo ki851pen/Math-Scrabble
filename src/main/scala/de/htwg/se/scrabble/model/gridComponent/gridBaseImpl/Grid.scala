@@ -6,7 +6,7 @@ import play.api.libs.json.Json
 
 import scala.collection.mutable
 
-case class Grid @Inject() (cells: Vector[Vector[Cell]]) extends GridInterface {
+case class Grid @Inject()(cells: Vector[Vector[Cell]]) extends GridInterface {
   def this(size: Int) = this(Vector.tabulate(size, size) { (row, col) => Cell("") })
 
   def cell(row: Int, col: Int): Cell = cells(row)(col)

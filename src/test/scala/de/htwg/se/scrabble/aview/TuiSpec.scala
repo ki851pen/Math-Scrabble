@@ -1,4 +1,7 @@
 package de.htwg.se.scrabble.aview
+import com.google.inject.Guice
+import de.htwg.se.scrabble.ScrabbleModule
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 import de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFixedSizeCreateStrategy
 import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.{Cell, Grid}
@@ -6,7 +9,8 @@ import org.scalatest.{Matchers, WordSpec}
 
 class TuiSpec extends WordSpec with Matchers{
   "A Math-Scrabble Tui" should {
-    val controller = new Controller()
+    val injector = Guice.createInjector(new ScrabbleModule)
+    val controller = injector.getInstance(classOf[ControllerInterface])
     val tui = new Tui(controller)
     "create and empty Grid on input 'init'" in {
       tui.processInputLine("init")

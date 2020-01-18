@@ -13,6 +13,8 @@ import de.htwg.se.scrabble.model.gridComponent.CellInterface
 // parse card to arithmetic
 // check if eqution is valid
 // calculate point
+// remove blank
+// increase hand size and pile size
 
 case class ProcessEquation(controller: ControllerInterface){
   var newcell: List[(Int, Int)] = Nil

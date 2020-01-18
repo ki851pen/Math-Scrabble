@@ -1,5 +1,8 @@
 package de.htwg.se.scrabble.controller
 
+import com.google.inject.Guice
+import de.htwg.se.scrabble.ScrabbleModule
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.Init
 import de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFixedSizeCreateStrategy
@@ -9,7 +12,8 @@ import scala.util.Failure
 class InitSpec extends WordSpec with Matchers{
   "init status" when {
     val init = Init()
-    val controller = new Controller()
+    val injector = Guice.createInjector(new ScrabbleModule)
+    val controller = injector.getInstance(classOf[ControllerInterface])
     "set grid" should {
       val res = init.setGrid(controller, 2, 2, 0)
       "return failure" in {

@@ -4,8 +4,9 @@ import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Grid
 import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 import de.htwg.se.scrabble.model.playerComponent.PlayerInterface
+import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 
-case class GameField (grid: Grid, pile: Pile, playerList: Map[String, PlayerInterface]) extends GameFieldInterface {
+case class GameField (grid: Grid, pile: Pile, playerList: Map[String, Player]) extends GameFieldInterface {
  def gameToStringWOPlayer: String = ""
 
   def playerListToString: String = ""
