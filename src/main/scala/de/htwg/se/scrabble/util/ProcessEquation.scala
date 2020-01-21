@@ -1,10 +1,10 @@
-package de.htwg.se.scrabble.controller.controllerComponent
+package de.htwg.se.scrabble.util
 
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.P
 import de.htwg.se.scrabble.model.gridComponent.CellInterface
 
-import collection.mutable.ListBuffer
-
+import scala.collection.mutable.ListBuffer
 import scala.util.parsing.combinator.RegexParsers
 
 object Calculator extends RegexParsers {

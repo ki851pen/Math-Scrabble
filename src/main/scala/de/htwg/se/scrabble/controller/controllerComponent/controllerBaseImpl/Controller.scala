@@ -8,7 +8,7 @@ import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
-import de.htwg.se.scrabble.util.{Memento, UndoManager}
+import de.htwg.se.scrabble.util.{Memento, ProcessEquation, UndoManager}
 
 import scala.swing.Publisher
 

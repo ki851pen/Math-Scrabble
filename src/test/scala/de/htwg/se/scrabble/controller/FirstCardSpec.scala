@@ -4,8 +4,6 @@ import com.google.inject.Guice
 import de.htwg.se.scrabble.ScrabbleModule
 import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.FirstCard
-import de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl.Controller
-import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFixedSizeCreateStrategy
 import org.scalatest.{Matchers, WordSpec}
 class FirstCardSpec extends WordSpec with Matchers{
   "FirstCard status" when {
