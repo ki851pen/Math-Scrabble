@@ -14,7 +14,7 @@ class Tui(controller: ControllerInterface) extends Reactor {
     input match {
       case "q" =>
       case "init" => controller.init
-      case "p" => controller.createPile(20, 7, 5, 6, 5)
+      case "p" => controller.createPile(22, 8, 6, 7)
       case "s" => controller.shufflePile
       case "h" => println(help)
       case "submit" => controller.endTurn
@@ -28,13 +28,13 @@ class Tui(controller: ControllerInterface) extends Reactor {
         case command :: player :: Nil if command == "fh" => controller.fillHand(player)
         case command :: size :: Nil if command == "gf" => if (size.matches(IntRegEx) && fixedSizes.contains(size))
           controller.createFixedSizeGameField(size.toInt) else println("size have to be one of the following: 3, 5, 9 or 15")
-        case command :: size :: equal :: plusminus :: muldiv :: blank :: digit :: Nil if command == "gf" =>
-          if (List(size, equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
-            controller.createFreeSizeGameField(size.toInt, equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
+        case command :: size :: equal :: plusminus :: muldiv :: digit :: Nil if command == "gf" =>
+          if (List(size, equal, plusminus, muldiv, digit).forall(_.matches(IntRegEx)))
+            controller.createFreeSizeGameField(size.toInt, equal.toInt, plusminus.toInt, muldiv.toInt, digit.toInt)
           else println("size have to be integer")
-        case command :: equal :: plusminus :: muldiv :: blank :: digit :: Nil if command == "p" =>
-          if (List(equal, plusminus, muldiv, blank, digit).forall(_.matches(IntRegEx)))
-            controller.createPile(equal.toInt, plusminus.toInt, muldiv.toInt, blank.toInt, digit.toInt)
+        case command :: equal :: plusminus :: muldiv :: digit :: Nil if command == "p" =>
+          if (List(equal, plusminus, muldiv, digit).forall(_.matches(IntRegEx)))
+            controller.createPile(equal.toInt, plusminus.toInt, muldiv.toInt, digit.toInt)
           else println("all characters after p have to be integer")
         case command :: row :: col :: index :: Nil if command == "set" && row.matches(IntRegEx) && col.matches(IntRegEx) && index.matches(IntRegEx) =>
           controller.setGrid(row.toInt - 1, col.toInt - 1, index.toInt)

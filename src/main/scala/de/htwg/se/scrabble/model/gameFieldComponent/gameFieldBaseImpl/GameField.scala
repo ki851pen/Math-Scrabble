@@ -15,7 +15,7 @@ case class GameField @Inject() (grid: Grid, pile: Pile, playerList: Map[String, 
   def gameToStringWOPlayer: String = "Grid :" + grid.toString + "\nPile: " + pile.size.toString + "\n" +
     playerList.values.map(p => p.name + "'s points: " + p.point.toString).mkString("    ") + "\n"
 
-  def createNewPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): GameField = copy(pile = new Pile(equal, plusminus, muldiv, blank, digit))
+  def createNewPile(equal: Int, plusminus: Int, muldiv: Int, digit: Int): GameField = copy(pile = new Pile(equal, plusminus, muldiv, digit))
 
   def shufflePile: GameField = copy(pile = pile.shuffle)
 

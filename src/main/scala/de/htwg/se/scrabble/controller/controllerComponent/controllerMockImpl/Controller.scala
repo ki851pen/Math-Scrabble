@@ -7,7 +7,7 @@ import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameField
 import de.htwg.se.scrabble.model.gridComponent.{CellInterface,CardInterface}
 
 case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends ControllerInterface {
-  gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(1, 1, 1, 1, 1, 1)
+  gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(1, 1, 1, 1, 1)
   private var gameField = gameFieldCreateStrategy.createNewGameField
   override def gridSize: Int = 1
 
@@ -21,11 +21,11 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
 
   override def createFixedSizeGameField(fixedSize: Int): Unit = {}
 
-  override def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {}
+  override def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, digit: Int): Unit = {}
 
   override def getGameField: GameFieldInterface = gameField
 
-  override def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {}
+  override def createPile(equal: Int, plusminus: Int, muldiv: Int, digit: Int): Unit = {}
 
   override def shufflePile: Unit = {}
 

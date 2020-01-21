@@ -13,9 +13,9 @@ trait ControllerInterface extends Publisher {
   def isSet(row: Int, col: Int): Boolean
   def init: Unit
   def createFixedSizeGameField(fixedSize: Int): Unit
-  def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit
+  def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, digit: Int): Unit
   def getGameField: GameFieldInterface
-  def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit
+  def createPile(equal: Int, plusminus: Int, muldiv: Int, digit: Int): Unit
   def shufflePile: Unit
   def setGrid(row: Int, col: Int, index: Int): Unit
   def endTurn: Unit

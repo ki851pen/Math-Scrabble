@@ -13,7 +13,7 @@ case class GameField (grid: Grid, pile: Pile, playerList: Map[String, Player]) e
 
   def gameToString(name: String): String = ""
 
-  def createNewPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): GameFieldInterface = ???
+  def createNewPile(equal: Int, plusminus: Int, muldiv: Int, digit: Int): GameFieldInterface = ???
 
   def shufflePile: GameFieldInterface = ???
 

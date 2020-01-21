@@ -39,8 +39,6 @@ trait CardInterface {
 
   def isDigit: Boolean
 
-  def isQuestionMark: Boolean
-
   def isOperator: Boolean
 
   def getPoint: Option[Int]

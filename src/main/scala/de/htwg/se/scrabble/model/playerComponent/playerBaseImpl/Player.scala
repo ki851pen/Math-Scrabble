@@ -7,7 +7,7 @@ import play.api.libs.json.Json
 case class Player(name: String, hand: List[Card], point: Int) extends PlayerInterface {
   def this(name: String) = this(name, Nil, 0)
 
-  val maxHandSize: Int = 9
+  val maxHandSize: Int = 10
 
   def getNrCardsInHand: Int = hand.size
 

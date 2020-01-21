@@ -12,7 +12,7 @@ trait GameFieldInterface {
 
   def playerList: Map[String, Player]
 
-  def createNewPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): GameFieldInterface
+  def createNewPile(equal: Int, plusminus: Int, muldiv: Int, digit: Int): GameFieldInterface
 
   def shufflePile: GameFieldInterface
 

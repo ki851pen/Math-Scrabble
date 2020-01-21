@@ -174,15 +174,15 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
     if (gameField.grid.size == oldsize) publish(new GameFieldChanged) else publish(new GridSizeChanged)
   }
 
-  def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
-    gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, blank, digit)
+  def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, digit: Int): Unit = {
+    gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, digit)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameState = FirstCard()
     publish(new GridSizeChanged)
   }
 
-  def createPile(equal: Int, plusminus: Int, muldiv: Int, blank: Int, digit: Int): Unit = {
-    gameField = gameField.createNewPile(equal, plusminus, muldiv, blank, digit)
+  def createPile(equal: Int, plusminus: Int, muldiv: Int, digit: Int): Unit = {
+    gameField = gameField.createNewPile(equal, plusminus, muldiv, digit)
     publish(new CardsChanged)
   }
 

@@ -5,8 +5,8 @@ import de.htwg.se.scrabble.model.gridComponent.CardInterface
 import play.api.libs.json.Json
 
 case class Card @Inject() (value: String) extends CardInterface {
-  private val point: Map[String, Int] = Map("=" -> 1, "+" -> 1, "-" -> 1, "*" -> 2, "/" -> 3, "?" -> 0
-    , "1" -> 1, "2" -> 1, "3" -> 2, "4" -> 2, "5" -> 3, "6" -> 2, "7" -> 4, "8" -> 2, "9" -> 2, "0" -> 1)
+  private val point: Map[String, Int] = Map("=" -> 1, "+" -> 1, "-" -> 1, "*" -> 2, "/" -> 3,
+    "1" -> 1, "2" -> 1, "3" -> 2, "4" -> 2, "5" -> 3, "6" -> 2, "7" -> 4, "8" -> 2, "9" -> 2, "0" -> 1)
   val validSet: Set[String] = point.keySet
   val parseValue: Any = if (isValid) {
     value.toString.toIntOption.getOrElse(value)
@@ -18,9 +18,7 @@ case class Card @Inject() (value: String) extends CardInterface {
 
   def isDigit: Boolean = parseValue.isInstanceOf[Int]
 
-  def isQuestionMark: Boolean = value == "?"
-
-  def isOperator: Boolean = !isQuestionMark && !isDigit
+  def isOperator: Boolean = !isDigit
 
   def getPoint: Option[Int] = {
     try {
