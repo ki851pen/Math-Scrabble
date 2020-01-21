@@ -81,10 +81,9 @@ case class ProcessEquation(controller: ControllerInterface) {
       expList.foreach(exp => {
         if (exp.exists(c => operator.exists(_ contains c))) {
           Calculator(exp.mkString("")) match {
-            case x :Double => {
+            case x :Double =>
               valList = x :: valList
               println(valList)
-            }
             case _ => return false
           }
         } else {
