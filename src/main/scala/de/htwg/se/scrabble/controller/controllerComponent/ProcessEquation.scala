@@ -31,7 +31,7 @@ case class ProcessEquation(controller: ControllerInterface) {
   //test2.foreach(println(_))
   val equations: List[Seq[CellInterface]] = test.flatten
   println(equations)
-  val ret: Boolean = equations.forall(evalEquation)
+  private val ret: Boolean = equations.forall(evalEquation)
 
   def isValid: Boolean = ret
 

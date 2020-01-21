@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.aview
 
-import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.controller.controllerComponent.{ControllerInterface, InvalidEquation}
 
 import scala.swing.Reactor
 import scala.swing.event.Event
@@ -46,6 +46,7 @@ class Tui(controller: ControllerInterface) extends Reactor {
   }
 
   reactions += {
+    case _: InvalidEquation => println("not valid equation")
     case _: Event => printTui
   }
 

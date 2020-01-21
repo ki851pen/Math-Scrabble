@@ -1,8 +1,7 @@
 package de.htwg.se.scrabble.aview.gui
 
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.{FirstCard, Init, P}
-import de.htwg.se.scrabble.controller._
-import de.htwg.se.scrabble.controller.controllerComponent.{CardsChanged, ClickChanged, ControllerInterface, GameFieldChanged, GridSizeChanged}
+import de.htwg.se.scrabble.controller.controllerComponent._
 import de.htwg.se.scrabble.util.CustomColors
 
 import scala.swing._
@@ -106,12 +105,17 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
     repaint
   }
 
+  def popup: Unit = {
+    Dialog.showMessage(contents.head, "invalid equation", title="invalid equation")
+  }
+
   def redraw = {
     gridPanel.redraw
     redrawWithoutGrid
   }
 
   reactions += {
+    case _: InvalidEquation => popup
     case _: GameFieldChanged => redraw
     case _: GridSizeChanged => resize
     case _: CardsChanged => redrawWithoutGrid
