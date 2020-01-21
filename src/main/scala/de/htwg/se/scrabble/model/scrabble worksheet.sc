@@ -1,5 +1,6 @@
 val a = List(List("2","=","2","","3","=","3","","2","=","1","0"))
 
+@scala.annotation.tailrec
 def findEquation(lol: List[List[String]]): List[List[String]] = {
   val r  = lol.reverse
   val l  = r.head
@@ -16,7 +17,27 @@ def findEquation(lol: List[List[String]]): List[List[String]] = {
 
 val b = findEquation(a)
 
-val test = List("2","=","2")
+import collection.mutable.ListBuffer
+def splitBySeparator[T]( l: Seq[T], sep: T ): Seq[Seq[T]] = {
+  val b = ListBuffer(ListBuffer[T]())
+  l foreach { e =>
+    if ( e == sep ) {
+      if  ( b.last.nonEmpty ) b += ListBuffer[T]()
+    }
+    else b.last += e
+  }
+  b.map(_.toSeq).toSeq
+}
+
+val test = List("0")
+splitBySeparator(test,"=")
+
+/*def eval(ex: List[String]): Boolean = {
+  ex.head.toIntOption.getOrElse(return false)
+  ex
+}*/
+
+/*val test = List("2","=","2")
 
 val head: String => (String, Char) = s => (s.tail, s.head)
 val toInt: String => (String, Int) = s => ("", s.toInt)
@@ -27,9 +48,4 @@ val product: String => (String, Int) = s => {
 }
 
 val initialState = "23"
-product(initialState)
-
-/*def eval(ex: List[String]): Boolean = {
-  ex.head.toIntOption.getOrElse(return false)
-  ex
-}*/
+product(initialState)*/
