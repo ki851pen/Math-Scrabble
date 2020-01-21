@@ -1,116 +1,120 @@
 package de.htwg.se.scrabble.controller
 
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.{FirstCard, Init}
+import de.htwg.se.scrabble.controller.controllerComponent._
+import de.htwg.se.scrabble.model.fileIoComponent._
+
+import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFreeSizeCreateStrategy
 import org.scalatest.{Matchers, WordSpec}
 
 class ControllerSpec extends WordSpec with Matchers{
-  /*"A Controller" when {
-    val gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(5, 1, 1, 1, 1,1)
-    val controller = new Controller(gameFieldCreateStrategy)
-    "observed by an Observer" should {
-      val observer = new Observer {
-        var updated: Boolean = false
-        def reset(): Unit = updated = false
-        override def update: Boolean = {updated = true; updated}
+  "A Controller" when {
+    val gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(5, 1, 1, 1,1)
+    val fileIO = new fileIoJsonImpl.FileIO
+    val controller = new controllerBaseImpl.Controller(gameFieldCreateStrategy, fileIO)
+    "created" should {
+      "has Status Init" in {
+        controller.gameStatus shouldBe a [Init]
+        controller.gameStatus.toString should be("init")
+        controller.gameToString should be("write init or gf [size] to begin")
       }
-      controller.add(observer)
-      "notify its Observer after init" in {
-        observer.reset()
-        controller.init()
-        observer.updated should be(true)
-        controller.getGameField.grid.size shouldBe 15
-        controller.getGameField.playerList("A").getNrCardsInHand should not be 0
-        controller.getGameField.playerList("B").getNrCardsInHand should not be 0
-        controller.gameStatus = GameStatus.P("A")
+      "has the size assigned when created" in {
+        controller.gridSize shouldBe 5
       }
-      "notify its Observer after calculate point" in {
-        observer.reset()
-        controller.endTurn()
-        observer.updated should be(true)
-        controller.gameStatus = GameStatus.P("B")
-        observer.reset()
-        controller.endTurn()
-        observer.updated should be(true)
-        controller.gameStatus = GameStatus.P("A")
+      "has unset cells" in {
+        controller.cell(0, 0).isSet shouldBe false
+
+        controller.getCurrentSum shouldBe 0
+        controller.getGameField shouldBe a [GameFieldInterface]
       }
-      "notify its Observer after grid creation" in {
-        observer.reset()
-        controller.createFixedSizeGameField(3)
-        observer.updated should be(true)
-        controller.getGameField.grid.size should be(3)
-        controller.gameToString should be(controller.getGameField.gameToString("A"))
+      "should has a set cell after setting cell" in {
+        controller.setGrid(0, 0, 0)
+        controller.isSet(0, 0) shouldBe false
       }
-      "notify its Observer after grid creation with free size" in {
-        observer.reset()
-        controller.createFreeSizeGameField(4, 1, 1, 1, 1, 1)
-        observer.updated should be(true)
-        controller.getGameField.grid.size should be(4)
+      "should has another status after a turn" in {
+        val state = FirstCard()
+        controller.changeGamestatus(state)
+        controller.gameStatus.toString should be("fc")
       }
-      "notify its Observer after setting a first cell in middle" in {
-        observer.reset()
-        controller.createFixedSizeGameField(5)
-        observer.reset()
-        controller.createPile(1, 0, 0, 0, 0)
-        controller.fillHand("A")
-        controller.setGrid(2,2,"=")
-        observer.updated should be(true)
-        controller.getGameField.grid.cell(2,2) shouldEqual Cell("t","=")//in input is already + 1
+
+      "can undo its previous action" in {
+        val memmento = controller.createMemento()
+        val oldgamefield = controller.getGameField
+        controller.addToSum(5)
+        controller.restoreFromMemento(memmento)
+        oldgamefield shouldBe controller.getGameField
       }
-      "not notify its Observer after setting a first cell not in middle" in {
-        observer.reset()
-        controller.createFixedSizeGameField(5)
-        observer.reset()
-        controller.setGrid(1,1,"4")
-        observer.updated should be(false)//<-- not pass
-        controller.getGameField.grid.cell(1,1) shouldEqual Cell("d","")
+
+      "can also redo" in {
+        controller.setGrid(1, 1, 1)
+        val cell = controller.cell(1, 1)
+        controller.undo
+        controller.redo
+        controller.cell(1, 1) shouldBe cell
       }
-      "notify its Observer after pile creation" in {
-        observer.reset()
-        controller.createPile(5, 1, 1, 1, 1)
-        observer.updated should be(true)
-        controller.getGameField.pile.size should be(20)
+
+      "can save the current game and load it" in {
+        val gameField = controller.getGameField
+        controller.setGameField(gameField)
+        controller.save
+        controller.init
+        controller.load
+        controller.getGameField shouldBe gameField
+        var newFileIO = new fileIoXmlImpl.FileIO
+        val newController = new controllerBaseImpl.Controller(gameFieldCreateStrategy, newFileIO)
+        newController.save
+        newController.load
       }
-      "notify its Observer after shuffle the pile" in {
-        observer.reset()
-        val oldgame = controller.getGameField
-        controller.shufflePile()
-        observer.updated should be(true)
-        controller.getGameField.pile should not be oldgame.pile
+
+      "can end a turn when a player played his turn" in {
+        val check = controller.checkEquation()
+        if (check){
+          controller.endTurn
+          controller.getCurrentSum shouldBe 0
+        }
+        else
+          ""
       }
-      "notify its Observer after existing player take cards from pile" in {
-        observer.reset()
-        val oldgame = controller.getGameField
-        controller.fillHand("A")
-        observer.updated should be(true)
-        controller.getGameField.playerList("A").getNrCardsInHand should be (9)
-        controller.getGameField.pile.size should be (oldgame.pile.size - 9)
+
+      "pass all tests of Mock Implementation" in {
+        val mockController = new controllerMockImpl.Controller(null)
+        mockController.init
+        mockController.createFixedSizeGameField(1)
+        mockController.createFreeSizeGameField(0, 0, 0, 0, 0)
+        mockController.createPile(0, 0, 0, 0)
+        mockController.shufflePile
+        mockController.setGrid(0, 0, 0)
+        mockController.endTurn
+        mockController.undo
+        mockController.redo
+        mockController.fillHand(null)
+        mockController.fillAllHand
+        mockController.getCardsInHand("")
+        mockController.clearHand("")
+        mockController.gameStatus shouldBe a [Init]
+        mockController.currentSelectedCol shouldBe 0
+        mockController.currentSelectedRow shouldBe 0
+        mockController.selectedCellChanged(0, 0)
+        mockController.chooseCardInHand(0)
+        mockController.changeHand("")
+        mockController.putCardInCell
+        mockController.gameToString shouldBe ""
+        mockController.changeGamestatus(null)
+        mockController.save
+        mockController.load
+        val gameField = mockController.getGameField
+        mockController.gridSize shouldBe 1
+        mockController.getCurrentSum shouldBe 0
+        mockController.cell(0, 0) shouldBe gameField.grid.cell(0, 0)
+        mockController.isSet(0, 0) shouldBe false
+        new CardsChanged
+        new ClickChanged
+        new InvalidEquation
+        ButtonSet(0, 0).col shouldBe 0
       }
-      "not notify its Observer after player that not in the list try take cards from pile" in {
-        observer.reset()
-        controller.fillHand("C")
-        observer.updated should be(false)
       }
-      "notify its Observer after fill all player hands" in {
-        observer.reset()
-        controller.fillAllHand
-        observer.updated should be(true)
-        controller.getGameField.playerList("B").getNrCardsInHand should be (9)
-      }
-      "notify its Observer after clear a player hand" in {
-        val oldPileSize: Int = controller.getGameField.pile.size
-        observer.reset()
-        controller.clearHand("B")
-        observer.updated should be(true)
-        controller.getGameField.playerList("B").getNrCardsInHand should be (0)
-        controller.getGameField.pile.size should be (oldPileSize + 9)
-      }
-    }
-    "check if specific cell is set" should{
-      val res = controller.isSet(2,2)
-      "return Boolean" in {
-        res shouldBe false
-      }
-    }
-  }*/
+  }
 }
 
 

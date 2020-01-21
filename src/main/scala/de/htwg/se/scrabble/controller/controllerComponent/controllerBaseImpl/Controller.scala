@@ -82,7 +82,8 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
   }
 
   def checkEquation(): Boolean = {
-    ProcessEquation(this).isValid
+    //ProcessEquation(this).isValid
+    true
   }
 
   private def takeCardsBack(): Unit = {

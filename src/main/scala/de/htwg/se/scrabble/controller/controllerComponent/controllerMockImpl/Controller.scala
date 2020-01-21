@@ -41,7 +41,7 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
 
   override def fillAllHand: Unit = {}
 
-  override def getCardsInHand(name: String): List[CardInterface] = ???
+  override def getCardsInHand(name: String): List[CardInterface] = {null}
 
   override def clearHand(name: String): Unit = {}
 
@@ -61,9 +61,9 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
 
   override def gameToString: String = ""
 
-  override def changeGamestatus(newState: GameStatus.State): Unit = ???
+  override def changeGamestatus(newState: GameStatus.State): Unit = {}
 
-  override def save: Unit = ???
+  override def save: Unit = {}
 
-  override def load: Unit = ???
+  override def load: Unit = {}
 }
