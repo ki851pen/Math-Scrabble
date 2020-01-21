@@ -56,11 +56,12 @@ class CardSpec extends WordSpec with Matchers {
     }
     "set to arithmetic operation" should{
       val numbercard = Card("*")
-      "not be valid" in{
+      "be valid" in{
         numbercard.isValid should be(true)
       }
       "have a parse value be arithmetic operation" in {
         numbercard.parseValue should be ("*")
+        numbercard.isOperator should be (true)
       }
       "have a String representation" in {
         numbercard.toString should be("*")

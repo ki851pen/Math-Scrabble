@@ -17,8 +17,11 @@ class CellSpec extends WordSpec with Matchers {
       val testcell3 = Cell("t","")
       "have type" in {
         testcell.cellType shouldBe "n"
+        testcell.isNormal shouldBe true
         testcell2.cellType shouldBe "d"
+        testcell2.isDouble shouldBe true
         testcell3.cellType shouldBe "t"
+        testcell3.isTriple shouldBe true
       }
       "have a String representation" in {
         testcell.toString shouldBe " "
