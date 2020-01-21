@@ -1,8 +1,7 @@
 package de.htwg.se.scrabble.controller.controllerComponent.controllerBaseImpl
 
 
-import com.google.inject.{Guice, Inject}
-import de.htwg.se.scrabble.ScrabbleModule
+import com.google.inject.Inject
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
 import de.htwg.se.scrabble.controller.controllerComponent.{ControllerInterface, _}
 import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
@@ -10,7 +9,6 @@ import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
 import de.htwg.se.scrabble.util.{Memento, UndoManager}
-import net.codingwell.scalaguice.InjectorExtensions._
 
 import scala.swing.Publisher
 

@@ -2,20 +2,13 @@ package de.htwg.se.scrabble.controller.controllerComponent
 
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.P
 import de.htwg.se.scrabble.model.gridComponent.CellInterface
+
 import collection.mutable.ListBuffer
 
-//import scala.tools.reflect.ToolBox
-//TODO: check if equation is valid then calculate the point
-// idea have a getrow and getcol in grid
-// when set save the position in collection
-// when submit check every row and col of set position
-// look for not set cell  for seperation between equation
-// only if in row all col have min 3 Card contiguous then is equation
-// parse card to arithmetic
-// check if eqution is valid
-// calculate point
-// remove blank
-// increase hand size and pile size
+import com.github.pdorobisz.mathexpressionevaluator.Evaluator
+import com.github.pdorobisz.mathexpressionevaluator.errors.EvaluatorError
+
+import scala.util.{Failure, Success}
 
 case class ProcessEquation(controller: ControllerInterface) {
   var newcell: List[(Int, Int)] = Nil
@@ -27,8 +20,6 @@ case class ProcessEquation(controller: ControllerInterface) {
   val cols: List[Seq[CellInterface]] = newcell.map(c => c._2).map(controller.getGameField.grid.getCol(_)).distinct
 
   val test: List[List[Seq[CellInterface]]] = rows.map(x => findEquation(List(x))) ::: cols.map(x => findEquation(List(x)))
-  //test.foreach(println(_))
-  //test2.foreach(println(_))
   val equations: List[Seq[CellInterface]] = test.flatten
   println(equations)
   private val ret: Boolean = equations.forall(evalEquation)
@@ -70,7 +61,10 @@ case class ProcessEquation(controller: ControllerInterface) {
       val expList = splitBySeparator(strEqa, "=")
       expList.foreach(exp => {
         if (exp.exists(c => operator.exists(_ contains c))) {
-
+          Evaluator.evaluate(exp.mkString("")) match {
+            case Success(s) => valList = s :: valList
+            case Failure(_) => return false
+          }
         } else {
           valList = exp.mkString("").toInt :: valList
           println(valList)
@@ -84,12 +78,3 @@ case class ProcessEquation(controller: ControllerInterface) {
     }
   }
 }
-  /*
-  val expression = "5 - 3 + 2"
-
-  def evaluate(expression: List[String]): Int = expression match {
-    case l :: "+" :: r :: rest => evaluate((l.toInt + r.toInt).toString :: rest)
-    case l :: "-" :: r :: rest => evaluate((l.toInt - r.toInt).toString :: rest)
-    case value :: Nil => value.toInt
-  }*/
-
