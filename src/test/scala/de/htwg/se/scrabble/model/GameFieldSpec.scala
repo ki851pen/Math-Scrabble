@@ -48,5 +48,17 @@ class GameFieldSpec extends WordSpec with Matchers{
         newergame.playerList.values should contain(Player("Poom",Nil,0))
       }
     }
+    "pass all tests of Mock Implementation" in {
+      val mockGamefield = gameFieldComponent.gameFieldMockImpl.GameField(Grid(Vector(Vector(Cell("")))), Pile(List(Card(""))), Map("A" -> new Player("A")))
+      mockGamefield.gameToStringWOPlayer
+      mockGamefield.playerListToString
+      mockGamefield.gameToString("A")
+      mockGamefield.createNewPile(1, 1, 1, 1)
+      mockGamefield.shufflePile
+      mockGamefield.fillHand("A", 1)
+      mockGamefield.clearHand("A")
+      mockGamefield.playerPlay("A", 0, 0, 0)
+      mockGamefield.calPointForPlayer("A", 0)
+    }
   }
 }

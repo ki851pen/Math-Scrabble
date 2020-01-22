@@ -7,18 +7,35 @@ import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.P
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import org.scalatest.{Matchers, WordSpec}
 
-import scala.util.Failure
-
 class PSpec extends WordSpec with Matchers{
+  "P[player_name] status" should {
+    val p = P("B")
+    "have string representation" in {
+      p.toString shouldBe "pB"
+    }
+  }
   "P[player_name] status" when {
     val p = P("A")
     val injector = Guice.createInjector(new ScrabbleModule)
     val controller = injector.getInstance(classOf[ControllerInterface])
-    "set grid" should {
-
-      val res = p.setGrid(controller, 2, 2, 0)
+    controller.init
+    controller.setGrid(7, 7, 0)
+    "set grid at different cell" should {
+      val res = p.setGrid(controller, 7, 8, 0)
+      "work" in {
+        res.isSuccess shouldBe true
+      }
+    }
+    "set grid at already set cell" should {
+      val res = p.setGrid(controller, 7, 7, 0)
       "not work" in {
-        res shouldBe a [Failure[GameFieldInterface]]
+        res.isFailure shouldBe true
+      }
+    }
+    "set grid at faraway cell" should {
+      val res = p.setGrid(controller, 0, 0, 0)
+      "not work" in {
+        res.isFailure shouldBe true
       }
     }
     "calculate point" should{
