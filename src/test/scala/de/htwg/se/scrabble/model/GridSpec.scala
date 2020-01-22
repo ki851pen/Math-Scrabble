@@ -21,6 +21,12 @@ class GridSpec extends WordSpec with Matchers {
         newGrid.cell(0, 0) shouldEqual Cell("1")
         grid.cell(0,0) shouldEqual Cell("")
       }
+      "be able to get list of cell in row or column" in {
+        val grid2 = new Grid(3)
+        val newGrid2 = grid2.set(0, 0, "1")
+        newGrid2.getCol(0) shouldBe List(Cell("1"), Cell(""), Cell(""))
+        newGrid2.getRow(0) shouldBe List(Cell("1"), Cell(""), Cell(""))
+      }
     }
     "set" should {
       val newGrid = new Grid(3)

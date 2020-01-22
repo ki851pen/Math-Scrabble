@@ -29,13 +29,13 @@ case class Grid @Inject()(cells: Vector[Vector[Cell]]) extends GridInterface {
     })
   }
 
-  def clearCell(row: Int, col: Int): Grid = copy(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(""))))
+  /*def clearCell(row: Int, col: Int): Grid = copy(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(""))))
 
   def clearCells(positionList: List[(Int, Int)]): Grid = {
     var grid = this
     positionList.foreach(x => grid = grid.clearCell(x._1, x._2))
     grid
-  }
+  }*/
 
   def getRow(row: Int): Vector[Cell] = cells(row)
 
