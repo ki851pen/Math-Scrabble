@@ -28,10 +28,19 @@ class PlayerSpec extends WordSpec with Matchers {
     }
     "use card in hand" should {
       val player = Player("name", List(Card("="), Card("="), Card("="), Card("+")),0)
-      val moreCardPlayer = player.useCard(Card("="))
+      val lessCardPlayer = player.useCard(Card("="))
+      val noCardPlayer = player.dropAllCard
       "remove one instance of used card" in {
-        moreCardPlayer.getNrCardsInHand should be (3)
-        moreCardPlayer.hand should be (List(Card("="),Card("="),Card("+")))
+        lessCardPlayer.getNrCardsInHand should be (3)
+        noCardPlayer.getNrCardsInHand should be (0)
+        lessCardPlayer.hand should be (List(Card("="),Card("="),Card("+")))
+      }
+    }
+    "rename" should {
+      val player = Player("name", List(Card("="), Card("="), Card("="), Card("+")),0)
+      val renamedPlayer = player.rename("new")
+      "have different name" in {
+        renamedPlayer.name should be ("new")
       }
     }
   }

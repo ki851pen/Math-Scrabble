@@ -14,6 +14,7 @@ class PileSpec extends WordSpec with Matchers {
       }
       "have a String representation" in{
         newpile.toString should be ("=, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, +, +, +, +, +, +, +, +, -, -, -, -, -, -, -, -, *, *, *, *, *, *, /, /, /, /, /, /, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9")
+        //newpile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("5"))
       }
     }
     "shuffle" should{
