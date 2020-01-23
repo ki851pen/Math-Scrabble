@@ -1,6 +1,9 @@
 package de.htwg.se.scrabble.model
-import de.htwg.se.scrabble.model.cell.Cell
-import de.htwg.se.scrabble.model.gameField.GameField
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl
+import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameField
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.{Card, Cell, Grid}
+import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
+import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 import org.scalatest.{Matchers, WordSpec}
 
 class GameFieldSpec extends WordSpec with Matchers{
@@ -16,27 +19,46 @@ class GameFieldSpec extends WordSpec with Matchers{
         game.pile shouldBe a[Pile]
         game.pile.tilepile shouldBe a[List[_]]
       }
-      "have a String representation that include String of Grid,Pile and Playerlist" in {
+      "have a String representation that include String of Grid, Pile and Playerlist" in {
         game.toString should include(game.grid.toString)
-        game.toString should include(game.pile.toString)
         game.toString should include(game.playerListToString)
       }
     }
-    "replace a Player" should {
-      val newplayer = GameField(game.grid,game.pile,game.changePlayerAttr("A", new Player("B")))
+    /*"rename a Player" should {
+      val gameWithNewPlayerName = game.renamePlayer("A", "B")
       "have a new Player" in {
-        newplayer.playerList.keys should contain ("B")
-        newplayer.playerList.values should contain (new Player("B"))
-        newplayer.playerList should not be game.playerList
+        gameWithNewPlayerName.playerList.keys should contain ("B")
+        gameWithNewPlayerName.playerList.values should contain (new Player("B"))
+        gameWithNewPlayerName.playerList should not be game.playerList
       }
-    }
+    }*/
     "create with player" should {
-      val playerGamefield = gameField.GameField(new Grid(5), new Pile(),Map("Poom"-> new Player("Poom"), "B"->new Player("B")))
+      val playerGamefield = gameFieldBaseImpl.GameField(new Grid(5), new Pile(),Map("Poom"-> new Player("Poom",List(Card("0"),Card("=")),0), "B"->new Player("B")))
       "have that player in playerlist(map)" in {
-        playerGamefield.playerList.values should contain(Player("Poom",Nil,0))
+        playerGamefield.playerList.values should contain(Player("Poom",List(Card("0"),Card("=")),0))
         playerGamefield.playerList.values should contain(Player("B",Nil,0))
         playerGamefield.playerList.size should be (2)
       }
+      "have ability to play card on player hand" in {
+        val newergame = playerGamefield.playerPlay("Poom",2,2,0)
+        newergame.playerList.values should contain(Player("Poom",List(Card("=")),0))
+      }
+      "have ability to clear player hand" in {
+        val newergame = playerGamefield.clearHand("Poom")
+        newergame.playerList.values should contain(Player("Poom",Nil,0))
+      }
+    }
+    "pass all tests of Mock Implementation" in {
+      val mockGamefield = gameFieldComponent.gameFieldMockImpl.GameField(Grid(Vector(Vector(Cell("")))), Pile(List(Card(""))), Map("A" -> new Player("A")))
+      mockGamefield.gameToStringWOPlayer
+      mockGamefield.playerListToString
+      mockGamefield.gameToString("A")
+      mockGamefield.createNewPile(1, 1, 1, 1)
+      mockGamefield.shufflePile
+      mockGamefield.fillHand("A", 1)
+      mockGamefield.clearHand("A")
+      mockGamefield.playerPlay("A", 0, 0, 0)
+      mockGamefield.calPointForPlayer("A", 0)
     }
   }
 }

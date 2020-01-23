@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.model
 
-import de.htwg.se.scrabble.model.cell.Cell
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.{Card, Cell}
 import org.scalatest.{Matchers, WordSpec}
 
 class CellSpec extends WordSpec with Matchers {
@@ -17,8 +17,11 @@ class CellSpec extends WordSpec with Matchers {
       val testcell3 = Cell("t","")
       "have type" in {
         testcell.cellType shouldBe "n"
+        testcell.isNormal shouldBe true
         testcell2.cellType shouldBe "d"
+        testcell2.isDouble shouldBe true
         testcell3.cellType shouldBe "t"
+        testcell3.isTriple shouldBe true
       }
       "have a String representation" in {
         testcell.toString shouldBe " "
@@ -32,11 +35,11 @@ class CellSpec extends WordSpec with Matchers {
       val testTripleCell = Cell("t","")
       val changedCell = testCell.setCell("1")
       val changedDoubleCell = testDoubleCell.setCell("7")
-      val changedTripleCell = testTripleCell.setCell("?")
+      val changedTripleCell = testTripleCell.setCell("+")
       "have changed value" in {
         changedCell.card shouldBe Card("1")
         changedDoubleCell.card shouldBe Card("7")
-        changedTripleCell.card shouldBe Card("?")
+        changedTripleCell.card shouldBe Card("+")
       }
       "be set" in {
         changedCell.isSet shouldBe true
@@ -46,12 +49,13 @@ class CellSpec extends WordSpec with Matchers {
       "have a point assign to them" in {
         changedCell.getPoint shouldBe 1
         changedDoubleCell.getPoint shouldBe 8
-        changedTripleCell.getPoint shouldBe 0
+        changedTripleCell.getPoint shouldBe 3
       }
       "have a String representation" in {
         changedCell.toString shouldBe "1"
-        changedDoubleCell.toString shouldBe "7x2"
-        changedTripleCell.toString shouldBe "?x3"
+        val tmp = changedDoubleCell.toString
+        changedDoubleCell.toString shouldBe "7"
+        changedTripleCell.toString shouldBe "+"
       }
     }
     "set incorrectly" should {

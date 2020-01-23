@@ -1,4 +1,5 @@
 package de.htwg.se.scrabble.model
+import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 import org.scalatest.{Matchers, WordSpec}
 
 class PileSpec extends WordSpec with Matchers {
@@ -9,16 +10,17 @@ class PileSpec extends WordSpec with Matchers {
         newpile.tilepile shouldBe a [List[_]]
       }
       "have length of 100" in{
-        newpile.size should be (100)
+        newpile.size should be (120)
       }
       "have a String representation" in{
-        newpile.toString should be ("=, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, +, +, +, +, +, +, +, -, -, -, -, -, -, -, *, *, *, *, *, /, /, /, /, /, ?, ?, ?, ?, ?, ?, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9")
+        newpile.toString should be ("=, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, =, +, +, +, +, +, +, +, +, -, -, -, -, -, -, -, -, *, *, *, *, *, *, /, /, /, /, /, /, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9")
+        //newpile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("5"))
       }
     }
     "shuffle" should{
       val pile = new Pile()
       "have same length" in {
-        pile.shuffle.tilepile.length should be (100)
+        pile.shuffle.tilepile.length should be (120)
       }
       "have a different String representation" in {
         pile.shuffle.toString should not be pile.toString

@@ -1,5 +1,6 @@
 package de.htwg.se.scrabble.model
 
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Card
 import org.scalatest.{Matchers, WordSpec}
 class CardSpec extends WordSpec with Matchers {
   "A Card" should {
@@ -23,7 +24,7 @@ class CardSpec extends WordSpec with Matchers {
         numbercard.isValid should be(true)
       }
       "have a parse value be Integer" in {
-        numbercard.parseValue shouldBe a [Int]
+        numbercard.isDigit should be(true)
       }
       "have a String representation" in {
         numbercard.toString should be("7")
@@ -55,11 +56,12 @@ class CardSpec extends WordSpec with Matchers {
     }
     "set to arithmetic operation" should{
       val numbercard = Card("*")
-      "not be valid" in{
+      "be valid" in{
         numbercard.isValid should be(true)
       }
       "have a parse value be arithmetic operation" in {
         numbercard.parseValue should be ("*")
+        numbercard.isOperator should be (true)
       }
       "have a String representation" in {
         numbercard.toString should be("*")

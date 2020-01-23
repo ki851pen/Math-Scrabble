@@ -1,13 +1,14 @@
 package de.htwg.se.scrabble.aview
-import de.htwg.se.scrabble.controller.Controller
-import de.htwg.se.scrabble.model.{Grid, Pile}
-import de.htwg.se.scrabble.model.cell.Cell
-import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
+import com.google.inject.Guice
+import de.htwg.se.scrabble.ScrabbleModule
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.model.gridComponent.gridBaseImpl.Grid
 import org.scalatest.{Matchers, WordSpec}
 
 class TuiSpec extends WordSpec with Matchers{
   "A Math-Scrabble Tui" should {
-    val controller = new Controller(new GameFieldFixedSizeCreateStrategy())
+    val injector = Guice.createInjector(new ScrabbleModule)
+    val controller = injector.getInstance(classOf[ControllerInterface])
     val tui = new Tui(controller)
     "create and empty Grid on input 'init'" in {
       tui.processInputLine("init")
@@ -19,31 +20,24 @@ class TuiSpec extends WordSpec with Matchers{
       controller.getGameField.grid should be(new Grid(9).initSpecialCell)
     }
 
-    "create 6x6 empty Grid(free size) on input 'gf 6 1 1 1 1 1' and set the pile as desired" in {
-      tui.processInputLine("gf 6 1 1 1 1 1")
+    "create 6x6 empty Grid(free size) on input 'gf 6 1 1 1 1' and set the pile as desired" in {
+      tui.processInputLine("gf 6 1 1 1 1")
       controller.getGameField.grid should be(new Grid(6).initSpecialCell)
     }
     "create a default pile on input 'p'" in {
       tui.processInputLine("p")
-      controller.getGameField.pile.size should be(100)
-      controller.getGameField.pile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("?") and include("5"))
+      controller.getGameField.pile.size should be(120)
+      controller.getGameField.pile.toString should (include("+") and include("-") and  include("*") and include("/") and include("=") and include("5"))
     }
     "shuffle a pile on input 's'" in {
-      val oldpile = controller.getGameField.pile.tilepile
+      val oldPile = controller.getGameField.pile.tilepile
       tui.processInputLine("s")
-      controller.getGameField.pile.size should be(100)
-      controller.getGameField.pile.tilepile should not equal oldpile
+      controller.getGameField.pile.size should be(120)
+      controller.getGameField.pile.tilepile should not equal oldPile
     }
-    "set a cell on input 'set 8 8 3'" in {
-      tui.processInputLine("gf 15")
-      tui.processInputLine("p 1 0 0 0 0")
-      tui.processInputLine("fh")
-      tui.processInputLine("set 8 8 =")
-      controller.getGameField.grid.cell(7,7) shouldEqual Cell("t","=")
-    }
-    "set a pile and its size on input 'p 1 1 1 1 1'" in {
-      tui.processInputLine("p 1 1 1 1 1")
-      controller.getGameField.pile.size should be(16)
+    "set a pile and its size on input 'p 1 1 1 1'" in {
+      tui.processInputLine("p 1 1 1 1")
+      controller.getGameField.pile.size should be(15)
     }
     "do nothing on invalid input" in {
       tui.processInputLine("-")

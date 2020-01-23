@@ -1,16 +1,19 @@
 package de.htwg.se.scrabble.controller
 
-import de.htwg.se.scrabble.controller.GameStatus.Init
-import de.htwg.se.scrabble.model.gameField.GameFieldFixedSizeCreateStrategy
+import com.google.inject.Guice
+import de.htwg.se.scrabble.ScrabbleModule
+import de.htwg.se.scrabble.controller.controllerComponent.ControllerInterface
+import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.Init
 import org.scalatest.{Matchers, WordSpec}
 
 import scala.util.Failure
 class InitSpec extends WordSpec with Matchers{
   "init status" when {
     val init = Init()
-    val controller = new Controller(new GameFieldFixedSizeCreateStrategy(5))
+    val injector = Guice.createInjector(new ScrabbleModule)
+    val controller = injector.getInstance(classOf[ControllerInterface])
     "set grid" should {
-      val res = init.setGrid(controller, 2, 2, "")
+      val res = init.setGrid(controller, 2, 2, 0)
       "return failure" in {
         res shouldBe a [Failure[_]]
       }

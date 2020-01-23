@@ -1,18 +1,21 @@
-package de.htwg.se.scrabble.model
+package de.htwg.se.scrabble.model.gridComponent.gridBaseImpl
 
-import de.htwg.se.scrabble.model.cell.Cell
+import com.google.inject.Inject
+import de.htwg.se.scrabble.model.gridComponent.GridInterface
+import play.api.libs.json.Json
 
 import scala.collection.mutable
 
-
-case class Grid(private val cells: Vector[Vector[Cell]]) {
+case class Grid @Inject()(cells: Vector[Vector[Cell]]) extends GridInterface {
   def this(size: Int) = this(Vector.tabulate(size, size) { (row, col) => Cell("") })
-
-  val size: Int = cells.size
 
   def cell(row: Int, col: Int): Cell = cells(row)(col)
 
   def isEmpty: Boolean = cells.forall(v => v.forall(c => !c.isSet))
+
+  def set(row: Int, col: Int, value: String): Grid = Grid(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(value))))
+
+  val size: Int = cells.size
 
   def initSpecialCell: Grid = {
     val max: Int = size - 1
@@ -26,13 +29,13 @@ case class Grid(private val cells: Vector[Vector[Cell]]) {
     })
   }
 
-  def clearCell(row: Int, col: Int): Grid = copy(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(""))))
+  /*def clearCell(row: Int, col: Int): Grid = copy(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(""))))
 
-  def clearCells(posList: List[(Int, Int)]): Grid = {
+  def clearCells(positionList: List[(Int, Int)]): Grid = {
     var grid = this
-    posList.foreach(x => grid = grid.clearCell(x._1, x._2))
+    positionList.foreach(x => grid = grid.clearCell(x._1, x._2))
     grid
-  }
+  }*/
 
   def getRow(row: Int): Vector[Cell] = cells(row)
 
@@ -55,8 +58,6 @@ case class Grid(private val cells: Vector[Vector[Cell]]) {
 
   private def isExtremeRight(col: Int) = col == size - 1
 
-  def set(row: Int, col: Int, value: String): Grid = Grid(cells.updated(row, cells(row).updated(col, cell(row, col).setCell(value))))
-
   override def toString: String = {
     val numCol = "      " + List.range(1, size + 1).filter(_ < 10).mkString("     ") + "    " + List.range(1, size + 1).filter(_ > 9).mkString("    ") + "  \n"
     val lineSeparator = "   +" + "-----+" * size + "\n"
@@ -77,4 +78,10 @@ case class Grid(private val cells: Vector[Vector[Cell]]) {
     } box = box.replaceFirst("_", cell(row, col).toString)
     box
   }
+
+}
+
+object Grid {
+  def apply(cells: Vector[Vector[Cell]]) = new Grid(cells)
+  implicit var gridFormat = Json.format[Grid]
 }
