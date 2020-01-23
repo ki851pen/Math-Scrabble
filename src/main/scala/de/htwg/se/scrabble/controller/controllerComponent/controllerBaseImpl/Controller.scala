@@ -8,7 +8,7 @@ import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
-import de.htwg.se.scrabble.util.{Memento, ProcessEquation, UndoManager}
+import de.htwg.se.scrabble.util.{Memento, UndoManager}
 
 import scala.swing.Publisher
 
@@ -43,6 +43,7 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
     this.gameField = restore.gameField
     this.gameState = restore.gameStatus
     this.currentSum = restore.currentSum
+    publish(new GameFieldChanged)
   }
 
   def setGrid(row: Int, col: Int, index: Int): Unit = {
