@@ -8,7 +8,7 @@ import de.htwg.se.scrabble.model.fileIoComponent.FileIOInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
-import de.htwg.se.scrabble.util.{Memento, UndoManager}
+import de.htwg.se.scrabble.util.{Memento, ProcessEquation, UndoManager}
 
 import scala.swing.Publisher
 
@@ -95,7 +95,7 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
 
   def endTurn: Unit = {
     //if submit after first card always pass checkEquation: should NOT be like this
-    if (!checkEquation()) {
+    if (!ProcessEquation(this).isValid) {
       takeCardsBack()
     } else {
       gameField = gameState.calPoint(this, currentSum).getOrElse(gameField)
