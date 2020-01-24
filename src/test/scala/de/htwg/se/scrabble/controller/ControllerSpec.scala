@@ -1,9 +1,10 @@
 package de.htwg.se.scrabble.controller
 
+import com.google.inject.Guice
+import de.htwg.se.scrabble.ScrabbleModule
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus.{FirstCard, Init}
 import de.htwg.se.scrabble.controller.controllerComponent._
 import de.htwg.se.scrabble.model.fileIoComponent._
-
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.GameFieldFreeSizeCreateStrategy
 import org.scalatest.{Matchers, WordSpec}
@@ -11,7 +12,8 @@ import org.scalatest.{Matchers, WordSpec}
 class ControllerSpec extends WordSpec with Matchers{
   "A Controller" when {
     val gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(5, 1, 1, 1,1)
-    val fileIO = new fileIoJsonImpl.FileIO
+    val injector = Guice.createInjector(new ScrabbleModule)
+    val fileIO = injector.getInstance(classOf[FileIOInterface])
     val controller = new controllerBaseImpl.Controller(gameFieldCreateStrategy, fileIO)
     "created" should {
       "has Status Init" in {
@@ -75,6 +77,20 @@ class ControllerSpec extends WordSpec with Matchers{
         }
         else
           ""
+      }
+
+      "can manipulate player hand" in {
+        controller.init
+        controller.changeHand("A")
+        controller.getCardsInHand("A").length shouldBe 10
+        controller.clearHand("A")
+        controller.getCardsInHand("A").length shouldBe 0
+      }
+
+      "select different cells" in {
+        controller.selectedCellChanged(6, 6)
+        controller.currentSelectedCol shouldBe 5
+        controller.currentSelectedRow shouldBe 5
       }
 
       "pass all tests of Mock Implementation" in {
