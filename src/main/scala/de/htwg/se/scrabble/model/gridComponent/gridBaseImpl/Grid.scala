@@ -60,22 +60,29 @@ case class Grid @Inject()(cells: Vector[Vector[Cell]]) extends GridInterface {
 
   override def toString: String = {
     val numCol = "      " + List.range(1, size + 1).filter(_ < 10).mkString("     ") + "    " + List.range(1, size + 1).filter(_ > 9).mkString("    ") + "  \n"
-    val lineSeparator = "   +" + "-----+" * size + "\n"
+    val lineSeparator = "   +" + "------+" * size + "\n"
     var box = "\n" + numCol + lineSeparator
     for (numLine <- 1 to size) {
       if (numLine < 10) {
-        val line = String.format(" %s ", numLine) + "|" + "  _  |" * size + "\n"
+        val line = String.format(" %s ", numLine) + "|" + "  _   |" * size + "\n"
         box += line + lineSeparator
       }
       else {
-        val line = String.format(" %s", numLine) + "|" + "  _  |" * size + "\n"
+        val line = String.format(" %s", numLine) + "|" + "  _   |" * size + "\n"
         box += line + lineSeparator
       }
     }
     for {
       row <- 0 until size
       col <- 0 until size
-    } box = box.replaceFirst("_", cell(row, col).toString)
+    }
+      {
+        val s = cell(row, col).toString
+        if (s.length == 1)
+          box = box.replaceFirst("_", s)
+        else
+          box = box.replaceFirst("_ ", s)
+      }
     box
   }
 
