@@ -82,6 +82,16 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
     beginTurn = createMemento()
   }
 
+  private def takeCardsBack(): Unit = {
+    restoreFromMemento(beginTurn)
+    publish(new GameFieldChanged)
+    publish(new InvalidEquation)
+  }
+
+  def checkEquation() = {
+    true
+  }
+
   def endTurn: Unit = {
     //if submit after first card always pass checkEquation: should NOT be like this
     if (!ProcessEquation(this).isValid) {
