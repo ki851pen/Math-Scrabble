@@ -66,4 +66,6 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
   override def save: Unit = {}
 
   override def load: Unit = {}
+
+  override def please_delete_me: String = ""
 }

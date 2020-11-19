@@ -19,6 +19,7 @@ trait ControllerInterface extends Publisher {
   def shufflePile: Unit
   def setGrid(row: Int, col: Int, index: Int): Unit
   def endTurn: Unit
+  def please_delete_me: String
 
   def undo: Unit
   def redo: Unit

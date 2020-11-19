@@ -20,6 +20,7 @@ case class Player(name: String, hand: List[Card], point: Int) extends PlayerInte
   def addPoint(pointToAdd: Int): Player = copy(point = point + pointToAdd)
 
   def rename(newName: String): Player = copy(name = newName)
+
   override def toString: String = name + " has: " + hand.mkString(", ")
 
 }

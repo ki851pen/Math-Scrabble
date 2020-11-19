@@ -22,7 +22,6 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
   def gameStatus: State = gameState
   def changeGamestatus(newState: State): Unit = gameState = newState
   def gridSize: Int = gameField.grid.size
-
   def cell(row: Int, col: Int): CellInterface = gameField.grid.cell(row, col)
   def getCurrentSum: Int = currentSum
 
@@ -49,6 +48,11 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
   def setGrid(row: Int, col: Int, index: Int): Unit = {
     undoManager.doStep(new SetCommand(row, col, index, this))
     publish(ButtonSet(row, col))
+  }
+
+  def please_delete_me: String = {
+      val del_me = "this is a test please delete me"
+      del_me
   }
 
   def save: Unit = {

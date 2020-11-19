@@ -1,12 +1,16 @@
 package de.htwg.se.scrabble.controller.controllerComponent
 
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
+import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 
 import scala.util.{Failure, Success, Try}
 
 object GameStatus {
 
   trait State {
+
+    def currPlayer():String
+
     def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface]
 
     def calPoint(controller: ControllerInterface, currentSum: Int): Option[GameFieldInterface]
@@ -16,6 +20,9 @@ object GameStatus {
   }
 
   case class Init() extends State {
+
+    override def currPlayer(): String = "A"
+
     override def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface]
     = Failure(new IllegalStateException("can't set grid when in init state"))
 
@@ -27,6 +34,9 @@ object GameStatus {
   }
 
   case class FirstCard() extends State {
+
+    override def currPlayer(): String = "A"
+
     override def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface] = {
       val gameField = controller.getGameField
       val gridMiddle: Int = controller.gridSize / 2
@@ -53,6 +63,9 @@ object GameStatus {
   }
 
   case class P(player: String) extends State {
+
+    override def currPlayer(): String = player
+
     private var newCellsOfTurn: List[(Int, Int)] = Nil //!IMPORTANT fehlt noch cell from firstcard
     override def setGrid(controller: ControllerInterface, row: Int, col: Int, index: Int): Try[GameFieldInterface] = {
       if (controller.cell(row, col).isSet) {

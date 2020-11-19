@@ -7,7 +7,7 @@ import de.htwg.se.scrabble.model.pileComponent.PileBaseImpl.Pile
 import de.htwg.se.scrabble.model.playerComponent.playerBaseImpl.Player
 import play.api.libs.json.Json
 
-case class GameField @Inject() (grid: Grid, pile: Pile, playerList: Map[String, Player]) extends GameFieldInterface {
+case class GameField @Inject()(grid: Grid, pile: Pile, playerList: Map[String, Player]) extends GameFieldInterface {
   def this(grid: Grid, pile: Pile) = this(grid, pile, Map("A" -> new Player("A"), "B" -> new Player("B")))
 
   private def changePlayerAttr(name: String, changedPlayer: Player): Map[String, Player] = playerList.updated(name, changedPlayer)
