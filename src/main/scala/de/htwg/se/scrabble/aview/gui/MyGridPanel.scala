@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.aview.gui
 
-import de.htwg.se.scrabble.controller.controllerComponent.{ButtonSet, ControllerInterface}
+import de.htwg.se.scrabble.controller.controllerComponent.{ButtonSet, ControllerInterface, GridSizeChanged}
 import de.htwg.se.scrabble.util.CustomColors
 
 import scala.swing.event._
@@ -11,6 +11,7 @@ class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.
   var cells = Array.ofDim[Button](controller.gridSize, controller.gridSize)
 
   def paintField {
+    cells = Array.ofDim[Button](controller.gridSize, controller.gridSize)
     for (row <- 1 until controller.gridSize + 1) {
       for (col <- 1 until controller.gridSize + 1) {
         val button: Button = new Button("") {
@@ -27,6 +28,7 @@ class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.
         listenTo(button)
       }
     }
+
   }
 
   paintField
@@ -59,6 +61,8 @@ class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.
   }
 
   reactions += {
+    case GridSizeChanged() =>
+      paintField
     case ButtonClicked(b) =>
       findButton(b.asInstanceOf[Button]) match {
         case Right((row, col)) => controller.selectedCellChanged(row, col)
