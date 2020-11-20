@@ -8,12 +8,11 @@ import scala.swing.{Button, Dimension, GridPanel}
 
 class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.gridSize, controller.gridSize) {
   val btnSize = new Dimension(48, 48)
-  private val sizeGrid = controller.gridSize
-  var cells = Array.ofDim[Button](sizeGrid, sizeGrid)
+  var cells = Array.ofDim[Button](controller.gridSize, controller.gridSize)
 
   def paintField {
-    for (row <- 1 until sizeGrid + 1) {
-      for (col <- 1 until sizeGrid + 1) {
+    for (row <- 1 until controller.gridSize + 1) {
+      for (col <- 1 until controller.gridSize + 1) {
         val button: Button = new Button("") {
           opaque = true
           val cell = controller.cell(row - 1, col - 1)
@@ -35,8 +34,8 @@ class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.
 
 
   def redraw = {
-    for (row <- 1 until sizeGrid + 1) {
-      for (col <- 1 until sizeGrid + 1) {
+    for (row <- 1 until controller.gridSize + 1) {
+      for (col <- 1 until controller.gridSize + 1) {
         val cell = cells(row - 1)(col - 1)
         cell.text = {
           val c = controller.cell(row - 1, col - 1)
@@ -49,8 +48,8 @@ class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.
   }
 
   private def findButton(bt: Button): Either[String, (Int, Int)] = {
-    for (row <- 1 until sizeGrid + 1) {
-          for (col <- 1 until sizeGrid + 1) {
+    for (row <- 1 until controller.gridSize + 1) {
+          for (col <- 1 until controller.gridSize + 1) {
             if (cells(row - 1)(col - 1) == bt) {
               return Right(row, col)
             }
