@@ -1,6 +1,6 @@
 package de.htwg.se.scrabble.aview.gui
 
-import de.htwg.se.scrabble.controller.controllerComponent.{ButtonSet, ControllerInterface, GridSizeChanged}
+import de.htwg.se.scrabble.controller.controllerComponent.{ButtonSet, ControllerInterface, GridSizeChanged, changeSize}
 import de.htwg.se.scrabble.util.CustomColors
 
 import scala.swing.event._
@@ -9,11 +9,11 @@ import scala.swing.{Button, Dimension, GridPanel}
 class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.gridSize, controller.gridSize) {
   val btnSize = new Dimension(48, 48)
   var cells = Array.ofDim[Button](controller.gridSize, controller.gridSize)
+  var gridsize = controller.gridSize
 
   def paintField {
-    cells = Array.ofDim[Button](controller.gridSize, controller.gridSize)
-    for (row <- 1 until controller.gridSize + 1) {
-      for (col <- 1 until controller.gridSize + 1) {
+    for (row <- 1 until gridsize + 1) {
+      for (col <- 1 until gridsize + 1) {
         val button: Button = new Button("") {
           opaque = true
           val cell = controller.cell(row - 1, col - 1)
@@ -28,7 +28,6 @@ class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.
         listenTo(button)
       }
     }
-
   }
 
   paintField
@@ -36,8 +35,8 @@ class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.
 
 
   def redraw = {
-    for (row <- 1 until controller.gridSize + 1) {
-      for (col <- 1 until controller.gridSize + 1) {
+    for (row <- 1 until gridsize + 1) {
+      for (col <- 1 until gridsize + 1) {
         val cell = cells(row - 1)(col - 1)
         cell.text = {
           val c = controller.cell(row - 1, col - 1)
@@ -50,19 +49,22 @@ class MyGridPanel(controller: ControllerInterface) extends GridPanel(controller.
   }
 
   private def findButton(bt: Button): Either[String, (Int, Int)] = {
-    for (row <- 1 until controller.gridSize + 1) {
-          for (col <- 1 until controller.gridSize + 1) {
-            if (cells(row - 1)(col - 1) == bt) {
-              return Right(row, col)
-            }
-          }
+    for (row <- 1 until gridsize + 1) {
+      for (col <- 1 until gridsize + 1) {
+        if (cells(row - 1)(col - 1) == bt) {
+          return Right(row, col)
+        }
+      }
     }
     Left("Unknown Button clicked!!!")
   }
 
   reactions += {
-    case GridSizeChanged() =>
+    case changeSize() =>
+      gridsize = controller.gridSize
+      cells = Array.ofDim[Button](gridsize, gridsize)
       paintField
+      redraw
     case ButtonClicked(b) =>
       findButton(b.asInstanceOf[Button]) match {
         case Right((row, col)) => controller.selectedCellChanged(row, col)

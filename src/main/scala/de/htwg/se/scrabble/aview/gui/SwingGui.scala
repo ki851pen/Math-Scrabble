@@ -67,6 +67,7 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
   redraw
 
   def resize = {
+    controller.publish(changeSize())
     val NewGridPanel = new MyGridPanel(controller)
     contents = new BorderPanel {
       add(NewGridPanel, BorderPanel.Position.Center)
