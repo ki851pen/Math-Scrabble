@@ -9,6 +9,7 @@ import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl._
 import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
 import de.htwg.se.scrabble.util.{Memento, ProcessEquation, UndoManager}
+import play.api.libs.json.{JsObject, Json}
 
 import scala.swing.Publisher
 
@@ -36,7 +37,7 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
     publish(new GameFieldChanged)
   }
 
-  def createMemento(): Memento = Memento(gameField, gameState, currentSum)
+  override def createMemento(): Memento = Memento(gameField, gameState, currentSum)
 
   def restoreFromMemento(restore: Memento): Unit = {
     this.gameField = restore.gameField
@@ -80,6 +81,7 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
   def gameToString: String = gameState.gameToString(this)
 
   def init: Unit = {
+    currentSum = 0
     println("------ Start of Initialisation ------")
     createFixedSizeGameField(15)
     fillAllHand
@@ -96,10 +98,11 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
     true
   }
 
-  def endTurn: Unit = {
+  def endTurn: Boolean = {
     //if submit after first card always pass checkEquation: should NOT be like this
     if (!ProcessEquation(this).isValid) {
       takeCardsBack()
+      false
     } else {
       gameField = gameState.calPoint(this, currentSum).getOrElse(gameField)
       currentSum = 0
@@ -107,10 +110,12 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
       undoManager.resetStack()
       publish(new GameFieldChanged)
       beginTurn = createMemento()
+      true
     }
   }
 
   def createFixedSizeGameField(fixedSize: Int): Unit = {
+    currentSum = 0
     val oldsize = gameField.grid.size
     gameFieldCreateStrategy = new GameFieldFixedSizeCreateStrategy(fixedSize)
     gameField = gameFieldCreateStrategy.createNewGameField
@@ -119,6 +124,7 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
   }
 
   def createFreeSizeGameField(sizeGrid: Int, equal: Int, plusminus: Int, muldiv: Int, digit: Int): Unit = {
+    currentSum = 0
     gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(sizeGrid, equal, plusminus, muldiv, digit)
     gameField = gameFieldCreateStrategy.createNewGameField
     gameState = FirstCard()
@@ -190,5 +196,14 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
     clearHand(playerName)
     fillHand(playerName)
     publish(new CardsChanged)
+  }
+
+  override def memToJson(mem: Memento) = {
+    val gf = mem.gameField.asInstanceOf[GameField]
+    Json.obj(
+      "gameField" -> Json.toJson(gf),
+      "status" -> Json.toJson(mem.gameStatus.toString),
+      "currentsum" -> Json.toJson(mem.currentSum)
+    )
   }
 }

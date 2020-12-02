@@ -2,7 +2,9 @@ package de.htwg.se.scrabble.controller.controllerComponent
 
 import GameStatus.State
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
-import de.htwg.se.scrabble.model.gridComponent.{CellInterface, CardInterface}
+import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
+import de.htwg.se.scrabble.util.Memento
+import play.api.libs.json.JsObject
 
 import scala.swing.Publisher
 
@@ -18,8 +20,10 @@ trait ControllerInterface extends Publisher {
   def createPile(equal: Int, plusminus: Int, muldiv: Int, digit: Int): Unit
   def shufflePile: Unit
   def setGrid(row: Int, col: Int, index: Int): Unit
-  def endTurn: Unit
+  def endTurn: Boolean
   def please_delete_me: String
+  def memToJson(mem: Memento): JsObject
+  def createMemento(): Memento
 
   def undo: Unit
   def redo: Unit
@@ -38,4 +42,5 @@ trait ControllerInterface extends Publisher {
   def changeHand(playerName: String)
   def putCardInCell: Unit
   def gameToString: String
+
 }

@@ -4,7 +4,9 @@ import de.htwg.se.scrabble.controller.controllerComponent.{ControllerInterface, 
 import de.htwg.se.scrabble.controller.controllerComponent.GameStatus._
 import de.htwg.se.scrabble.model.gameFieldComponent.GameFieldInterface
 import de.htwg.se.scrabble.model.gameFieldComponent.gameFieldBaseImpl.{GameFieldCreateStrategyTemplate, GameFieldFreeSizeCreateStrategy}
-import de.htwg.se.scrabble.model.gridComponent.{CellInterface,CardInterface}
+import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
+import de.htwg.se.scrabble.util.Memento
+import play.api.libs.json.JsObject
 
 case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends ControllerInterface {
   gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(1, 1, 1, 1, 1)
@@ -31,7 +33,11 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
 
   override def setGrid(row: Int, col: Int, index: Int): Unit = {}
 
-  override def endTurn: Unit = {}
+  override def endTurn: Boolean = false
+
+  override def memToJson(mem: Memento): JsObject = ???
+
+  override def createMemento(): Memento = ???
 
   override def undo: Unit = {}
 
