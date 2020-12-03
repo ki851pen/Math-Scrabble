@@ -7,6 +7,7 @@ import de.htwg.se.scrabble.util.Memento
 import play.api.libs.json.JsObject
 
 import scala.swing.Publisher
+import scala.swing.event.Event
 
 trait ControllerInterface extends Publisher {
   def gridSize: Int
@@ -22,7 +23,7 @@ trait ControllerInterface extends Publisher {
   def setGrid(row: Int, col: Int, index: Int): Unit
   def endTurn: Boolean
   def please_delete_me: String
-  def memToJson(mem: Memento): JsObject
+  def memToJson(mem: Memento,ev:Event): JsObject
   def createMemento(): Memento
 
   def undo: Unit

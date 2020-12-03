@@ -8,9 +8,12 @@ import de.htwg.se.scrabble.model.gridComponent.{CardInterface, CellInterface}
 import de.htwg.se.scrabble.util.Memento
 import play.api.libs.json.JsObject
 
+import scala.swing.event.Event
+
 case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate) extends ControllerInterface {
   gameFieldCreateStrategy = new GameFieldFreeSizeCreateStrategy(1, 1, 1, 1, 1)
   private var gameField = gameFieldCreateStrategy.createNewGameField
+
   override def gridSize: Int = 1
 
   override def getCurrentSum: Int = 0
@@ -35,7 +38,7 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
 
   override def endTurn: Boolean = false
 
-  override def memToJson(mem: Memento): JsObject = ???
+  override def memToJson(mem: Memento, ev: Event): JsObject = ???
 
   override def createMemento(): Memento = ???
 
@@ -47,7 +50,9 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
 
   override def fillAllHand: Unit = {}
 
-  override def getCardsInHand(name: String): List[CardInterface] = {null}
+  override def getCardsInHand(name: String): List[CardInterface] = {
+    null
+  }
 
   override def clearHand(name: String): Unit = {}
 

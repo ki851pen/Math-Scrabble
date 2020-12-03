@@ -12,6 +12,7 @@ import de.htwg.se.scrabble.util.{Memento, ProcessEquation, UndoManager}
 import play.api.libs.json.{JsObject, Json}
 
 import scala.swing.Publisher
+import scala.swing.event.Event
 
 class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyTemplate, fileIO: FileIOInterface) extends ControllerInterface with Publisher{
   private var gameField: GameFieldInterface = gameFieldCreateStrategy.createNewGameField
@@ -198,12 +199,13 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
     publish(new CardsChanged)
   }
 
-  override def memToJson(mem: Memento) = {
+  override def memToJson(mem: Memento,ev: Event) = {
     val gf = mem.gameField.asInstanceOf[GameField]
     Json.obj(
       "gameField" -> Json.toJson(gf),
       "status" -> Json.toJson(mem.gameStatus.toString),
-      "currentsum" -> Json.toJson(mem.currentSum)
+      "currentsum" -> Json.toJson(mem.currentSum),
+      "Event" -> Json.toJson(ev.toString)
     )
   }
 }
