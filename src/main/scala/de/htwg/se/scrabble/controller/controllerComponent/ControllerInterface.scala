@@ -24,6 +24,7 @@ trait ControllerInterface extends Publisher {
   def endTurn: Boolean
   def please_delete_me: String
   def memToJson(mem: Memento,ev:Event): JsObject
+  def memToJson(mem: Memento): JsObject
   def createMemento(): Memento
 
   def undo: Unit

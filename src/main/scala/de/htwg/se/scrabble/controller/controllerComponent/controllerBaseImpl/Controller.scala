@@ -208,4 +208,13 @@ class Controller @Inject()(var gameFieldCreateStrategy: GameFieldCreateStrategyT
       "Event" -> Json.toJson(ev.toString)
     )
   }
+
+  override def memToJson(mem: Memento) = {
+    val gf = mem.gameField.asInstanceOf[GameField]
+    Json.obj(
+      "gameField" -> Json.toJson(gf),
+      "status" -> Json.toJson(mem.gameStatus.toString),
+      "currentsum" -> Json.toJson(mem.currentSum),
+    )
+  }
 }

@@ -40,6 +40,8 @@ case class Controller(private var gameFieldCreateStrategy: GameFieldCreateStrate
 
   override def memToJson(mem: Memento, ev: Event): JsObject = ???
 
+  override def memToJson(mem: Memento): JsObject = ???
+
   override def createMemento(): Memento = ???
 
   override def undo: Unit = {}
